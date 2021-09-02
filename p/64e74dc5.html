@@ -1,0 +1,1092 @@
+<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/img/favicon.png"><link rel="icon" type="image/png" href="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/img/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content="没有天生的大牛，更没有永远的菜鸟求知若饥 , 虚心若愚"><meta name="author" content="iceH"><meta name="keywords" content=""><title>Golang学习之异常与文本文件处理 - iceH’s Blog</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/css/gundongtiao.css# 滚动条颜色.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/css/shubiao.css# 鼠标指针.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/css/valine.css"><script id="fluid-configs">var Fluid=window.Fluid||{},CONFIG={hostname:"www.360rce.com",root:"/",version:"1.8.5",typing:{enable:!0,typeSpeed:70,cursorChar:"_",loop:!1},toc:{enable:!0,headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:0},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"right",visible:"hover",icon:""},copy_btn:!0,image_zoom:{enable:!0},lazyload:{enable:!0,onlypost:!1},web_analytics:{enable:!1,baidu:null,google:null,gtag:null,tencent:{sid:null,cid:null},woyaola:null,cnzz:null,leancloud:{app_id:null,app_key:null,server_url:null}}}</script><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="iceH’s Blog" type="application/atom+xml">
+</head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>iceH's Blog</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="iconfont icon-books"></i> 博文</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档 </a><a class="dropdown-item" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类 </a><a class="dropdown-item" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></div></li><li class="nav-item"><a class="nav-link" target="_blank" rel="noopener" href="https://wiki.secice.cn/"><i class="iconfont icon-kaggle"></i> Wiki</a></li><li class="nav-item"><a class="nav-link" href="/playlist/"><i class="iconfont icon-music"></i> 音乐</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner intro-2" id="background" parallax="true" style="background:url(//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/img/background1.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="page-header text-center fade-in-up"><span class="h2" id="subtitle" title="Golang学习之异常与文本文件处理"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2021-01-09 15:45" pubdate>2021年1月9日 下午</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 10.4k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 147 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto"><h1 style="display:none">Golang学习之异常与文本文件处理</h1><div class="markdown-body"><h2 id="一、异常处理"><a href="#一、异常处理" class="headerlink" title="一、异常处理"></a>一、异常处理</h2><h3 id="1-1-error接口"><a href="#1-1-error接口" class="headerlink" title="1.1 error接口"></a>1.1 error接口</h3><p><code>error</code>接口是Golang内建的接口类型，实现了一个错误处理的标准模式。返回一个不是致命的错误，主要起到一个提示作用。</p><h4 id="1-1-1-error接口的基本使用"><a href="#1-1-1-error接口的基本使用" class="headerlink" title="1.1.1 error接口的基本使用"></a>1.1.1 error接口的基本使用</h4><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//fmt包中的Errorf函数</span>
+	err1 := fmt.Errorf(<span class="hljs-string">&quot;%s&quot;</span>, <span class="hljs-string">&quot;this is error1.&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;err1 type is : %T, err1=%+v\n&quot;</span>, err1, err1)
+
+	<span class="hljs-comment">//errors包中的New()函数</span>
+	err2 := errors.New(<span class="hljs-string">&quot;this is error2.&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;err2 type is : %T, err2=%+v\n&quot;</span>, err2, err2)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">err1 type is : *errors.errorString, err1=this is error1.</span>
+<span class="hljs-comment">err2 type is : *errors.errorString, err2=this is error2.</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="1-1-2-error接口的应用"><a href="#1-1-2-error接口的应用" class="headerlink" title="1.1.2 error接口的应用"></a>1.1.2 error接口的应用</h4><p><code>error</code>接口一般用于程序发生错误时，给予提示信息的作用：<br>下例演示：当分母为0时，打印一个提示信息</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MyDiv</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-params">(result <span class="hljs-keyword">int</span>, err error)</span></span> &#123; <span class="hljs-comment">//error是接口类型，使用这个接口</span>
+	err = <span class="hljs-literal">nil</span>
+
+	<span class="hljs-keyword">if</span> b == <span class="hljs-number">0</span> &#123;
+		err = errors.New(<span class="hljs-string">&quot;分母不能为0&quot;</span>)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		result = a / b
+	&#125;
+
+	<span class="hljs-keyword">return</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">for</span> i, j := <span class="hljs-number">10</span>, <span class="hljs-number">2</span>; j &gt; <span class="hljs-number">-2</span>; j-- &#123;
+		result, err := MyDiv(i, j)
+
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;error:&quot;</span>, err)
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;result=&quot;</span>, result)
+		&#125;
+	&#125;
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">result= 5</span>
+<span class="hljs-comment">result= 10</span>
+<span class="hljs-comment">error: 分母不能为0</span>
+<span class="hljs-comment">result= -10</span>
+<span class="hljs-comment">*/</span></code></pre><p>这个<code>error</code>只是打印一个信息，并不是程序报错，所以能够正常运行完成。</p><h3 id="1-2-panic"><a href="#1-2-panic" class="headerlink" title="1.2 panic"></a>1.2 panic</h3><p>当遇到不可恢复的错误状态的时候，如：数组访问越界、空指针引用等，这些运行时的致命错误，就会引发<code>panic</code>异常。<br><strong>当panic异常引发时，程序就会中断运行</strong>。随后，程序崩溃并输出日志信息，日志信息包括<code>panic value</code>和函数调用的堆栈跟踪信息。<br>不是所有的<code>panic</code>异常都来自运行时（运行时发生了致命错误，程序内部会自动调用<code>panic()</code>函数，让程序中断并崩溃）。直接调用内建的<code>panic()</code>函数也会引发异常（手动引发异常）。<code>panic()</code>函数接收任意值作为参数。</p><h4 id="1-2-1-人为引发panic"><a href="#1-2-1-人为引发panic" class="headerlink" title="1.2.1 人为引发panic"></a>1.2.1 人为引发panic</h4><p>手动显式调用<code>panic()</code>函数，就是人为引发的异常，导致程序中断崩溃：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testa</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;aaaaaaaa&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testb</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//显式调用panic函数，引发异常，导致程序中断并且崩溃</span>
+	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;this is a panic test.&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testc</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;cccccccc&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	testa()
+	testb()
+	testc()
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">aaaaaaaa</span>
+<span class="hljs-comment">panic: this is a panic test.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">goroutine 1 [running]:</span>
+<span class="hljs-comment">main.testb(...)</span>
+<span class="hljs-comment">	F:/goProject/src/myTest/main.go:11</span>
+<span class="hljs-comment">main.main()</span>
+<span class="hljs-comment">	F:/goProject/src/myTest/main.go:20 +0x9d</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Process finished with exit code 2</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="1-2-2-内部检测机制自动引发的panic"><a href="#1-2-2-内部检测机制自动引发的panic" class="headerlink" title="1.2.2 内部检测机制自动引发的panic"></a>1.2.2 内部检测机制自动引发的panic</h4><p>数组访问越界，内部自动引发异常：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testa</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;aaaaaaaa&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testb</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> a = [<span class="hljs-number">2</span>]<span class="hljs-keyword">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125; <span class="hljs-comment">//定义一个长度为2的数组</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ &#123;
+		fmt.Println(<span class="hljs-string">&quot;testb, i=&quot;</span>, a[i]) <span class="hljs-comment">//当i=2的时候，数组访问越界，内部会自动检测到并引发panic</span>
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testc</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;cccccccc&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	testa()
+	testb()
+	testc()
+&#125;</code></pre><h3 id="1-3-recover"><a href="#1-3-recover" class="headerlink" title="1.3 recover"></a>1.3 recover</h3><p><code>recover</code> 是一个专用于”拦截”运行时 <code>panic</code> 的内建函数。当前程序运行时发生了 <code>panic</code>，<code>recover</code> 可以从 <code>panic</code> 的状态中恢复并重新获得流程控制权。简而言之：从 <code>panic</code> 的崩溃处恢复运行程序，它不会引发程序崩溃。<br><code>recover</code> 有一个返回值：如果引发了 <code>panic</code>，则返回对应的错误信息；如果未引发 <code>panic</code>，则返回 <code>nil</code>。<br><code>recover</code> 必须在 <code>defer</code> 调用的函数中有效。</p><h4 id="1-3-1-recover的基本使用"><a href="#1-3-1-recover的基本使用" class="headerlink" title="1.3.1 recover的基本使用"></a>1.3.1 recover的基本使用</h4><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testa</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;aaaaaaaa&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testb</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//recover()需要放在defer语句的函数调用中</span>
+	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-comment">//recover有一个返回值：当有panic时，返回对应的错误信息；没有panic时，返回nil</span>
+		<span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123; <span class="hljs-comment">//没有panic时，返回nil。nil != nil 条件不成立，不会进if语句</span>
+			fmt.Println(err) <span class="hljs-comment">//打印错误信息，不要再写recover()了。if初始化语句中已经得到了错误信息并恢复了运行，因为后面没有任何panic的引发，所以再写recover()就会打印出nil</span>
+		&#125;
+	&#125;() <span class="hljs-comment">//匿名函数调用，满足defer语句中的函数调用，这一条件</span>
+
+	<span class="hljs-keyword">var</span> a = [<span class="hljs-number">2</span>]<span class="hljs-keyword">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125; <span class="hljs-comment">//定义一个长度为2的数组</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ &#123;
+		fmt.Println(<span class="hljs-string">&quot;testb, i=&quot;</span>, a[i]) <span class="hljs-comment">//当i=2的时候，数组访问越界，内部会自动检测到并引发panic</span>
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">testc</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;cccccccc&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	testa()
+	testb()
+	testc()
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">aaaaaaaa</span>
+<span class="hljs-comment">testb, i= 1</span>
+<span class="hljs-comment">testb, i= 2</span>
+<span class="hljs-comment">runtime error: index out of range [2] with length 2</span>
+<span class="hljs-comment">cccccccc</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="1-3-2-recover不能在defer中直接调用"><a href="#1-3-2-recover不能在defer中直接调用" class="headerlink" title="1.3.2 recover不能在defer中直接调用"></a>1.3.2 recover不能在defer中直接调用</h4><p><code>recover</code>不能在<code>defer</code>中直接调用，<code>recover</code>需要在<code>defer</code>调用的函数里才能生效。</p><h4 id="1-3-3-recover正确的使用方式"><a href="#1-3-3-recover正确的使用方式" class="headerlink" title="1.3.3 recover正确的使用方式"></a>1.3.3 recover正确的使用方式</h4><p><code>defer</code>后面接一个函数，在函数里写<code>recover()</code>，然后调用这个函数，才能使<code>recover()</code>生效。<br>例如，打印一下错误信息：</p><pre><code class="hljs go"><span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-built_in">recover</span>())
+&#125;() <span class="hljs-comment">//调用匿名函数</span>
+<span class="hljs-number">123</span>
+​<span class="hljs-string">``</span><span class="hljs-string">`go</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">`</span><span class="hljs-built_in">recover</span>()<span class="hljs-string">`放在匿名函数中，匿名函数当然是一个函数，而且它接着`</span><span class="hljs-keyword">defer</span><span class="hljs-string">`语句，最后加了一对小括号`</span>()<span class="hljs-string">`完成对匿名函数的调用。</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">## 二、字符串处理</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">### 2.1 字符串常用操作</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">以下函数都是在`</span>strings<span class="hljs-string">`包中，使用前必须先导入`</span>strings<span class="hljs-string">`包！</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">#### 2.1.1 Contains函数</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">语法：`</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Contains</span><span class="hljs-params">(s, substr <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">bool</span>`，验证字符串<span class="hljs-title">s</span>中是否包含了<span class="hljs-title">substr</span>。</span>
+完全匹配，一个字符都不能差！
+示例：
+
+​<span class="hljs-string">``</span><span class="hljs-string">`go</span>
+<span class="hljs-string">func main() &#123;</span>
+<span class="hljs-string">	fmt.Println(strings.Contains(&quot;hello,go&quot;, &quot;go&quot;))</span>
+<span class="hljs-string">	fmt.Println(strings.Contains(&quot;hello,go&quot;, &quot;ol&quot;))</span>
+<span class="hljs-string">&#125;</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">/*</span>
+<span class="hljs-string">运行结果：</span>
+<span class="hljs-string">true</span>
+<span class="hljs-string">false</span>
+<span class="hljs-string">*/</span></code></pre><h4 id="2-1-2-Join函数"><a href="#2-1-2-Join函数" class="headerlink" title="2.1.2 Join函数"></a>2.1.2 Join函数</h4><p>语法：<code>func Join(a []string, sep string) string</code>，字符串链接，把slice a通过sep链接起来。<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	sli := []<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;go&quot;</span>, <span class="hljs-string">&quot;python&quot;</span>, <span class="hljs-string">&quot;rust&quot;</span>&#125;
+	newStr := strings.Join(sli, <span class="hljs-string">&quot;@&quot;</span>)
+	fmt.Println(<span class="hljs-string">&quot;newStr=&quot;</span>, newStr)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">newStr= go@python@rust</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-1-3-Index函数"><a href="#2-1-3-Index函数" class="headerlink" title="2.1.3 Index函数"></a>2.1.3 Index函数</h4><p>语法：<code>func Index(s, sep string) int</code>，在字符串s中查找sep的位置，返回sep的下标，找不到返回-1。<br>完全匹配，一个字符都不能差！返回的是第一个找到的下标！<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;index:&quot;</span>, strings.Index(<span class="hljs-string">&quot;abchehe&quot;</span>, <span class="hljs-string">&quot;he&quot;</span>))
+	fmt.Println(<span class="hljs-string">&quot;index:&quot;</span>, strings.Index(<span class="hljs-string">&quot;abchehe&quot;</span>, <span class="hljs-string">&quot;bd&quot;</span>))
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">index: 3</span>
+<span class="hljs-comment">index: -1</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-1-4-Repeat函数"><a href="#2-1-4-Repeat函数" class="headerlink" title="2.1.4 Repeat函数"></a>2.1.4 Repeat函数</h4><p>语法：<code>func Repeat(s string, count int) string</code>，重复s字符串count次，返回最终的字符串。<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	newStr := strings.Repeat(<span class="hljs-string">&quot;go&quot;</span>, <span class="hljs-number">3</span>)
+	fmt.Println(<span class="hljs-string">&quot;hello,&quot;</span> + newStr)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">hello,gogogo</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-1-5-Replace函数"><a href="#2-1-5-Replace函数" class="headerlink" title="2.1.5 Replace函数"></a>2.1.5 Replace函数</h4><p>语法：<code>func Replace(s, old, new string, n int) string</code>，在字符串s中，把old字符串替换为new字符串。n表示替换的次数，小于0表示全部替换。<br>如果old为空，则在字符串的开头和每个UTF-8序列之后添加n个new。<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;o&quot;</span>, <span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-number">-1</span>))
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;o&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">-1</span>))
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;o&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">1</span>))
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;9&quot;</span>, <span class="hljs-number">1</span>))
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;9&quot;</span>, <span class="hljs-number">3</span>))
+	fmt.Println(strings.Replace(<span class="hljs-string">&quot;hellogo&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;9&quot;</span>, <span class="hljs-number">-1</span>)) <span class="hljs-comment">//old为空，n为-1，头部添加new，然后每个UTF-8字符后面再添加new</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">hellAgA</span>
+<span class="hljs-comment">hellg</span>
+<span class="hljs-comment">hellgo</span>
+<span class="hljs-comment">9hellogo</span>
+<span class="hljs-comment">9h9e9llogo</span>
+<span class="hljs-comment">9h9e9l9l9o9g9o9</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-1-6-Split函数"><a href="#2-1-6-Split函数" class="headerlink" title="2.1.6 Split函数"></a>2.1.6 Split函数</h4><p>语法：<code>func Split(s, sep string) []string</code>，把s字符串按照sep分割，返回slice。<br>大意：将s分割为所有由sep分隔的子字符串，并返回这些分隔符之间的子字符串的一部分。<br>如果s不包含sep且sep不为空，则Split返回长度为1的切片，其唯一元素为s。<br>如果sep为空，则Split在每个UTF-8序列之后拆分。<br>如果s和sep均为空，则Split返回一个空切片。<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;strings&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;hello@go@barry&quot;</span>
+	sli := strings.Split(s, <span class="hljs-string">&quot;@&quot;</span>)
+	fmt.Println(sli)
+
+	s = <span class="hljs-string">&quot; 11-22 - 33 &quot;</span>
+	sli = strings.Split(s, <span class="hljs-string">&quot; &quot;</span>) <span class="hljs-comment">//以空格分割，sep之间有子字符串会被显示出来</span>
+	fmt.Println(sli)
+
+	s = <span class="hljs-string">&quot;a man a plan a&quot;</span>
+	sli = strings.Split(s, <span class="hljs-string">&quot;a&quot;</span>) <span class="hljs-comment">//&quot;a&quot;之间的空格都会被显示出来</span>
+	fmt.Println(sli)
+
+	s = <span class="hljs-string">&quot;Anagod&quot;</span>
+	sli = strings.Split(s, <span class="hljs-string">&quot;c&quot;</span>)
+	fmt.Println(sli)
+
+	s = <span class="hljs-string">&quot;我爱Golangひじょう&quot;</span>
+	sli = strings.Split(s, <span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">//根据UTF-8分割</span>
+	fmt.Println(sli)
+
+	s = <span class="hljs-string">&quot;&quot;</span>
+	sli = strings.Split(s, <span class="hljs-string">&quot;&quot;</span>)
+	fmt.Println(sli)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">[hello go barry]</span>
+<span class="hljs-comment">[ 11-22 - 33 ]</span>
+<span class="hljs-comment">[  m n   pl n  ]</span>
+<span class="hljs-comment">[Anagod]</span>
+<span class="hljs-comment">[我 爱 G o l a n g ひ じ ょ う]</span>
+<span class="hljs-comment">[]</span>
+<span class="hljs-comment">*/</span>
+*/</code></pre><h4 id="2-1-7-Trim函数"><a href="#2-1-7-Trim函数" class="headerlink" title="2.1.7 Trim函数"></a>2.1.7 Trim函数</h4><p>语法：<code>func Trim(s string, cutset string) string</code>，去除s字符串头尾的cutset。<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;@@@are u ok?@@@&quot;</span>
+	sli := strings.Trim(s, <span class="hljs-string">&quot;@&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;sli=%+v\n&quot;</span>, sli)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">sli=are u ok?</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-1-8-Fields函数"><a href="#2-1-8-Fields函数" class="headerlink" title="2.1.8 Fields函数"></a>2.1.8 Fields函数</h4><p>语法：<code>func Fields(s string) []string</code>，去除字符串s中的空格，返回slice。<br><code>Fields</code>和<code>Split</code>很像，<code>Split</code>功能更加强大，它可以指定字符串。<code>Fields</code>不能指定，只能以空格分割。<br>示例：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;     are  @ u  # ok? &quot;</span>
+	sli := strings.Fields(s)
+	fmt.Println(sli)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">[are @ u # ok?]</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="2-2-字符串转换"><a href="#2-2-字符串转换" class="headerlink" title="2.2 字符串转换"></a>2.2 字符串转换</h3><p>以下函数都是在<code>strconv</code>包中，使用前必须先导入<code>strconv</code>包！</p><h4 id="2-2-1-Append系列"><a href="#2-2-1-Append系列" class="headerlink" title="2.2.1 Append系列"></a>2.2.1 Append系列</h4><p><code>strconv.AppendXxxx()</code>，将其他类型转换为字符串后，添加到现有的字节切片中。</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//声明一个字节切片，声明切片需要制定len，cap可以省略</span>
+	byteSlice := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">0</span>)
+
+	<span class="hljs-comment">//strconv.AppendXxxx()系列都是返回[]byte，需要重新把追加后的新值，赋值给旧的变量，以覆盖旧的变量</span>
+	byteSlice = strconv.AppendBool(byteSlice, <span class="hljs-literal">true</span>)
+
+	<span class="hljs-comment">//第二个写int的值，第三个制定以什么进制去转换这个int</span>
+	byteSlice = strconv.AppendInt(byteSlice, <span class="hljs-number">123456</span>, <span class="hljs-number">10</span>)
+	byteSlice = strconv.AppendInt(byteSlice, <span class="hljs-number">123456</span>, <span class="hljs-number">16</span>)
+	byteSlice = strconv.AppendInt(byteSlice, <span class="hljs-number">123456</span>, <span class="hljs-number">2</span>)
+
+	byteSlice = strconv.AppendQuote(byteSlice, <span class="hljs-string">&quot;abchellogo&quot;</span>)
+
+	fmt.Println(<span class="hljs-string">&quot;byteSlice=&quot;</span>, <span class="hljs-keyword">string</span>(byteSlice))
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">byteSlice= true1234561e24011110001001000000&quot;abchellogo&quot;</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="2-2-2-Format"><a href="#2-2-2-Format" class="headerlink" title="2.2.2 Format"></a>2.2.2 Format</h4><p>将其他类型转换为字符串。</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> str <span class="hljs-keyword">string</span>
+
+	<span class="hljs-comment">//&#x27;f&#x27;表示打印的格式。10表示小数精确到几位，-1表示使用最少数量的小数。64表示float64</span>
+	str += strconv.FormatFloat(<span class="hljs-number">3.1415</span>, <span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">64</span>) <span class="hljs-comment">//常用的是&#x27;f&#x27;格式</span>
+
+	str += <span class="hljs-string">&quot;;&quot;</span>
+
+	<span class="hljs-comment">//整型转换为字符串</span>
+	str += strconv.Itoa(<span class="hljs-number">999</span>)
+
+	fmt.Println(<span class="hljs-string">&quot;str=&quot;</span>, str)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">str= 3.1415000000;999</span>
+<span class="hljs-comment">*/</span></code></pre><p><code>strconv.FormatFloat()</code>的用法：</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">FormatFloat</span><span class="hljs-params">(f <span class="hljs-keyword">float64</span>, fmt <span class="hljs-keyword">byte</span>, prec, bitSize <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">string</span></span></code></pre><p>函数将浮点数表示为字符串并返回。</p><p>bitSize表示f的来源类型（32：float32、64：float64），会据此进行舍入。</p><p>fmt表示格式：’f’（-ddd.dddd）、’b’（-ddddp±ddd，指数为二进制）、’e’（-d.dddde±dd，十进制指数）、’E’（-d.ddddE±dd，十进制指数）、’g’（指数很大时用’e’格式，否则’f’格式）、’G’（指数很大时用’E’格式，否则’f’格式）。</p><p>prec控制精度（排除指数部分）：对’f’、’e’、’E’，它表示小数点后的数字个数；对’g’、’G’，它控制总的数字个数。如果prec 为-1，则代表使用最少数量的、但又必需的数字来表示f。</p><h4 id="2-2-3-Parse"><a href="#2-2-3-Parse" class="headerlink" title="2.2.3 Parse"></a>2.2.3 Parse</h4><p>把字符串转换为其他类型。<br>常用示例1：字符串转换为bool</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	boolValue, err := strconv.ParseBool(<span class="hljs-string">&quot;true&quot;</span>)
+
+	<span class="hljs-comment">//err=nil的时候，说明没有error</span>
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+		fmt.Printf(<span class="hljs-string">&quot;boolValue=%+v, type is :%T\n&quot;</span>, boolValue, boolValue)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;err:&quot;</span>, err)
+	&#125;
+
+	<span class="hljs-comment">//bool只有true和false，转换时除了首字母可以大写，其他任何一个字符写错都会返回error</span>
+	boolValue, err = strconv.ParseBool(<span class="hljs-string">&quot;FalsE&quot;</span>)
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+		fmt.Printf(<span class="hljs-string">&quot;boolValue=%+v, type is:%T\n&quot;</span>, boolValue, boolValue)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;err:&quot;</span>, err)
+	&#125;
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">boolValue=true, type is:bool</span>
+<span class="hljs-comment">err: strconv.ParseBool: parsing &quot;FalsE&quot;: invalid syntax</span>
+<span class="hljs-comment">*/</span></code></pre><p>常用示例2：字符串转换为int</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	intValue, _ := strconv.Atoi(<span class="hljs-string">&quot;7890&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;intValue=%d, type is:%T\n&quot;</span>, intValue, intValue)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">intValue=7890, type is:int</span>
+<span class="hljs-comment">*/</span></code></pre><h2 id="三、正则表达式"><a href="#三、正则表达式" class="headerlink" title="三、正则表达式"></a>三、正则表达式</h2><p>正则表达式是一种进行<code>模式匹配和文本操纵</code>（按指定的模式提取）的工具。Golang有内建的<code>regexp</code>标准包支持。<br>Golang实现的是<code>RE2</code>标准，除了<code>\C</code>，详细的语法参考：<a target="_blank" rel="noopener" href="https://github.com/google/re2">link</a><br>备注：反引号在``Golang中表示原始字符串。<br>提醒：能用<code>strings</code>包解决的，不要用正则。正则很复杂、很难写，效率也没有<code>strings</code>来得高。<br>详细使用方式请查看：<a target="_blank" rel="noopener" href="https://studygolang.com/pkgdoc">link</a></p><h3 id="3-1-正则表达式基本使用"><a href="#3-1-正则表达式基本使用" class="headerlink" title="3.1 正则表达式基本使用"></a>3.1 正则表达式基本使用</h3><p>1.引入<code>regexp</code>包<br>2.定义一个解析（匹配）规则<br>3.使用这个规则进行提取</p><h4 id="3-1-1-匹配除换行符-n之外的任意字符"><a href="#3-1-1-匹配除换行符-n之外的任意字符" class="headerlink" title="3.1.1 .匹配除换行符\n之外的任意字符"></a>3.1.1 <code>.</code>匹配除换行符<code>\n</code>之外的任意字符</h4><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;regexp&quot;</span> <span class="hljs-comment">//第1步：引入包</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;abc   a9z . azc,   apc;arc  &quot;</span>
+
+	<span class="hljs-comment">//第2步：定义解析器</span>
+	reg1 := regexp.MustCompile(<span class="hljs-string">`a.c`</span>) <span class="hljs-comment">//反引号&quot;``&quot;在Golang中表示原始字符串</span>
+
+	<span class="hljs-keyword">if</span> reg1 == <span class="hljs-literal">nil</span> &#123; <span class="hljs-comment">//解析成功返回正则解析器，失败返回nil</span>
+		fmt.Println(<span class="hljs-string">&quot;faild regexp.&quot;</span>)
+		<span class="hljs-keyword">return</span> <span class="hljs-comment">//解析失败就结束函数，不然跳出if语句后，还会继续往下走</span>
+	&#125;
+
+	result := reg1.FindAllStringSubmatch(s, <span class="hljs-number">-1</span>) <span class="hljs-comment">//-1表示匹配所有</span>
+
+	fmt.Println(<span class="hljs-string">&quot;result=&quot;</span>, result)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">result= [[abc] [azc] [apc] [arc]]</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="3-1-2-的使用"><a href="#3-1-2-的使用" class="headerlink" title="3.1.2 []的使用"></a>3.1.2 <code>[]</code>的使用</h4><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;regexp&quot;</span> <span class="hljs-comment">//第1步：引入包</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;abc   a9z . azc, a666c  apc;arc  &quot;</span>
+
+	<span class="hljs-comment">//第2步：定义解析器</span>
+	reg1 := regexp.MustCompile(<span class="hljs-string">`a\d[a-z]`</span>)
+	<span class="hljs-comment">//reg1 := regexp.MustCompile(`a[0-9][a-z]`) //等价于上一条语句</span>
+
+	<span class="hljs-keyword">if</span> reg1 == <span class="hljs-literal">nil</span> &#123; <span class="hljs-comment">//解析成功返回正则解析器，失败返回nil</span>
+		fmt.Println(<span class="hljs-string">&quot;faild regexp.&quot;</span>)
+		<span class="hljs-keyword">return</span> <span class="hljs-comment">//解析失败就结束函数，不然跳出if语句后，还会继续往下走</span>
+	&#125;
+
+	<span class="hljs-comment">//分段方式返回结果</span>
+	result := reg1.FindAllStringSubmatch(s, <span class="hljs-number">-1</span>) <span class="hljs-comment">//-1表示匹配所有</span>
+
+	fmt.Println(<span class="hljs-string">&quot;result=&quot;</span>, result)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">result= [[a9z]]</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="3-1-3-匹配前一个字符1次或多次"><a href="#3-1-3-匹配前一个字符1次或多次" class="headerlink" title="3.1.3 +匹配前一个字符1次或多次"></a>3.1.3 <code>+</code>匹配前一个字符1次或多次</h4><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;regexp&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	s := <span class="hljs-string">&quot;3333.1414 567 agdsd 1.23 7. 08.99 1sdfasdf 6.66 ; 7.a1&quot;</span>
+
+	reg := regexp.MustCompile(<span class="hljs-string">`\d+\.\d+`</span>)
+	<span class="hljs-keyword">if</span> reg == <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;regexp failed.&quot;</span>)
+		<span class="hljs-keyword">return</span> <span class="hljs-comment">//解析失败就结束函数，不然跳出if语句后，还会继续往下走</span>
+	&#125;
+
+	result := reg.FindAllString(s, <span class="hljs-number">-1</span>)
+	fmt.Println(<span class="hljs-string">&quot;result=&quot;</span>, result)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">result= [3333.1414 1.23 08.99 6.66]</span>
+<span class="hljs-comment">*/</span></code></pre><p>“08.99”是一个字符串，符合<code>\d</code>的规则，所以是完整显示出来了，并不是人类自己理解的0是无用数。</p><h3 id="3-2-解析HTML代码的小示例"><a href="#3-2-解析HTML代码的小示例" class="headerlink" title="3.2 解析HTML代码的小示例"></a>3.2 解析HTML代码的小示例</h3><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;regexp&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//反引号``，表示原生的字符串</span>
+	s := <span class="hljs-string">`</span>
+<span class="hljs-string">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-string">&lt;html lang=&quot;zh-CN&quot;&gt;</span>
+<span class="hljs-string">&lt;head&gt;</span>
+<span class="hljs-string">	&lt;title&gt;Go语言标准库文档中文版 | Go语言中文网 | Golang中文社区 | Golang中国&lt;/title&gt;</span>
+<span class="hljs-string">	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no&quot;&gt;</span>
+<span class="hljs-string">	&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge, chrome=1&quot;&gt;</span>
+<span class="hljs-string">	&lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="hljs-string">	&lt;link rel=&quot;shortcut icon&quot; href=&quot;/static/img/go.ico&quot;&gt;</span>
+<span class="hljs-string">	&lt;link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;/static/img/logo2.png&quot;&gt;</span>
+<span class="hljs-string">	&lt;meta name=&quot;author&quot; content=&quot;polaris &lt;polaris@studygolang.com&gt;&quot;&gt;</span>
+<span class="hljs-string">	&lt;meta name=&quot;keywords&quot; content=&quot;中文, 文档, 标准库, Go语言,Golang,Go社区,Go中文社区,Golang中文社区,Go语言社区,Go语言学习,学习Go语言,Go语言学习园地,Golang 中国,Golang中国,Golang China, Go语言论坛, Go语言中文网&quot;&gt;</span>
+<span class="hljs-string">	&lt;meta name=&quot;description&quot; content=&quot;Go语言文档中文版，Go语言中文网，中国 Golang 社区，Go语言学习园地，致力于构建完善的 Golang 中文社区，Go语言爱好者的学习家园。分享 Go 语言知识，交流使用经验&quot;&gt;</span>
+<span class="hljs-string">&lt;/head&gt;</span>
+<span class="hljs-string">&lt;div&gt;呵呵&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div&gt;哈哈哈&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div&gt;f**kf**kf**k&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div&gt;呵呵111111111&lt;/div&gt;</span>
+<span class="hljs-string">&lt;frameset cols=&quot;15,85&quot;&gt;</span>
+<span class="hljs-string">	&lt;frame src=&quot;/static/pkgdoc/i.html&quot;&gt;</span>
+<span class="hljs-string">	&lt;frame name=&quot;main&quot; src=&quot;/static/pkgdoc/main.html&quot; tppabs=&quot;main.html&quot; &gt;</span>
+<span class="hljs-string">	&lt;noframes&gt;</span>
+<span class="hljs-string">	&lt;/noframes&gt;</span>
+<span class="hljs-string">&lt;/frameset&gt;</span>
+<span class="hljs-string">&lt;/html&gt;</span>
+<span class="hljs-string">	`</span>
+
+	<span class="hljs-comment">//(.*)表示分组，我只要小括号中间这一部分的内容</span>
+	<span class="hljs-comment">//(?s:)表示组命令，s表示匹配换行符`\n`</span>
+	reg := regexp.MustCompile(<span class="hljs-string">`&lt;div&gt;(?s:(.*?))&lt;/div&gt;`</span>)
+	<span class="hljs-keyword">if</span> reg == <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;regexp failed.&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	result := reg.FindAllStringSubmatch(s, <span class="hljs-number">-1</span>) <span class="hljs-comment">//会把 &quot;&lt;div&gt;呵呵&lt;/div&gt;&quot; 和 &quot;呵呵&quot;，都取出来</span>
+	fmt.Println(<span class="hljs-string">&quot;result=&quot;</span>, result)
+
+	fmt.Println(<span class="hljs-string">&quot;--------------------------------------------&quot;</span>)
+
+	<span class="hljs-comment">//查看一下切片中每个元素的构成情况</span>
+	<span class="hljs-keyword">for</span> _, text := <span class="hljs-keyword">range</span> result &#123;
+		fmt.Printf(<span class="hljs-string">&quot;text[0]=%v, text[1]=%v\n&quot;</span>, text[<span class="hljs-number">0</span>], text[<span class="hljs-number">1</span>])
+	&#125;
+
+	fmt.Println(<span class="hljs-string">&quot;--------------------------------------------&quot;</span>)
+
+	<span class="hljs-comment">//首尾的&lt;div&gt;标签不要，我只想要&lt;div&gt;呵呵&lt;/div&gt;中间的内容 呵呵</span>
+	cleanResult := []<span class="hljs-keyword">string</span>&#123;&#125;
+	<span class="hljs-keyword">for</span> _, text := <span class="hljs-keyword">range</span> result &#123;
+		cleanResult = <span class="hljs-built_in">append</span>(cleanResult, text[<span class="hljs-number">1</span>])
+	&#125;
+
+	fmt.Println(<span class="hljs-string">&quot;cleanResult=&quot;</span>, cleanResult)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">result= [[&lt;div&gt;呵呵&lt;/div&gt; 呵呵] [&lt;div&gt;哈哈哈&lt;/div&gt; 哈哈哈] [&lt;div&gt;f**kf**kf**k&lt;/div&gt; f**kf**kf**k] [&lt;div&gt;呵呵111111111&lt;/div&gt; 呵呵111111111]]</span>
+<span class="hljs-comment">--------------------------------------------</span>
+<span class="hljs-comment">text[0]=&lt;div&gt;呵呵&lt;/div&gt;, text[1]=呵呵</span>
+<span class="hljs-comment">text[0]=&lt;div&gt;哈哈哈&lt;/div&gt;, text[1]=哈哈哈</span>
+<span class="hljs-comment">text[0]=&lt;div&gt;f**kf**kf**k&lt;/div&gt;, text[1]=f**kf**kf**k</span>
+<span class="hljs-comment">text[0]=&lt;div&gt;呵呵111111111&lt;/div&gt;, text[1]=呵呵111111111</span>
+<span class="hljs-comment">--------------------------------------------</span>
+<span class="hljs-comment">cleanResult= [呵呵 哈哈哈 f**kf**kf**k 呵呵111111111]</span>
+<span class="hljs-comment">*/</span></code></pre><h2 id="四、json"><a href="#四、json" class="headerlink" title="四、json"></a>四、json</h2><p><code>json</code>（JavaScript Object Notation）比 XML 更轻量级的<code>数据交换格式</code>，被广泛应用于 Web 服务端程序和客户端之间的数据通信。<br>其表现形式为<strong>键-值对集合的文本描述形式</strong>，跨平台、跨语言的数据交换格式。<br>Golang有内建的 <code>encoding/json</code> 包，来处理 <code>json</code>。<br><code>json</code> 官方网站：<a target="_blank" rel="noopener" href="https://www.json.org/json-zh.html">link</a>（这是官方汉化版，英文原版把URL中的zh换成en）<br>在线格式化：<a target="_blank" rel="noopener" href="https://www.json.cn/">link</a></p><h3 id="4-1-编码json"><a href="#4-1-编码json" class="headerlink" title="4.1 编码json"></a>4.1 编码json</h3><p>编码 <code>json</code> 就是生成一个 <code>json</code>，将一些信息做成一个 <code>json</code> 文本格式。</p><h4 id="4-1-1-使用结构体生成一个json"><a href="#4-1-1-使用结构体生成一个json" class="headerlink" title="4.1.1 使用结构体生成一个json"></a>4.1.1 使用结构体生成一个json</h4><p><strong>想要生成一个 json，结构体成员的变量名首字母必须大写，否则无法生成</strong>！<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;encoding/json&quot;</span> <span class="hljs-comment">//引入标准包</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Company <span class="hljs-keyword">struct</span> &#123;
+	CompanyName <span class="hljs-keyword">string</span>
+	Deps        []<span class="hljs-keyword">string</span>
+	IsOK        <span class="hljs-keyword">bool</span>
+	Price       <span class="hljs-keyword">float64</span>
+	unit        <span class="hljs-keyword">string</span> <span class="hljs-comment">//成员变量名首字母小写，就不会生成到json中去</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//初始化结构体中的切片成员时，需要制定类型，不然报错：Missing type in composite literal ===&gt; 复合文字中缺少类型</span>
+	c1 := Company&#123;<span class="hljs-string">&quot;山景城Google公司&quot;</span>, []<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;Search Engine&quot;</span>, <span class="hljs-string">&quot;Andriod&quot;</span>, <span class="hljs-string">&quot;Google Mail&quot;</span>&#125;, <span class="hljs-literal">true</span>, <span class="hljs-number">953.37</span>, <span class="hljs-string">&quot;Dollars&quot;</span>&#125;
+
+	<span class="hljs-comment">//编码，格式化编码，根据内容生成json文本</span>
+	c1Byte, err := json.MarshalIndent(c1, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;\t&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;json marshal failed.&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	fmt.Println(c1Byte)
+	fmt.Println(<span class="hljs-keyword">string</span>(c1Byte)) <span class="hljs-comment">//Marshal()返回切片字节，字节默认以ASCII码值打印，需要使用string()转换</span>
+	fmt.Printf(<span class="hljs-string">&quot;type is : %T\n&quot;</span>, c1Byte) <span class="hljs-comment">//是个uint8的切片类型，byte的底层是用uint8实现</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">[123 10 9 34 67 111 109 112 97 110 121 78 97 109 101 34 58 32 34 229 177 177 230 153 175 229 159 142 71 111 111 103 108 101 229 133 172 229 143 184 34 44 10 9 34 68 101 112 115 34 58 32 91 10 9 9 34 83 101 97 114 99 104 32 69 110 103 105 110 101 34 44 10 9 9 34 65 110 100 114 105 111 100 34 44 10 9 9 34 71 111 111 103 108 101 32 77 97 105 108 34 10 9 93 44 10 9 34 73 115 79 75 34 58 32 116 114 117 101 44 10 9 34 80 114 105 99 101 34 58 32 57 53 51 46 51 55 10 125]</span>
+<span class="hljs-comment">&#123;</span>
+<span class="hljs-comment">	&quot;CompanyName&quot;: &quot;山景城Google公司&quot;,</span>
+<span class="hljs-comment">	&quot;Deps&quot;: [</span>
+<span class="hljs-comment">		&quot;Search Engine&quot;,</span>
+<span class="hljs-comment">		&quot;Andriod&quot;,</span>
+<span class="hljs-comment">		&quot;Google Mail&quot;</span>
+<span class="hljs-comment">	],</span>
+<span class="hljs-comment">	&quot;IsOK&quot;: true,</span>
+<span class="hljs-comment">	&quot;Price&quot;: 953.37</span>
+<span class="hljs-comment">&#125;</span>
+<span class="hljs-comment">type is : []uint8</span>
+<span class="hljs-comment">*/</span></code></pre><p><strong>结构体成员的变量名首字母必须大写，否则无法生成：</strong><br>有没有生成成功可以把生成后的内容复制去<code>json.cn</code>网站上，能够出现正确的内容，则就生成成功了。</p><h4 id="4-1-2-结构体编码json时的二次编码语法"><a href="#4-1-2-结构体编码json时的二次编码语法" class="headerlink" title="4.1.2 结构体编码json时的二次编码语法"></a>4.1.2 结构体编码json时的二次编码语法</h4><p>在结构体数据类型后面加上：<code>json:&quot;Syntax&quot;</code>。<code>Syntax</code> 为语法格式。<br><code>json:&quot;newName&quot;</code>，给这个字段起个别名，最终以这个 newName 的命名为准。<br><code>json:&quot;-&quot;</code>，表示不让这个字段输出，相当于不添加到 json 中去。<br><code>json:&quot;,string&quot;</code>，表示以字符串格式输出。<br>注意：<strong>使用结构体生成 json，结构体中的成员变量名的首字母必须大写</strong>！<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;encoding/json&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Company <span class="hljs-keyword">struct</span> &#123;
+	CompanyName <span class="hljs-keyword">string</span>   <span class="hljs-string">`json:&quot;companyName&quot;`</span>  <span class="hljs-comment">//二次编码，最终会以这个二次编码的字段名companyName为准</span>
+	Deps        []<span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;departments&quot;`</span>  <span class="hljs-comment">//就相当于起个别名</span>
+	IsOK        <span class="hljs-keyword">bool</span>     <span class="hljs-string">`json:&quot;-&quot;`</span>            <span class="hljs-comment">//-表示这个字段不会输出</span>
+	Price       <span class="hljs-keyword">float64</span>  <span class="hljs-string">`json:&quot;price,string&quot;`</span> <span class="hljs-comment">//指定以字符串格式输出</span>
+	Unit        <span class="hljs-keyword">string</span>   <span class="hljs-string">`json:&quot;moneyUnit&quot;`</span>    <span class="hljs-comment">//如果成员变量名首字母还是小写，依然还是不会生成到json中去</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//初始化结构体中的切片成员时，需要制定类型，不然报错：Missing type in composite literal ===&gt; 复合文字中缺少类型</span>
+	c1 := Company&#123;<span class="hljs-string">&quot;山景城Google公司&quot;</span>, []<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;Search Engine&quot;</span>, <span class="hljs-string">&quot;Andriod&quot;</span>, <span class="hljs-string">&quot;GMail&quot;</span>&#125;, <span class="hljs-literal">true</span>, <span class="hljs-number">953.37</span>, <span class="hljs-string">&quot;Dollars&quot;</span>&#125;
+
+	<span class="hljs-comment">//编码，格式化编码，根据内容生成json文本</span>
+	c1Byte, err := json.MarshalIndent(c1, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;\t&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;json marshal failed.&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	fmt.Println(<span class="hljs-keyword">string</span>(c1Byte))          <span class="hljs-comment">//Marshal()返回切片字节，字节默认以ASCII码值打印，需要使用string()转换</span>
+	fmt.Printf(<span class="hljs-string">&quot;type is : %T\n&quot;</span>, c1Byte) <span class="hljs-comment">//是个uint8的切片类型，byte的底层是用uint8实现</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">&#123;</span>
+<span class="hljs-comment">	&quot;companyName&quot;: &quot;山景城Google公司&quot;,</span>
+<span class="hljs-comment">	&quot;departments&quot;: [</span>
+<span class="hljs-comment">		&quot;Search Engine&quot;,</span>
+<span class="hljs-comment">		&quot;Andriod&quot;,</span>
+<span class="hljs-comment">		&quot;GMail&quot;</span>
+<span class="hljs-comment">	],</span>
+<span class="hljs-comment">	&quot;price&quot;: &quot;953.37&quot;,</span>
+<span class="hljs-comment">	&quot;moneyUnit&quot;: &quot;Dollars&quot;</span>
+<span class="hljs-comment">&#125;</span>
+<span class="hljs-comment">type is : []uint8</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="4-1-3-使用map编码json"><a href="#4-1-3-使用map编码json" class="headerlink" title="4.1.3 使用map编码json"></a>4.1.3 使用map编码json</h4><p>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;encoding/json&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">//json中的值可能会有各种类型，解决这一问题：声明一个能够接收任意类型的万能空接口</span>
+	m := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)
+	m[<span class="hljs-string">&quot;companyName&quot;</span>] = <span class="hljs-string">&quot;山景城Google公司&quot;</span>
+	m[<span class="hljs-string">&quot;departments&quot;</span>] = []<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;Search Engine&quot;</span>, <span class="hljs-string">&quot;Andriod&quot;</span>, <span class="hljs-string">&quot;GMail&quot;</span>&#125; <span class="hljs-comment">//切片需要指明类型</span>
+	m[<span class="hljs-string">&quot;IsOK&quot;</span>] = <span class="hljs-literal">true</span>
+	m[<span class="hljs-string">&quot;price&quot;</span>] = <span class="hljs-number">953.37</span>
+	m[<span class="hljs-string">&quot;moneyUnit&quot;</span>] = <span class="hljs-string">&quot;Dollars&quot;</span>
+
+	<span class="hljs-comment">//编码成json</span>
+	mByte, err := json.MarshalIndent(m, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;\t&quot;</span>) <span class="hljs-comment">//按一定的格式输出json</span>
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;json marshal failed.&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	fmt.Println(<span class="hljs-keyword">string</span>(mByte))
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">&#123;</span>
+<span class="hljs-comment">	&quot;IsOK&quot;: true,</span>
+<span class="hljs-comment">	&quot;companyName&quot;: &quot;山景城Google公司&quot;,</span>
+<span class="hljs-comment">	&quot;departments&quot;: [</span>
+<span class="hljs-comment">		&quot;Search Engine&quot;,</span>
+<span class="hljs-comment">		&quot;Andriod&quot;,</span>
+<span class="hljs-comment">		&quot;GMail&quot;</span>
+<span class="hljs-comment">	],</span>
+<span class="hljs-comment">	&quot;moneyUnit&quot;: &quot;Dollars&quot;,</span>
+<span class="hljs-comment">	&quot;price&quot;: 953.37</span>
+<span class="hljs-comment">&#125;</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="4-2-解码json"><a href="#4-2-解码json" class="headerlink" title="4.2 解码json"></a>4.2 解码json</h3><p>解析一个 <code>json</code> 就是编码的反过程：已经有了一个现成的 <code>json</code>，从中提取出信息，并保存到结构体或者 <code>map</code>。</p><h4 id="4-2-1-解码json到结构体"><a href="#4-2-1-解码json到结构体" class="headerlink" title="4.2.1 解码json到结构体"></a>4.2.1 解码json到结构体</h4><p>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;encoding/json&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Company <span class="hljs-keyword">struct</span> &#123;
+	CompanyName <span class="hljs-keyword">string</span>   <span class="hljs-string">`json:&quot;companyName&quot;`</span> <span class="hljs-comment">//二次编码，起个别名。是为了跟原生json中的键名保持一致</span>
+	Deps        []<span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;departments&quot;`</span> <span class="hljs-comment">//二次编码，起个别名。是为了跟原生json中的键名保持一致</span>
+	IsOK        <span class="hljs-keyword">bool</span>
+	Price       <span class="hljs-keyword">float64</span> <span class="hljs-string">`json:&quot;price&quot;`</span> <span class="hljs-comment">//二次编码，起个别名。是为了跟原生json中的键名保持一致</span>
+	Unit        <span class="hljs-keyword">string</span>  <span class="hljs-string">`json:&quot;moneyUnit&quot;`</span> <span class="hljs-comment">//二次编码，起个别名。是为了跟原生json中的键名保持一致</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	jsonBuf := <span class="hljs-string">`</span>
+<span class="hljs-string">&#123;</span>
+<span class="hljs-string">	&quot;IsOK&quot;: true,</span>
+<span class="hljs-string">	&quot;companyName&quot;: &quot;山景城Google公司&quot;,</span>
+<span class="hljs-string">	&quot;departments&quot;: [</span>
+<span class="hljs-string">		&quot;Search Engine&quot;,</span>
+<span class="hljs-string">		&quot;Andriod&quot;,</span>
+<span class="hljs-string">		&quot;GMail&quot;</span>
+<span class="hljs-string">	],</span>
+<span class="hljs-string">	&quot;moneyUnit&quot;: &quot;Dollars&quot;,</span>
+<span class="hljs-string">	&quot;price&quot;: 953.37</span>
+<span class="hljs-string">&#125;</span>
+<span class="hljs-string">	`</span>
+
+	<span class="hljs-comment">//1.字段全部解析</span>
+	<span class="hljs-keyword">var</span> c1 Company
+	<span class="hljs-comment">//jsonBuf解析到c1中去。要修改结构体中的值，需要引用传递。第二个参数必须要地址传递</span>
+	err := json.Unmarshal([]<span class="hljs-keyword">byte</span>(jsonBuf), &amp;c1)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;Unmarshal failed, error:&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;c1 = %+v, type is : %T\n&quot;</span>, c1, c1)
+
+	<span class="hljs-comment">//2.只解析某几个字段</span>
+	<span class="hljs-comment">//重新声明一个结构体，写上想要的那几个字段。最终只会解码指定的这几个字段。注意：数据类型和名称依然要完全统一</span>
+	<span class="hljs-keyword">type</span> SimpleCompany <span class="hljs-keyword">struct</span> &#123;
+		CompanyName <span class="hljs-keyword">string</span>   <span class="hljs-string">`json:&quot;companyName&quot;`</span>
+		Deps        []<span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;departments&quot;`</span>
+	&#125;
+	<span class="hljs-keyword">var</span> c2 SimpleCompany <span class="hljs-comment">//声明这个新定义的结构体的变量</span>
+	<span class="hljs-comment">//jsonBuf解析到c2中去。要修改结构体中的值，需要引用传递。第二个参数必须要地址传递</span>
+	err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(jsonBuf), &amp;c2)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;Unmarshal failed, error:&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;c2 = %+v, type is : %T\n&quot;</span>, c2, c2)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">c1 = &#123;CompanyName:山景城Google公司 Deps:[Search Engine Andriod GMail] IsOK:true Price:953.37 Unit:Dollars&#125;, type is : main.Company</span>
+<span class="hljs-comment">c2 = &#123;CompanyName:山景城Google公司 Deps:[Search Engine Andriod GMail]&#125;, type is : main.SimpleCompany</span>
+<span class="hljs-comment">*/</span></code></pre><p>注意事项：<br>1.原本 json 中的字段名称是什么，结构体中也必须完全一样跟着写。但结构体中的变量名首字母必须大写，所以要用到二次编码格式。二次编码，起个别名，是为了让结构体中的字段名称与原生json中的键名保持一致。<br>2.<code>Unmarshal()</code> 函数是把第一个 json 文本的 byte 数据写入到第二个结构体变量中去。想要修改结构体中的值，就需要取结构体的地址。<strong>需要地址传递</strong>！</p><h4 id="4-2-2-解码json到map"><a href="#4-2-2-解码json到map" class="headerlink" title="4.2.2 解码json到map"></a>4.2.2 解码json到map</h4><p>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;encoding/json&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	jsonBuf := <span class="hljs-string">`</span>
+<span class="hljs-string">&#123;</span>
+<span class="hljs-string">	&quot;IsOK&quot;: true,</span>
+<span class="hljs-string">	&quot;companyName&quot;: &quot;山景城Google公司&quot;,</span>
+<span class="hljs-string">	&quot;departments&quot;: [</span>
+<span class="hljs-string">		&quot;Search Engine&quot;,</span>
+<span class="hljs-string">		&quot;Andriod&quot;,</span>
+<span class="hljs-string">		&quot;GMail&quot;</span>
+<span class="hljs-string">	],</span>
+<span class="hljs-string">	&quot;moneyUnit&quot;: &quot;Dollars&quot;,</span>
+<span class="hljs-string">	&quot;price&quot;: 953.37</span>
+<span class="hljs-string">&#125;</span>
+<span class="hljs-string">	`</span>
+
+	<span class="hljs-comment">//创建一个map</span>
+	m := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)
+
+	err := json.Unmarshal([]<span class="hljs-keyword">byte</span>(jsonBuf), &amp;m) <span class="hljs-comment">//第二个参数必须传内存地址</span>
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;json unmarshal failed. err:&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	fmt.Printf(<span class="hljs-string">&quot;%+v\n&quot;</span>, m)
+
+	fmt.Println(<span class="hljs-string">&quot;---------------------------------------------------------------&quot;</span>)
+
+	<span class="hljs-comment">//想要从map中取值，就需要类型断言，一步步反推才能使用</span>
+	<span class="hljs-comment">//想要值到每一个内容，就必须通过for迭代，一个个类型断言反推，才能拿到值</span>
+	<span class="hljs-keyword">var</span> companyName <span class="hljs-keyword">string</span>
+	<span class="hljs-keyword">var</span> isOK <span class="hljs-keyword">bool</span>
+	<span class="hljs-keyword">var</span> price <span class="hljs-keyword">float64</span>
+	<span class="hljs-keyword">var</span> moneyUnit <span class="hljs-keyword">string</span>
+	<span class="hljs-keyword">var</span> departments <span class="hljs-keyword">string</span>
+
+	<span class="hljs-keyword">for</span> key, value := <span class="hljs-keyword">range</span> m &#123;
+		<span class="hljs-keyword">switch</span> data := value.(<span class="hljs-keyword">type</span>) &#123; <span class="hljs-comment">//value.(type)用来匹配下列case的各个数据类型；data是返回过来的值</span>
+		<span class="hljs-keyword">case</span> <span class="hljs-keyword">string</span>:
+			<span class="hljs-comment">//要取到对应键中的内容，则需要进一步处理</span>
+			<span class="hljs-keyword">switch</span> &#123;
+			<span class="hljs-keyword">case</span> key == <span class="hljs-string">&quot;companyName&quot;</span>:
+				companyName = data
+			<span class="hljs-keyword">case</span> key == <span class="hljs-string">&quot;moneyUnit&quot;</span>:
+				moneyUnit = data
+			&#125;
+			fmt.Printf(<span class="hljs-string">&quot;data type is string. key[%s]=%s\n&quot;</span>, key, data)
+		<span class="hljs-keyword">case</span> <span class="hljs-keyword">bool</span>:
+			<span class="hljs-keyword">if</span> key == <span class="hljs-string">&quot;IsOK&quot;</span> &#123;
+				isOK = data
+			&#125;
+			fmt.Printf(<span class="hljs-string">&quot;data type is bool, key[%s]=%v\n&quot;</span>, key, value)
+		<span class="hljs-keyword">case</span> <span class="hljs-keyword">float64</span>: <span class="hljs-comment">//浮点型用float64才能匹配到</span>
+			<span class="hljs-keyword">if</span> key == <span class="hljs-string">&quot;price&quot;</span> &#123;
+				price = data
+			&#125;
+			fmt.Printf(<span class="hljs-string">&quot;data type is float64, key[%s]=%f\n&quot;</span>, key, value)
+		<span class="hljs-keyword">case</span> []<span class="hljs-keyword">interface</span>&#123;&#125;: <span class="hljs-comment">//如果value本身是一个切片，需要用空接口（万能类型）来匹配</span>
+			fmt.Printf(<span class="hljs-string">&quot;data type is []interface&#123;&#125;, key[%s]=%+v\n&quot;</span>, key, value)
+			<span class="hljs-comment">//如果要在切片中取值，则需要进一步地迭代，一个个取出来，一个个处理</span>
+			<span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> data &#123; <span class="hljs-comment">//取出切片中，每个元素的下标和值</span>
+				<span class="hljs-keyword">if</span> s, ok := v.(<span class="hljs-keyword">string</span>); ok &#123; <span class="hljs-comment">//判断这个值是否为string类型，是返回true，否返回false</span>
+					departments += s + <span class="hljs-string">&quot;;&quot;</span>
+				&#125;
+			&#125;
+		&#125;
+	&#125;
+
+	fmt.Printf(<span class="hljs-string">&quot;companyName=%s; departments=%s; isOK=%v; price=%f; moneyUnit=%s\n&quot;</span>, companyName, departments, isOK, price, moneyUnit)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">map[IsOK:true companyName:山景城Google公司 departments:[Search Engine Andriod GMail] moneyUnit:Dollars price:953.37]</span>
+<span class="hljs-comment">---------------------------------------------------------------</span>
+<span class="hljs-comment">data type is bool, key[IsOK]=true</span>
+<span class="hljs-comment">data type is string. key[companyName]=山景城Google公司</span>
+<span class="hljs-comment">data type is []interface&#123;&#125;, key[departments]=[Search Engine Andriod GMail]</span>
+<span class="hljs-comment">data type is string. key[moneyUnit]=Dollars</span>
+<span class="hljs-comment">data type is float64, key[price]=953.370000</span>
+<span class="hljs-comment">companyName=山景城Google公司; departments=Search Engine;Andriod;GMail;; isOK=true; price=953.370000; moneyUnit=Dollars</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="4-2-3-对两种解析方式的简单总结"><a href="#4-2-3-对两种解析方式的简单总结" class="headerlink" title="4.2.3 对两种解析方式的简单总结"></a>4.2.3 对两种解析方式的简单总结</h4><p>解析到 <code>map</code>，只是定义 <code>map</code> 那一段写起来很方便，想要取出里面的值，则需要迭代每一个元素，然后对每一个元素进行类型断言，反推每个数据类型。每个数据类型再单独进行处理。<br>解析到结构体，只是定义结构体的时候比较麻烦，需要指定每个字段的数据类型，二次编码的名称要跟原生的 json 文本中的键名一样。但是，一次定义就可以把所有的内容都解析进去，后续只需要<code>结构体名称.字段名</code>（<code>structVarName.fieldName</code>）操作即可。</p><h2 id="五、文件操作"><a href="#五、文件操作" class="headerlink" title="五、文件操作"></a>五、文件操作</h2><p>Golang 有内建的 <code>os</code> 文件操作包。</p><h3 id="5-1-文件分类"><a href="#5-1-文件分类" class="headerlink" title="5.1 文件分类"></a>5.1 文件分类</h3><h4 id="5-1-1-设备文件"><a href="#5-1-1-设备文件" class="headerlink" title="5.1.1 设备文件"></a>5.1.1 设备文件</h4><p>平时最常用的有：</p><ul><li>屏幕（标准输出设备）<br>最常用的一个函数：<code>fmt.Println()</code>，往标准输出设备写内容。</li><li>键盘（标准输入设备）<br><code>fmt.Scan()</code>，从标准输入设备读取内容。</li></ul><h4 id="5-1-2-磁盘文件"><a href="#5-1-2-磁盘文件" class="headerlink" title="5.1.2 磁盘文件"></a>5.1.2 磁盘文件</h4><p>放在存储设备上的文件。<br>还可以分为两类：</p><ul><li>文本文件：能够用记事本（Notpad++）打开，且不是乱码的就是文本文件。</li><li>二进制文件：用记事本打开后，看到乱码的就是二进制文件。</li></ul><h3 id="5-2-文件操作的相关api"><a href="#5-2-文件操作的相关api" class="headerlink" title="5.2 文件操作的相关api"></a>5.2 文件操作的相关api</h3><h4 id="5-2-1-新建文件"><a href="#5-2-1-新建文件" class="headerlink" title="5.2.1 新建文件"></a>5.2.1 新建文件</h4><p>如果文件不存在则新建，如果<strong>文件已存在则会清空原文件</strong>。<br>第1种方式：<code>func Create(name string) (file *File, err Error)</code>，根据提供的文件名（或路径+文件名）创建新的文件，返回一个可读可写的文件指针，默认权限是 <code>0666</code>。内部调用的是 <code>OpenFile()</code>。<br>第2种方式：<code>func New(fd uintptr, name string) *File</code>，根据文件描述符创建相应的文件，返回一个文件指针。</p><h4 id="5-2-2-打开文件"><a href="#5-2-2-打开文件" class="headerlink" title="5.2.2 打开文件"></a>5.2.2 打开文件</h4><p>第1种方式：<code>func Open(name string) (file *File, err Error)</code>，以<strong>只读</strong>方式打开一个名称为 name 的文件。内部实现调用了<code>OpenFile()</code>。<br>第2种方式：<code>func OpenFile(name string, flag int, perm uint32) (file *File, err Error)</code>，打开名称为name的文件，flag是打开的方式（如：只读、只写等），perm是权限。</p><h4 id="5-2-3-写文件"><a href="#5-2-3-写文件" class="headerlink" title="5.2.3 写文件"></a>5.2.3 写文件</h4><p>第1种方式：<code>func (file *File) Write(b []byte) (n int, err Error)</code>，写入byte到文件。可处理二进制和非二进制文件。<br>第2种方式：<code>func (file *File) WriteAt(b []byte, off int64) (n int, err Error)</code>，从off位置开始写入byte。<br>第3种方式：<code>func (file *File) WriteString(s string) (ret int, err Error)</code>，写入string到文件。只能处理文本文件（非二进制文件），它只会往里面写字符串。</p><h4 id="5-2-4-读文件"><a href="#5-2-4-读文件" class="headerlink" title="5.2.4 读文件"></a>5.2.4 读文件</h4><p>第1种方式：<code>func (file *File) Read(b []byte) (n int, err Error)</code>，读取数据到byte切片中。<br>第2种方式：<code>func (file *File) ReadAt(b []byte, off int64) (n int, err Error)</code>，从off位置开始读取数据到byte切片中。</p><h4 id="5-2-5-删除文件"><a href="#5-2-5-删除文件" class="headerlink" title="5.2.5 删除文件"></a>5.2.5 删除文件</h4><p>第1种方式：<code>func Remove(name string) Error</code>，删除文件名为name的文件。</p><h3 id="5-3-标准输出设备文件的使用"><a href="#5-3-标准输出设备文件的使用" class="headerlink" title="5.3 标准输出设备文件的使用"></a>5.3 标准输出设备文件的使用</h3><h4 id="5-3-1-往标准输出设备写内容"><a href="#5-3-1-往标准输出设备写内容" class="headerlink" title="5.3.1 往标准输出设备写内容"></a>5.3.1 往标准输出设备写内容</h4><p>标准输出设备通常指的是屏幕，Golang 默认是往屏幕写内容。</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;hello world.&quot;</span>)
+	os.Stdout.Close() <span class="hljs-comment">//把输出设备给关了，关闭文件后，无法再输出</span>
+	fmt.Println(<span class="hljs-string">&quot;hello go.&quot;</span>)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">hello world.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Process finished with exit code 0</span>
+<span class="hljs-comment">*/</span></code></pre><p>还可以使用 <code>os.Stdout.WriteString(s string)</code> 往设备输出内容：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	os.Stdout.WriteString(<span class="hljs-string">&quot;hello world.\n&quot;</span>) <span class="hljs-comment">//需手动换行</span>
+	<span class="hljs-keyword">var</span> words = []<span class="hljs-keyword">byte</span>&#123;<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;\t&#x27;</span>, <span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-string">&#x27;o&#x27;</span>, <span class="hljs-string">&#x27;\t&#x27;</span>, <span class="hljs-string">&#x27;u&#x27;</span>, <span class="hljs-string">&#x27;\n&#x27;</span>&#125;
+	os.Stdout.Write(words)
+	fmt.Println(words)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">hello world.</span>
+<span class="hljs-comment">ae	io	u</span>
+<span class="hljs-comment">[97 101 9 105 111 9 117 10]</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Process finished with exit code 0</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="5-4-写文件的操作"><a href="#5-4-写文件的操作" class="headerlink" title="5.4 写文件的操作"></a>5.4 写文件的操作</h3><h4 id="5-4-1-WriteString-的使用"><a href="#5-4-1-WriteString-的使用" class="headerlink" title="5.4.1 WriteString()的使用"></a>5.4.1 <code>WriteString()</code>的使用</h4><p>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">WriteFile</span><span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;
+	<span class="hljs-comment">//1.打开文件（新建文件）</span>
+	f, err := os.Create(path)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;create file failed. err:&quot;</span>, err)
+		<span class="hljs-keyword">return</span> <span class="hljs-comment">//有错误就结束函数，不让它往下走了</span>
+	&#125;
+
+	<span class="hljs-comment">//使用完毕，必须关闭文件</span>
+	<span class="hljs-keyword">defer</span> f.Close() <span class="hljs-comment">//函数调用完毕，即表示文件使用完毕了</span>
+
+	<span class="hljs-comment">//2.往里面写内容</span>
+	<span class="hljs-keyword">var</span> s <span class="hljs-keyword">string</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;
+		s = fmt.Sprintf(<span class="hljs-string">&quot;这是第%d行！\n&quot;</span>, i)
+		n, err := f.WriteString(s)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Printf(<span class="hljs-string">&quot;write %d line err:%+v\n&quot;</span>, i, err)
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			fmt.Printf(<span class="hljs-string">&quot;wrote %d words.\n&quot;</span>, n) <span class="hljs-comment">//以byte类型来计算长度</span>
+		&#125;
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	path := <span class="hljs-string">&quot;./demo.txt&quot;</span>
+	WriteFile(path)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">wrote 17 words.</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="5-5-读文件的操作"><a href="#5-5-读文件的操作" class="headerlink" title="5.5 读文件的操作"></a>5.5 读文件的操作</h3><h4 id="5-5-1-Read-的使用"><a href="#5-5-1-Read-的使用" class="headerlink" title="5.5.1 Read()的使用"></a>5.5.1 <code>Read()</code>的使用</h4><p>直接使用已在5.4.1示例中生成的demo.txt。<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;io&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ReadFile</span><span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;
+	<span class="hljs-comment">//1.打开文件</span>
+	f, err := os.Open(path)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;open file failed. err=&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	<span class="hljs-comment">//使用完毕，关闭文件</span>
+	<span class="hljs-keyword">defer</span> f.Close()
+
+	<span class="hljs-comment">//2.读取内容</span>
+	buf := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">2048</span>)
+	<span class="hljs-comment">//Read([]byte)中的参数需要是一个byte类型的切片</span>
+	n, err := f.Read(buf) <span class="hljs-comment">//n表示实际一共读取了多少字节</span>
+	<span class="hljs-comment">//EOF:end of file，表示文件的正常结束。文件已经正常结束了，说明整个文件都读取完整了。</span>
+	<span class="hljs-comment">//既然整个文件都读取完整了，并且正常结束了，那么何来的错误？</span>
+	<span class="hljs-comment">//EOF是表示文件正常结束，而不是错误。所以需要再判断一下，错误并不是EOF</span>
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &amp;&amp; err != io.EOF &#123;
+		fmt.Println(<span class="hljs-string">&quot;read content failed. err=&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;has read %d words.\n&quot;</span>, n)
+
+	fmt.Println(<span class="hljs-keyword">string</span>(buf[:n])) <span class="hljs-comment">//[:n]指定取多少个字节。如果说读取了很多字节，但实际上没有那么多字节。剩下的都会以空字符形式来表现，显示上不够友好</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	path := <span class="hljs-string">&quot;./demo.txt&quot;</span>
+	ReadFile(path)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">has read 170 words.</span>
+<span class="hljs-comment">这是第0行！</span>
+<span class="hljs-comment">这是第1行！</span>
+<span class="hljs-comment">这是第2行！</span>
+<span class="hljs-comment">这是第3行！</span>
+<span class="hljs-comment">这是第4行！</span>
+<span class="hljs-comment">这是第5行！</span>
+<span class="hljs-comment">这是第6行！</span>
+<span class="hljs-comment">这是第7行！</span>
+<span class="hljs-comment">这是第8行！</span>
+<span class="hljs-comment">这是第9行！</span>
+<span class="hljs-comment">*/</span></code></pre><h4 id="5-5-2-Read-b-byte-，-byte的长度表示去读取多少个字节"><a href="#5-5-2-Read-b-byte-，-byte的长度表示去读取多少个字节" class="headerlink" title="5.5.2 Read(b []byte)，[]byte的长度表示去读取多少个字节"></a>5.5.2 <code>Read(b []byte)</code>，[]byte的长度表示去读取多少个字节</h4><p>上例中，声明切片时，长度指定了 2048 个字节。那么就表示，去文件中读取 2048 个字节。<br>下图这个反面教材中的指定了切片长度为 0，那么就表示，去文件中读取 0 个字节。</p><pre><code class="hljs go">buf := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">0</span>)	<span class="hljs-comment">//这个切片长度是为了给后面的Read()。指定多少长度，就去读取多少个字节。长度指定0，表示去读取0个字节！读取0个字节，就等于什么都不去读取。</span></code></pre><p>指定了只读取 90 个字节，那么程序只会去读取 90 个字节，剩下的内容都不会去读取。</p><p>指定去读取 999 个字节，但文件中只有 170 个字节。指定的读取数量超过了文件中的总内容，那么剩余的每一个字节就会以空字符来显示。</p><h4 id="5-5-3-根据文件总大小去读取内容"><a href="#5-5-3-根据文件总大小去读取内容" class="headerlink" title="5.5.3 根据文件总大小去读取内容"></a>5.5.3 根据文件总大小去读取内容</h4><p>既然大了也不是，小了也不行。那么就先得到这个文件的总大小，然后指定这个总大小的数字去读取内容。<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;io&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ReadFile</span><span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;
+	f, err := os.Open(path)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;open file failed. err=&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	
+	<span class="hljs-comment">//尝试获取文件的大小</span>
+	<span class="hljs-comment">//f.Stat()返回一个接口，FileInfo类型中有一个Size()的方法可以获取到文件的总大小</span>
+	fi, err := f.Stat()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &amp;&amp; err != io.EOF &#123;
+		fmt.Println(<span class="hljs-string">&quot;get file stat failed. err=&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fsize := fi.Size() <span class="hljs-comment">//获取到文件的总大小</span>
+	fmt.Println(<span class="hljs-string">&quot;this file size is :&quot;</span>, fsize)
+
+	<span class="hljs-keyword">defer</span> f.Close() <span class="hljs-comment">//使用完毕，关闭文件</span>
+
+	buf := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, fsize) <span class="hljs-comment">//文件总大小有多少，那么就指定去读取多少</span>
+	n, err := f.Read(buf)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &amp;&amp; err != io.EOF &#123;
+		fmt.Println(<span class="hljs-string">&quot;read content failed. err=&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;has read %d bytes.\n&quot;</span>, n)
+
+	fmt.Println(<span class="hljs-keyword">string</span>(buf)) <span class="hljs-comment">//不用再写[:n]了，因为已经读取了跟文件总大小完全匹配的全部内容</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	path := <span class="hljs-string">&quot;./demo.txt&quot;</span>
+	ReadFile(path)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">this file size is : 170</span>
+<span class="hljs-comment">has read 170 bytes.</span>
+<span class="hljs-comment">这是第0行！</span>
+<span class="hljs-comment">这是第1行！</span>
+<span class="hljs-comment">这是第2行！</span>
+<span class="hljs-comment">这是第3行！</span>
+<span class="hljs-comment">这是第4行！</span>
+<span class="hljs-comment">这是第5行！</span>
+<span class="hljs-comment">这是第6行！</span>
+<span class="hljs-comment">这是第7行！</span>
+<span class="hljs-comment">这是第8行！</span>
+<span class="hljs-comment">这是第9行！</span>
+<span class="hljs-comment">*/</span></code></pre><p>注意：获取文件总大小并按这个长度去读取，属于一次性读取整个文件中的内容。小文本可以这么使用，但是大文本这么全部读取到内存中，会占用比较大的内存资源从而导致影响性能。<br>该解决方案从这里看来的：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/17133590/how-to-get-file-length-in-go">link</a></p><h4 id="5-5-4-os-Stat-获取文件的元数据信息"><a href="#5-5-4-os-Stat-获取文件的元数据信息" class="headerlink" title="5.5.4 os.Stat() 获取文件的元数据信息"></a>5.5.4 <code>os.Stat()</code> 获取文件的元数据信息</h4><p>上面的案例中，因为需要读取出文件中的内容。所以采用的策略是：先打开这个文件，有了这个文件指针后，通过这个指针变量去获取该文件的元数据信息。<br>如果只想要获取文件的元数据信息，而不打开文件，就可以使用 <code>os.State()</code> 方法。它可以在不打开文件的情况下，获取到文件的元数据信息。<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fi, err := os.Stat(<span class="hljs-string">&quot;1.mp4&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+
+	fmt.Println(<span class="hljs-string">&quot;file name:&quot;</span>, fi.Name())
+	fmt.Println(<span class="hljs-string">&quot;file size:&quot;</span>, fi.Size())
+	fmt.Println(<span class="hljs-string">&quot;is dir?&quot;</span>, fi.IsDir())
+	fmt.Println(<span class="hljs-string">&quot;file mode:&quot;</span>, fi.Mode())
+	fmt.Println(<span class="hljs-string">&quot;file modTime:&quot;</span>, fi.ModTime())
+&#125;
+
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">file name: 1.mp4</span>
+<span class="hljs-comment">file size: 8021539</span>
+<span class="hljs-comment">is dir? false</span>
+<span class="hljs-comment">file mode: -rw-rw-rw-</span>
+<span class="hljs-comment">file modTime: 2020-09-13 18:14:06.889 +0800 CST</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="5-6-逐行读取内容"><a href="#5-6-逐行读取内容" class="headerlink" title="5.6 逐行读取内容"></a>5.6 逐行读取内容</h3><p>需要借助 Golang 内建包 <code>bufio</code>，它是带缓存的 I/O。<br>示例：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;bufio&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;io&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ReadFileByLine</span><span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;
+	f, err := os.Open(path)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;open file failed. err:&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	<span class="hljs-keyword">defer</span> f.Close()
+
+	<span class="hljs-comment">//新建一个缓冲区，把内容先放在缓冲区</span>
+	r := bufio.NewReader(f)
+
+	<span class="hljs-keyword">for</span> &#123;
+		<span class="hljs-comment">//遇到&#x27;\n&#x27;结束读取，但&#x27;\n&#x27;同时也被读取了</span>
+		buf, err := r.ReadBytes(<span class="hljs-string">&#x27;\n&#x27;</span>)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">if</span> err == io.EOF &#123; <span class="hljs-comment">//文件已正常结束</span>
+				<span class="hljs-keyword">break</span>
+			&#125; <span class="hljs-keyword">else</span> &#123;
+				fmt.Println(<span class="hljs-string">&quot;read bytes err:&quot;</span>, err)
+			&#125;
+		&#125;
+
+		fmt.Printf(<span class="hljs-string">&quot;buf = #%s#&quot;</span>, <span class="hljs-keyword">string</span>(buf)) <span class="hljs-comment">//井号前后都没有加过换行符，但是ReadBytes()会把指定的字符也给读取了</span>
+	&#125;
+
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	path := <span class="hljs-string">&quot;./demo.txt&quot;</span>
+
+	ReadFileByLine(path)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">运行结果：</span>
+<span class="hljs-comment">buf = #这是第0行！</span>
+<span class="hljs-comment">#buf = #这是第1行！</span>
+<span class="hljs-comment">#buf = #这是第2行！</span>
+<span class="hljs-comment">#buf = #这是第3行！</span>
+<span class="hljs-comment">#buf = #这是第4行！</span>
+<span class="hljs-comment">#buf = #这是第5行！</span>
+<span class="hljs-comment">#buf = #这是第6行！</span>
+<span class="hljs-comment">#buf = #这是第7行！</span>
+<span class="hljs-comment">#buf = #这是第8行！</span>
+<span class="hljs-comment">#buf = #这是第9行！</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">*/</span></code></pre><h3 id="5-7-文件案例：拷贝文件"><a href="#5-7-文件案例：拷贝文件" class="headerlink" title="5.7 文件案例：拷贝文件"></a>5.7 文件案例：拷贝文件</h3><p><code>Read()</code> 读取，<code>Write()</code> 写入。<br>设计思路：使用命令行实现功能。</p><h4 id="5-7-1-参考代码"><a href="#5-7-1-参考代码" class="headerlink" title="5.7.1 参考代码"></a>5.7.1 参考代码</h4><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;io&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-comment">//获取命令行参数</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetCMDArgs</span><span class="hljs-params">()</span> []<span class="hljs-title">string</span></span> &#123;
+	cmdArry := os.Args
+
+	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cmdArry) != <span class="hljs-number">3</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;command line error. except: binaryName.exe srcFileName dstFileName&quot;</span>)
+		os.Exit(<span class="hljs-number">-1</span>)
+	&#125;
+
+	<span class="hljs-keyword">return</span> cmdArry
+&#125;
+
+<span class="hljs-comment">//获取文件名，分别是源文件名和目标文件名</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetFilenames</span><span class="hljs-params">(cmdArry []<span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(srcFileName, dstFileName <span class="hljs-keyword">string</span>)</span></span> &#123;
+	srcFileName = cmdArry[<span class="hljs-number">1</span>]
+	dstFileName = cmdArry[<span class="hljs-number">2</span>]
+
+	<span class="hljs-keyword">if</span> srcFileName == dstFileName &#123;
+		fmt.Println(<span class="hljs-string">&quot;The destination file name cannot be the same as the source file name.&quot;</span>)
+		os.Exit(<span class="hljs-number">-1</span>)
+	&#125;
+
+	<span class="hljs-keyword">return</span>
+&#125;
+
+<span class="hljs-comment">//核心功能，实现文件的拷贝</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ExecuteCopy</span><span class="hljs-params">(srcFileName, dstFileName <span class="hljs-keyword">string</span>)</span></span> &#123;
+	buf := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>*<span class="hljs-number">5</span>) <span class="hljs-comment">//切片缓冲区，以多少个字节去读取文件中的内容。1024Byte = 1KB</span>
+
+	<span class="hljs-comment">//打开源文件</span>
+	srcF, err := os.Open(srcFileName)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;open source file failed. error:&quot;</span>, err)
+		os.Exit(<span class="hljs-number">-1</span>)
+	&#125;
+	<span class="hljs-keyword">defer</span> srcF.Close() <span class="hljs-comment">//关闭文件</span>
+
+	<span class="hljs-comment">//创建目标文件</span>
+	dstF, err := os.Create(dstFileName)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;create destination file failed. error:&quot;</span>, err)
+		os.Exit(<span class="hljs-number">-1</span>)
+	&#125;
+	<span class="hljs-keyword">defer</span> dstF.Close() <span class="hljs-comment">//关闭文件</span>
+
+	<span class="hljs-keyword">for</span> &#123;
+		n, err := srcF.Read(buf)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">if</span> err == io.EOF &#123; <span class="hljs-comment">//文件已到末尾，正常结束</span>
+				<span class="hljs-keyword">break</span>
+			&#125;
+		&#125;
+
+		dstF.Write(buf[:n]) <span class="hljs-comment">//buf[:n]表示读多少写多少，到了最后的时候，往往读不全指定的字节数据量。如果还是写死为buf，超出部分将会是空字节内容</span>
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	cmdArry := GetCMDArgs()
+	srcFileName, dstFileName := GetFilenames(cmdArry)
+	ExecuteCopy(srcFileName, dstFileName)
+&#125;</code></pre><h4 id="5-7-2-buf-n-，表示读多少写多少"><a href="#5-7-2-buf-n-，表示读多少写多少" class="headerlink" title="5.7.2 buf[:n]，表示读多少写多少"></a>5.7.2 buf[:n]，表示读多少写多少</h4><p>5.7.1 示例代码中，ExecuteCopy() 函数的倒数第二行代码：dstF.Write(buf[:n])。它表示读取到多少内容，就写入多少内容。<br>这个 buf 是可以自行指定，每次读取多少个字节。</p><h5 id="5-7-2-1-不采用读多少写多少模式所引发的问题"><a href="#5-7-2-1-不采用读多少写多少模式所引发的问题" class="headerlink" title="5.7.2.1 不采用读多少写多少模式所引发的问题"></a>5.7.2.1 不采用读多少写多少模式所引发的问题</h5><p>修改 for 循环中的代码，抛弃读多少写多少的模式，指定了每次就是一股脑地往目标文件中写入 1024*5 个字节：</p><pre><code class="hljs go"><span class="hljs-keyword">for</span> &#123;
+		_, err := srcF.Read(buf) <span class="hljs-comment">// [:n] 被抛弃了</span>
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">if</span> err == io.EOF &#123; <span class="hljs-comment">// 文件已到末尾，正常结束</span>
+				<span class="hljs-keyword">break</span>
+			&#125;
+		&#125;
+
+		dstF.Write(buf) <span class="hljs-comment">//每次写入5120个字节，不管实际是不是有那么多数据。数据不够会产生空字节</span>
+	&#125;</code></pre><p>再次编译运行代码后，可以看到。如果不写 buf[:n]，那么最后就会有几个空字节多出来。<br>直观看起来，就是目标文件比源文件大出一点来.</p><h5 id="5-7-2-2-大致原理"><a href="#5-7-2-2-大致原理" class="headerlink" title="5.7.2.2 大致原理"></a>5.7.2.2 大致原理</h5><p>源文件总大小是 17047119 个字节，每次读取 1024<em>5 个字节，需要 3329.5 次才能把整个文件读取完整。<br>那么前 3329 次是没有问题的，一共能够读取到 17044480 个字节。当最后一次读取数据的时候，只剩下 2639 个有效字节了，只能读取到这 2639 个有效字节。但是写入数据的时候，它是以 buf 指定的字节量去写入数据。buf 指定的是 1024</em>5 个字节去写入，但最后只读到了 2639 个字节，而你却要写入 5120 个字节。既然你诚心诚意想要写入 5120 个字节，那么 Golang 就满足你的意愿，它很忠诚地往目标文件中写入了 5120 个字节。指定要去写入 5120 个字节，但却只有 2639 个有效字节，那么剩余的 2481 个字节只能用空字节来占位。（5120 - 2639 = 2481）<br>目标文件总大小是 17049600 个字节，源文件大小是 17047119 个字节，（17049600 - 17047119 = 2481）目标文件比源文件多出了 2481 个字节。</p></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/">编程之美</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/Golang/">Golang</a></div></div><p class="note note-warning"><strong>本文作者: </strong><a href="/">iceH</a><br><strong>本文链接: </strong><a href="http://www.360rce.com/p/64e74dc5">http://www.360rce.com/p/64e74dc5</a><br><strong>版权声明: </strong>本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><article class="post-prev col-6"><a href="/p/404597ff"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Golang学习之并发编程</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/p/edaf7f2c"><span class="hidden-mobile">Golang学习之面向对象编程</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><div id="vcomments"></div><script type="text/javascript">Fluid.utils.waitElementVisible("vcomments",(function(){Fluid.utils.createScript("https://cdn.staticfile.org/valine/1.4.14/Valine.min.js",(function(){new Valine({el:"#vcomments",app_id:"MnjV8raNBztIVGGKiicFL3Sq-MdYXbMMI",app_key:"hS70MmgmzDqbMSkSAfkDe42h",placeholder:"留下你的小脚印吧...",path:window.location.pathname,avatar:"wavatar",meta:["nick","mail"],pageSize:"10",lang:"zh-CN",highlight:!1,recordIP:!1,serverURLs:""})}))}))</script><noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments powered by Valine.</a></noscript></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div class="toc-body" id="toc-body"></div></div></div></div></div><div class="col-lg-7 mx-auto nopadding-md"><div class="container custom post-custom mx-auto"><img src="https://cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/img/psb.gif" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:300px;height:150px"></div></div><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div></main><footer class="text-center mt-5 py-3"><div class="footer-content"><span>iceH</span> <i class="iconfont icon-love"></i> <span>一条啥也不会的咸鱼！</span></div></footer><script src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:200}),NProgress.start(),document.addEventListener("DOMContentLoaded",(function(){window.NProgress&&window.NProgress.inc()})),window.addEventListener("load",(function(){NProgress.done()}))</script><script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/events.js"></script><script src="/js/plugins.js"></script><script src="/js/lazyload.js"></script><script src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js"></script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><script src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>!function(t,i){(0,Fluid.plugins.typing)(i.getElementById("subtitle").title)}(window,document)</script><script src="/js/local-search.js"></script><script>document.querySelector("#local-search-input").onclick=function(){searchFunc("/local-search.xml","local-search-input","local-search-result"),this.onclick=null}</script><script src="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/js/qipao.js"></script><script src="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/js/jingtaisidai.js"></script><script src="//cdn.jsdelivr.net/gh/root-iceH/root-iceH.github.io/js/dianjichuzi.js"></script><script src="//cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="//cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="/js/boot.js"></script><link defer rel="stylesheet" href="/css/customize.css"></body></html>
