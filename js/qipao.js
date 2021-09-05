@@ -1,6 +1,6 @@
 // 上升的气泡bynote.cn
 function qipao() {
-    $('#background').circleMagic({
+    $('#banner').circleMagic({
         radius: 10,
         density: .2,
         color: 'rgba(255,255,255,.4)',
