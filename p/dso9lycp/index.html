@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='漏洞介绍 Linux目前是最为常见的操作系统，该系统是处于源代码开放状态，信息安全问题也会随之被世界各地的“体验者”揭露出来。
+Linux操作系统的内核是该系列操作系统的“灵魂大脑”，一旦出现安全隐患情况下，攻击者会很对这些安全隐患加以恶意利用，其中Linux内核漏洞是目前攻击者最为热爱的漏洞之一，内核漏洞的利用通常会以“上帝视角”，也就是所谓的操作系统最高权限的形式为攻击者提供对目标系统的超级用户访问权限。
+漏洞复现 以Linux内核提权漏洞-“脏牛”来做演示。
+给大家介绍下检查linux提权辅助工具，les该工具主要帮助检测linux内核的安全缺陷。
+下载地址：
+1 https://github.com/mzet-/linux-exploit-suggester 1.将linux-exploit-suggester.sh下载到要检查的主机上，主要使用以下两条指令：
+1 2 3 chmod &#43;x linux-exploit-suggester.sh ./linux-exploit-suggester.sh 在执行上述命令之前，首先查看Linux内核版本。
+查看脚本执行结果，可以使用脏牛来进行提权。
+2.将漏洞利用代码上传到目标机器，接下来编译并执行。
+1 2 3 gcc -pthread dirty.c -o dirty -lcrypt ./dirty password 3.该漏洞利用代码会加入一个uid为0的用户，使用su firefart切换到firefart用户，获取root权限。'>
+<title>Linux提权之内核漏洞</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/dso9lycp/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='Linux提权之内核漏洞'>
+<meta property='og:description' content='漏洞介绍 Linux目前是最为常见的操作系统，该系统是处于源代码开放状态，信息安全问题也会随之被世界各地的“体验者”揭露出来。
+Linux操作系统的内核是该系列操作系统的“灵魂大脑”，一旦出现安全隐患情况下，攻击者会很对这些安全隐患加以恶意利用，其中Linux内核漏洞是目前攻击者最为热爱的漏洞之一，内核漏洞的利用通常会以“上帝视角”，也就是所谓的操作系统最高权限的形式为攻击者提供对目标系统的超级用户访问权限。
+漏洞复现 以Linux内核提权漏洞-“脏牛”来做演示。
+给大家介绍下检查linux提权辅助工具，les该工具主要帮助检测linux内核的安全缺陷。
+下载地址：
+1 https://github.com/mzet-/linux-exploit-suggester 1.将linux-exploit-suggester.sh下载到要检查的主机上，主要使用以下两条指令：
+1 2 3 chmod &#43;x linux-exploit-suggester.sh ./linux-exploit-suggester.sh 在执行上述命令之前，首先查看Linux内核版本。
+查看脚本执行结果，可以使用脏牛来进行提权。
+2.将漏洞利用代码上传到目标机器，接下来编译并执行。
+1 2 3 gcc -pthread dirty.c -o dirty -lcrypt ./dirty password 3.该漏洞利用代码会加入一个uid为0的用户，使用su firefart切换到firefart用户，获取root权限。'>
+<meta property='og:url' content='https://360rce.github.io/p/dso9lycp/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='提权' /><meta property='article:published_time' content='2020-11-26T11:12:42&#43;00:00'/><meta property='article:modified_time' content='2020-11-26T11:12:42&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/kx/wallhaven-kxd77q.jpg' />
+<meta name="twitter:title" content="Linux提权之内核漏洞">
+<meta name="twitter:description" content="漏洞介绍 Linux目前是最为常见的操作系统，该系统是处于源代码开放状态，信息安全问题也会随之被世界各地的“体验者”揭露出来。
+Linux操作系统的内核是该系列操作系统的“灵魂大脑”，一旦出现安全隐患情况下，攻击者会很对这些安全隐患加以恶意利用，其中Linux内核漏洞是目前攻击者最为热爱的漏洞之一，内核漏洞的利用通常会以“上帝视角”，也就是所谓的操作系统最高权限的形式为攻击者提供对目标系统的超级用户访问权限。
+漏洞复现 以Linux内核提权漏洞-“脏牛”来做演示。
+给大家介绍下检查linux提权辅助工具，les该工具主要帮助检测linux内核的安全缺陷。
+下载地址：
+1 https://github.com/mzet-/linux-exploit-suggester 1.将linux-exploit-suggester.sh下载到要检查的主机上，主要使用以下两条指令：
+1 2 3 chmod &#43;x linux-exploit-suggester.sh ./linux-exploit-suggester.sh 在执行上述命令之前，首先查看Linux内核版本。
+查看脚本执行结果，可以使用脏牛来进行提权。
+2.将漏洞利用代码上传到目标机器，接下来编译并执行。
+1 2 3 gcc -pthread dirty.c -o dirty -lcrypt ./dirty password 3.该漏洞利用代码会加入一个uid为0的用户，使用su firefart切换到firefart用户，获取root权限。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/kx/wallhaven-kxd77q.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#漏洞介绍">漏洞介绍</a></li>
+    <li><a href="#漏洞复现">漏洞复现</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/dso9lycp/">
+                
+                    <img src="https://w.wallhaven.cc/full/kx/wallhaven-kxd77q.jpg" loading="lazy" alt="Featured image of post Linux提权之内核漏洞" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%B9%E6%A2%A6%E5%88%B0%E8%A5%BF%E5%B7%9E/" >
+                吹梦到西州
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dso9lycp/">Linux提权之内核漏洞</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2020/11/26</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="漏洞介绍">漏洞介绍</h2>
+<p>Linux目前是最为常见的操作系统，该系统是处于源代码开放状态，信息安全问题也会随之被世界各地的“体验者”揭露出来。</p>
+<p>Linux操作系统的内核是该系列操作系统的“灵魂大脑”，一旦出现安全隐患情况下，攻击者会很对这些安全隐患加以恶意利用，其中Linux内核漏洞是目前攻击者最为热爱的漏洞之一，内核漏洞的利用通常会以“上帝视角”，也就是所谓的操作系统最高权限的形式为攻击者提供对目标系统的超级用户访问权限。</p>
+<h2 id="漏洞复现">漏洞复现</h2>
+<p>以Linux内核提权漏洞-“脏牛”来做演示。</p>
+<p>给大家介绍下检查linux提权辅助工具，les该工具主要帮助检测linux内核的安全缺陷。</p>
+<p>下载地址：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://github.com/mzet-/linux-exploit-suggester
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>1.将linux-exploit-suggester.sh下载到要检查的主机上，主要使用以下两条指令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">chmod +x linux-exploit-suggester.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">./linux-exploit-suggester.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在执行上述命令之前，首先查看Linux内核版本。</p>
+<p><img src="/p/dso9lycp/01.png"
+	width="1367"
+	height="65"
+	srcset="/p/dso9lycp/01_hua1a519e56b7f8f7d17a0305f7ec1eeef_7116_480x0_resize_box_3.png 480w, /p/dso9lycp/01_hua1a519e56b7f8f7d17a0305f7ec1eeef_7116_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="查看Linux内核版本"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="2103"
+		data-flex-basis="5047px"
+	
+></p>
+<p>查看脚本执行结果，可以使用脏牛来进行提权。</p>
+<p><img src="/p/dso9lycp/02.png"
+	width="1597"
+	height="856"
+	srcset="/p/dso9lycp/02_hud20310e435a727165f7a8279f595113b_75264_480x0_resize_box_3.png 480w, /p/dso9lycp/02_hud20310e435a727165f7a8279f595113b_75264_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="执行结果"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="186"
+		data-flex-basis="447px"
+	
+></p>
+<p>2.将漏洞利用代码上传到目标机器，接下来编译并执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">gcc -pthread dirty.c -o dirty -lcrypt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">./dirty password
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/dso9lycp/03.png"
+	width="644"
+	height="96"
+	srcset="/p/dso9lycp/03_hu2ff926f5f8a7d5f7f632779f2243da61_6979_480x0_resize_box_3.png 480w, /p/dso9lycp/03_hu2ff926f5f8a7d5f7f632779f2243da61_6979_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="编译"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="670"
+		data-flex-basis="1610px"
+	
+></p>
+<p><img src="/p/dso9lycp/04.png"
+	width="809"
+	height="402"
+	srcset="/p/dso9lycp/04_hu88606ffb694cb351ffaf74c2e13c3df5_25658_480x0_resize_box_3.png 480w, /p/dso9lycp/04_hu88606ffb694cb351ffaf74c2e13c3df5_25658_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="运行"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="482px"
+	
+></p>
+<p>3.该漏洞利用代码会加入一个uid为0的用户，使用<code>su firefart</code>切换到firefart用户，获取root权限。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%8F%90%E6%9D%83/">提权</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/1ibvkqhp/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/gp/wallhaven-gpd26e.jpg" loading="lazy" data-key="1ibvkqhp" data-hash="https://w.wallhaven.cc/full/gp/wallhaven-gpd26e.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux提权之Sudo配置错误</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/b222zucs/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/we/wallhaven-wexqp7.jpg" loading="lazy" data-key="b222zucs" data-hash="https://w.wallhaven.cc/full/we/wallhaven-wexqp7.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux提权之Suid提权</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/aor7ahen/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/l8/wallhaven-l8d8yy.jpg" loading="lazy" data-key="aor7ahen" data-hash="https://w.wallhaven.cc/full/l8/wallhaven-l8d8yy.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux提权之定时任务</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/whp5em3l/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxd3xw.jpg" loading="lazy" data-key="whp5em3l" data-hash="https://w.wallhaven.cc/full/jx/wallhaven-jxd3xw.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于微信内置浏览器 达到持久控制</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/1ypylhrh/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png" loading="lazy" data-key="1ypylhrh" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之并发编程</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

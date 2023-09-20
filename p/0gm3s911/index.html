@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='原文: 我今年23岁，毕业两年，做过运维，做过安全，做过手机，也做过黑产。 会web渗透，会脚本语言，会Windows/Linux底层安全运维，会安卓框架 爱跑步，爱极限运动，爱计算机，爱网络。
+21岁，刚刚出来工作，之前做黑产积累了一点资本，一通公安的电话，我成了什么都没有的应届找工作的大学生。
+'>
+<title>我想说的话，我的大风车</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/0gm3s911/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='我想说的话，我的大风车'>
+<meta property='og:description' content='原文: 我今年23岁，毕业两年，做过运维，做过安全，做过手机，也做过黑产。 会web渗透，会脚本语言，会Windows/Linux底层安全运维，会安卓框架 爱跑步，爱极限运动，爱计算机，爱网络。
+21岁，刚刚出来工作，之前做黑产积累了一点资本，一通公安的电话，我成了什么都没有的应届找工作的大学生。
+'>
+<meta property='og:url' content='https://360rce.github.io/p/0gm3s911/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='生活' /><meta property='article:published_time' content='2015-11-21T22:25:10&#43;00:00'/><meta property='article:modified_time' content='2015-11-21T22:25:10&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/kx/wallhaven-kxdrdq.jpg' />
+<meta name="twitter:title" content="我想说的话，我的大风车">
+<meta name="twitter:description" content="原文: 我今年23岁，毕业两年，做过运维，做过安全，做过手机，也做过黑产。 会web渗透，会脚本语言，会Windows/Linux底层安全运维，会安卓框架 爱跑步，爱极限运动，爱计算机，爱网络。
+21岁，刚刚出来工作，之前做黑产积累了一点资本，一通公安的电话，我成了什么都没有的应届找工作的大学生。
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/kx/wallhaven-kxdrdq.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hue92896558ee730c67dc59b841139d134_363585_300x0_resize_box_3.png" width="300"
+                            height="333" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">iceH&#39;s Blog</a></h1>
+            <h2 class="site-description">一条啥也不会的咸鱼！</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M456 32h-304C121.1 32 96 57.13 96 88v320c0 13.22-10.77 24-24 24S48 421.2 48 408V112c0-13.25-10.75-24-24-24S0 98.75 0 112v296C0 447.7 32.3 480 72 480h352c48.53 0 88-39.47 88-88v-304C512 57.13 486.9 32 456 32zM464 392c0 22.06-17.94 40-40 40H139.9C142.5 424.5 144 416.4 144 408v-320c0-4.406 3.594-8 8-8h304c4.406 0 8 3.594 8 8V392zM264 272h-64C186.8 272 176 282.8 176 296S186.8 320 200 320h64C277.3 320 288 309.3 288 296S277.3 272 264 272zM408 272h-64C330.8 272 320 282.8 320 296S330.8 320 344 320h64c13.25 0 24-10.75 24-24S421.3 272 408 272zM264 352h-64c-13.25 0-24 10.75-24 24s10.75 24 24 24h64c13.25 0 24-10.75 24-24S277.3 352 264 352zM408 352h-64C330.8 352 320 362.8 320 376s10.75 24 24 24h64c13.25 0 24-10.75 24-24S421.3 352 408 352zM400 112h-192c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32v-64C432 126.3 417.7 112 400 112z"></path></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM176 128c35.35 0 64 28.65 64 64s-28.65 64-64 64s-64-28.65-64-64S140.7 128 176 128zM272 384h-192C71.16 384 64 376.8 64 368C64 323.8 99.82 288 144 288h64c44.18 0 80 35.82 80 80C288 376.8 280.8 384 272 384zM496 320h-128C359.2 320 352 312.8 352 304S359.2 288 368 288h128C504.8 288 512 295.2 512 304S504.8 320 496 320zM496 256h-128C359.2 256 352 248.8 352 240S359.2 224 368 224h128C504.8 224 512 231.2 512 240S504.8 256 496 256zM496 192h-128C359.2 192 352 184.8 352 176S359.2 160 368 160h128C504.8 160 512 167.2 512 176S504.8 192 496 192z"></path></svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M464 96h-192l-64-64h-160C21.5 32 0 53.5 0 80V160h512V144C512 117.5 490.5 96 464 96zM0 432C0 458.5 21.5 480 48 480h416c26.5 0 48-21.5 48-48V192H0V432z"></path></svg>
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#BDBDBF"><path d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"></path></svg>
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 160C202.9 160 160 202.9 160 256s42.92 96 96 96c53.08 0 96-42.92 96-96S309.1 160 256 160zM256 288C238.3 288 224 273.7 224 256s14.33-32 32-32c17.67 0 32 14.33 32 32S273.7 288 256 288zM256 0c-141.4 0-256 114.6-256 256s114.6 256 256 256c141.4 0 256-114.6 256-256S397.4 0 256 0zM256 384c-70.75 0-128-57.25-128-128s57.25-128 128-128s128 57.25 128 128S326.8 384 256 384z"></path></svg>
+					
+                    
+                    
+                    <span>暗色</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/0gm3s911/">
+                
+                    <img src="https://w.wallhaven.cc/full/kx/wallhaven-kxdrdq.jpg" loading="lazy" alt="Featured image of post 我想说的话，我的大风车" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%A2%E5%BF%B5%E5%BF%B5%E4%B8%8D%E5%BF%98/" >
+                敢念念不忘
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/0gm3s911/">我想说的话，我的大风车</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2015/11/21</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>原文:
+我今年23岁，毕业两年，做过运维，做过安全，做过手机，也做过黑产。
+会web渗透，会脚本语言，会Windows/Linux底层安全运维，会安卓框架
+爱跑步，爱极限运动，爱计算机，爱网络。</p>
+<p>21岁，刚刚出来工作，之前做黑产积累了一点资本，一通公安的电话，我成了什么都没有的应届找工作的大学生。</p>
+<p>我去过智联招聘当服务器运维技术员，去过智联安防做过网络安全总监，最后在机锋网当了一名第三方rom框架组组长。我跑过手机发布会，待过线下座谈会，也低着头去大公司帮忙做安全，和两年前相似，我又有了一点在这个社会上活下来的需要的最重要的东西。</p>
+<p>今年5月，我父亲退休了，我和我女朋友准备结婚了，6月3号，我们领证了。7月11日，我们办了订婚宴，10月28号，我们本该结婚了，家里出事了。两年累计下来的资本，又化为泡影。这次，现在不是什么都没有，是我欠了别人许多许多。</p>
+<p>她说，没有关系，什么时候办婚宴都可以，先把事情解决了。
+我向机锋预支了4个月工资加所有奖金，经理同意了。他说，360你去不了了，除非你能把这4个月该做的，在1月份前完成，现在，快了。
+进入社会，快3年了，可能这些跟真正大起大落的人比不算什么，可是我真的累。</p>
+<p>穷途末路，没有地方借钱，我试着在网络上找那些朋友帮忙，可是，他们不认识我了，一个都不认识了。我无心组建的一个QQ群，他叫大风车，随意打的名字。里面除了学生，还是学生，根本就没有见过面的人。可是他们却帮我了，虽然还不足凤毛麟角，可是他们确实帮了我。现在稍微缓和了一点，可是事还没有解决，不过他们已经帮了我最多最多了。
+今晚的事还没有做完，很累，只能不停的点烟提神，突然看到那个图标，想起那天夕阳下的奔跑。我想说点话，也想找个地方把我的累说出来，还想对大风车的人说点话，虽然有二十来个人，可是，我却只记得这几个。</p>
+<p>小Y：
+  其实你刚刚进来的时候，我记得是一个钻阔，是不是你我还真想不起来了，那时候大风车人也多，大家不停的嘲讽，可是你却没有发飙，只是不停的说那是以前不懂，现在要学习技术。现在大风车那么团结了，我也看到你的成长，你的好学，你的努力，也在我困难的时候给了大风车这个集体给予我最大的帮助，真要送你一个祝福，我希望你考上自己喜欢的大学，喜欢的专业。再找一个女朋友，哪天你可以和我说，老大，我找到女朋友了。</p>
+<p>大师智：
+  什么时候开始这么叫你的，具体哪天想不起来了，只记得我很喜欢一个游戏解说叫小智，他那天上了大师在直播，于是你说你自己是大师智，就一直这样叫着了。我时常黑你，怎么黑好玩就怎么来，你也别生气，尊敬是留给陌生人的，好朋友才互相黑着玩的你说对吧。你太懒了，找点时间给自己补点墨水，虽然大风车是一个朋友的集体，可我的初衷是培养一些人。</p>
+<p>碧哥：
+  同样也是叫大师智开始，这么叫你的。你很逗比，我很喜欢这样乐观的人，我完全看不到你的成长，我感觉你遇到95后突然一下子变成一个人人喊大牛的碧哥，可是你几斤几两现在好像能摸的清楚，别膨胀，你总有真正是大牛的一天，还有，快找个女朋友，天天用大师智送的娃娃，容易漏气。</p>
+<p>表哥：
+  是不是现在都流行叫哥了啊，碧哥就算了还有个表哥。希望你做你想做的，以后如果公司缺运维，我第一个推荐你，问题尽管向我问，我真看不见，你抖我一下都成。
+表姐：
+  刚刚说要表哥就说表姐了，也许你现在在题海，看不见，我也希望你和小Y一样，考上自己想去的大学。</p>
+<p>土豆：
+  你是大风车的老人了，我对你的印象是沉默寡言的人，一个问题爱一直研究的人，或许你不是，只是不经常出现了，记忆中你是工作了吧，忙了就很难顾及到别的了，一起为了生活拼搏吧！</p>
+<p>jame_xhs：
+  妈的你这名字也太长了，就不能有一个朗朗上口的称呼吗。我们有共同的爱好，我们都喜欢手机，喜欢他的外观工艺，喜欢他的软件系统，能找到一个同爱好的人，本来就是人生中一件难得的事，多冒泡，大风车是一个大家庭，每个人的关系都应该一样，每一个话题大家都应该能一起说。加油！</p>
+<p>95：
+  和你认识的时间不长，不过也谢谢你信得过我，也谢谢你帮过我，我们目前的状态一样，你为梦想拼，我为生活拼，都是拼搏。一月份，我给你一个sss团队核心该有的样子，给你一个sss团队讲师该有的进度，共勉！</p>
+<p>疯子：
+  我对你没有什么印象，不过在我困难的时候QQ私聊我需要帮助吗，现在还是很感激你的，真的，我对你没有什么印象，只知道你是大风车群里的一员，也知道你喜欢健身，我一直希望大风车是一个大家都是好朋友的地方，虽然只是网络，可能虚无缥缈，可是朋友缺不是虚无缥缈的东西。</p>
+<p>小可爱：
+  我一直觉得你是一个很有想法的人，总感觉你和同龄人不一样，也很努力，我一直觉得当初我学习技术的时候已经很努力了，可是我做不到晚上12点睡第二天7点就可以起来看php，不管是不是一时而起的干劲，他都是你努力的象征，同样的，我也希望你的生活好一点，至少比我好，不是一点，是很多。</p>
+<p>iceH：
+  我告诉你，你这个名字太low了。我不记得怎么加的你，还是你加的我，只记得你混迹在许多的娱乐圈里面，动不动就什么黑客精神的娱乐圈，还爱邀请我，那时候真的烦。不过你现在好像有一点转变，有没有混迹我不知道，至少没有对我进行邀群DDOS了，你需要改变的是技术，技术好了，你邀请我进黄色直播群我都不在意。</p>
+<p>虫二：
+  感谢你在努力适应大风车，每一个后来进入大风车的人都希望能学好技术，不过可能让你失望了，还真没学到，我忙到没有时间教你们，偶尔有时间还尽和大家扯蛋，别怪我，进了大风车就是好朋友，好朋友的知识总会分享给你的。</p>
+<p>小队长：
+  别生气你是最后一个，主角都是最后出场的，也别问大姐呢？这是我写给大风车的人，大姐是我穿一条内裤长大的兄弟，有什么心里话，我会直接对他说。你是集体里面唯一的女孩，也是我最疼的妹妹，我可以黑任何人，就是不会黑你，任何人也不可以黑你，大师智敢欺负你，我第一个剁他的猪屌，我希望你开开心心的，活好每一天，你有什么要求，我能做到的，尽量做，晚上早点睡，女孩的皮肤和身体很重要的，我很爱听你和我倾诉你的生活，也谢谢你可以听我生活的辛苦。你一直是最漂亮可爱的，谁说不是，和大师智一样，把他挂树上剁屌。大风车一开始是一个技术的集合，可是却意外成为一个大家庭，可是我不忘初衷，一直希望你们学好技术，你不同，你的任务就是卖萌打扮，做自己开心想做的事，哪天找到你爱的人，爱你的人，别把我这个老大忘记了。</p>
+<p>这一直是我想对你们说的心里话，可能有点心灵鸡汤了，好像这不是那个天天爱开玩笑没事讲几个黄段子的我了，不过我还是觉得，网络不是友谊的鸿沟，是好朋友就是好朋友，哪来那么多别的事，见不见过又怎样，是否了解又怎样，至少我们聊起天来很开心。差不多了，点根烟，继续把没做完的事做完。</p>
+<p>谢谢你们听我说心里话，谢谢你们能了解我，谢谢你们叫我老大。</p>
+<p>                    ——永远旋转的大风车</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/usdfwwlv/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/85/wallhaven-859zy1.png" loading="lazy" data-key="usdfwwlv" data-hash="https://w.wallhaven.cc/full/85/wallhaven-859zy1.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">一个人开始废掉的3个迹象</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/nl8dq2do/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/vq/wallhaven-vqeg9m.png" loading="lazy" data-key="nl8dq2do" data-hash="https://w.wallhaven.cc/full/vq/wallhaven-vqeg9m.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">莫名的感慨</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/bkl3vdxu/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/gp/wallhaven-gpm3r7.png" loading="lazy" data-key="bkl3vdxu" data-hash="https://w.wallhaven.cc/full/gp/wallhaven-gpm3r7.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">七年，当我们成为别人的背影时，我们失去了多少</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mf032wl0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/o5/wallhaven-o5jx7p.png" loading="lazy" data-key="mf032wl0" data-hash="https://w.wallhaven.cc/full/o5/wallhaven-o5jx7p.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">又是一年高考季</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/w7tu78z2/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/9d/wallhaven-9d9jmx.jpg" loading="lazy" data-key="w7tu78z2" data-hash="https://w.wallhaven.cc/full/9d/wallhaven-9d9jmx.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大风车全体成员写给Bge，只为你有一天可以看到。等你归来</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

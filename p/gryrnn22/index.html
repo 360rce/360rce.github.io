@@ -1,0 +1,2573 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='一、基础函数 函数构成代码执行的逻辑结构。
+1.1 定义格式 函数基本构成元素：由关键字 func 开头，紧接着是一个函数名 FuncName，然后才是参数列表、返回值、函数体和返回语句。（参数列表、返回值、返回语句是可选的）
+1.1.1 基本语法 示例：
+1 2 3 4 5 6 func FuncName(/*参数列表*/) (o1 type1, o2 type2/*返回值：名称 数据类型*/) { //函数体 //也就是这一块区域里的代码 return v1, v2 //返回值 } 1.1.2 定义格式的说明 1.1.2.1 func func 是声明函数的关键字。
+1.1.2.2 函数名称 函数名称采用驼峰格式命名。Golang 规定：函数名首字母小写即对外部不可见，函数名首字母大写即对外部可见。
+1.1.2.3 参数列表 紧跟在函数名称后面的一对小括号 ()，不管有没有参数，这对小括号 () 必须写上！ 参数是可选的，可以是 0 个或者多个参数。参数格式为：参数名 数据类型。 Golang 没有默认参数！
+1.1.2.4 返回值 可选。如果这个函数没有返回值，就直接省略最后的返回参数以及 return 语句。 如果只有一个返回值且没有声明返回值的名称，那么就可以省略不写返回值名称以及括号，直接在函数体中使用 return 语句把这个只有一个的返回值给返回出去。但返回值的数据类型必须写！同理 1.1.1 的示例中，返回值声明了两个变量名（返回参数名称）o1 和 o2，这个也不是必须写的，可以只写数据类型而不写返回参数名称。 注意：Golang 没有默认值，如果函数没有返回值，Golang 是不会返回任何内容。在Golang中，函数没有返回值，那就是真的没有任何内容会返回出来了！ 例：'>
+<title>Golang学习之函数与工程管理</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/gryrnn22/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='Golang学习之函数与工程管理'>
+<meta property='og:description' content='一、基础函数 函数构成代码执行的逻辑结构。
+1.1 定义格式 函数基本构成元素：由关键字 func 开头，紧接着是一个函数名 FuncName，然后才是参数列表、返回值、函数体和返回语句。（参数列表、返回值、返回语句是可选的）
+1.1.1 基本语法 示例：
+1 2 3 4 5 6 func FuncName(/*参数列表*/) (o1 type1, o2 type2/*返回值：名称 数据类型*/) { //函数体 //也就是这一块区域里的代码 return v1, v2 //返回值 } 1.1.2 定义格式的说明 1.1.2.1 func func 是声明函数的关键字。
+1.1.2.2 函数名称 函数名称采用驼峰格式命名。Golang 规定：函数名首字母小写即对外部不可见，函数名首字母大写即对外部可见。
+1.1.2.3 参数列表 紧跟在函数名称后面的一对小括号 ()，不管有没有参数，这对小括号 () 必须写上！ 参数是可选的，可以是 0 个或者多个参数。参数格式为：参数名 数据类型。 Golang 没有默认参数！
+1.1.2.4 返回值 可选。如果这个函数没有返回值，就直接省略最后的返回参数以及 return 语句。 如果只有一个返回值且没有声明返回值的名称，那么就可以省略不写返回值名称以及括号，直接在函数体中使用 return 语句把这个只有一个的返回值给返回出去。但返回值的数据类型必须写！同理 1.1.1 的示例中，返回值声明了两个变量名（返回参数名称）o1 和 o2，这个也不是必须写的，可以只写数据类型而不写返回参数名称。 注意：Golang 没有默认值，如果函数没有返回值，Golang 是不会返回任何内容。在Golang中，函数没有返回值，那就是真的没有任何内容会返回出来了！ 例：'>
+<meta property='og:url' content='https://360rce.github.io/p/gryrnn22/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Golang' /><meta property='article:published_time' content='2021-01-06T16:16:54&#43;00:00'/><meta property='article:modified_time' content='2021-01-06T16:16:54&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/d6/wallhaven-d6o97j.png' />
+<meta name="twitter:title" content="Golang学习之函数与工程管理">
+<meta name="twitter:description" content="一、基础函数 函数构成代码执行的逻辑结构。
+1.1 定义格式 函数基本构成元素：由关键字 func 开头，紧接着是一个函数名 FuncName，然后才是参数列表、返回值、函数体和返回语句。（参数列表、返回值、返回语句是可选的）
+1.1.1 基本语法 示例：
+1 2 3 4 5 6 func FuncName(/*参数列表*/) (o1 type1, o2 type2/*返回值：名称 数据类型*/) { //函数体 //也就是这一块区域里的代码 return v1, v2 //返回值 } 1.1.2 定义格式的说明 1.1.2.1 func func 是声明函数的关键字。
+1.1.2.2 函数名称 函数名称采用驼峰格式命名。Golang 规定：函数名首字母小写即对外部不可见，函数名首字母大写即对外部可见。
+1.1.2.3 参数列表 紧跟在函数名称后面的一对小括号 ()，不管有没有参数，这对小括号 () 必须写上！ 参数是可选的，可以是 0 个或者多个参数。参数格式为：参数名 数据类型。 Golang 没有默认参数！
+1.1.2.4 返回值 可选。如果这个函数没有返回值，就直接省略最后的返回参数以及 return 语句。 如果只有一个返回值且没有声明返回值的名称，那么就可以省略不写返回值名称以及括号，直接在函数体中使用 return 语句把这个只有一个的返回值给返回出去。但返回值的数据类型必须写！同理 1.1.1 的示例中，返回值声明了两个变量名（返回参数名称）o1 和 o2，这个也不是必须写的，可以只写数据类型而不写返回参数名称。 注意：Golang 没有默认值，如果函数没有返回值，Golang 是不会返回任何内容。在Golang中，函数没有返回值，那就是真的没有任何内容会返回出来了！ 例："><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/d6/wallhaven-d6o97j.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一基础函数">一、基础函数</a>
+      <ol>
+        <li><a href="#11-定义格式">1.1 定义格式</a>
+          <ol>
+            <li><a href="#111-基本语法">1.1.1 基本语法</a></li>
+            <li><a href="#112-定义格式的说明">1.1.2 定义格式的说明</a></li>
+          </ol>
+        </li>
+        <li><a href="#12-有参数无返回值函数普通参数列表">1.2 有参数无返回值函数（普通参数列表）</a>
+          <ol>
+            <li><a href="#121-形参与实参">1.2.1 形参与实参</a></li>
+            <li><a href="#122-多个同类型参数的简写方式">1.2.2 多个同类型参数的简写方式</a></li>
+            <li><a href="#123-多个不同类型参数列表的写法">1.2.3 多个不同类型参数列表的写法</a></li>
+            <li><a href="#124-定义了几个参数就必须传递几个值">1.2.4 定义了几个参数，就必须传递几个值</a></li>
+          </ol>
+        </li>
+        <li><a href="#13-不定参数列表">1.3 不定参数列表</a>
+          <ol>
+            <li><a href="#131-不定参数类型的定义">1.3.1 不定参数类型的定义</a></li>
+            <li><a href="#132-不定参数的传参">1.3.2 不定参数的传参</a></li>
+            <li><a href="#133-不定参数必须放在形参的最后面">1.3.3 不定参数必须放在形参的最后面</a></li>
+            <li><a href="#134-不定实参传递给另一个函数的不定形参">1.3.4 不定实参传递给另一个函数的不定形参</a></li>
+          </ol>
+        </li>
+        <li><a href="#14-无参有返回值">1.4 无参有返回值</a>
+          <ol>
+            <li><a href="#141-一个返回值">1.4.1 一个返回值</a></li>
+            <li><a href="#142-多个返回值">1.4.2 多个返回值</a></li>
+          </ol>
+        </li>
+        <li><a href="#15-有参数有返回值">1.5 有参数有返回值</a></li>
+      </ol>
+    </li>
+    <li><a href="#二递归函数">二、递归函数</a>
+      <ol>
+        <li><a href="#21-普通函数调用流程">2.1 普通函数调用流程</a></li>
+        <li><a href="#22-递归函数的特性">2.2 递归函数的特性</a></li>
+        <li><a href="#23-递归函数调用流程">2.3 递归函数调用流程</a></li>
+        <li><a href="#24-数字累加">2.4 数字累加</a></li>
+      </ol>
+    </li>
+    <li><a href="#三函数类型">三、函数类型</a>
+      <ol>
+        <li><a href="#31-大致流程">3.1 大致流程</a>
+          <ol>
+            <li><a href="#311-给函数起一个别名">3.1.1 给函数起一个别名。</a></li>
+            <li><a href="#312-声明一个函数类型的变量名">3.1.2 声明一个函数类型的变量名</a></li>
+            <li><a href="#313-赋值给一个变量">3.1.3 赋值给一个变量</a></li>
+            <li><a href="#314-通过这个变量来调用函数">3.1.4 通过这个变量来调用函数</a></li>
+          </ol>
+        </li>
+        <li><a href="#32-综合示例演示多态的思想">3.2 综合示例，演示多态的思想</a></li>
+      </ol>
+    </li>
+    <li><a href="#四回调函数">四、回调函数</a>
+      <ol>
+        <li><a href="#41-大致流程">4.1 大致流程</a></li>
+        <li><a href="#42-综合示例">4.2 综合示例</a></li>
+      </ol>
+    </li>
+    <li><a href="#五匿名函数与闭包">五、匿名函数与闭包</a>
+      <ol>
+        <li><a href="#51-无参无返回值的匿名函数">5.1 无参无返回值的匿名函数</a></li>
+        <li><a href="#52-带参数的匿名函数">5.2 带参数的匿名函数</a></li>
+        <li><a href="#53-有参数有返回值">5.3 有参数有返回值</a></li>
+        <li><a href="#54-闭包捕获外部变量的特点">5.4 闭包捕获外部变量的特点</a></li>
+        <li><a href="#55-只要闭包还在使用变量就还存在">5.5 只要闭包还在使用，变量就还存在</a></li>
+        <li><a href="#56-注意事项">5.6 注意事项</a></li>
+      </ol>
+    </li>
+    <li><a href="#六defer">六、defer</a>
+      <ol>
+        <li><a href="#61-最基本的例子">6.1 最基本的例子</a></li>
+        <li><a href="#62-多个defer的执行顺序">6.2 多个defer的执行顺序</a></li>
+        <li><a href="#62-defer和匿名函数结合使用">6.2 defer和匿名函数结合使用</a></li>
+      </ol>
+    </li>
+    <li><a href="#七获取命令行参数">七、获取命令行参数</a>
+      <ol>
+        <li><a href="#71-如何实现">7.1 如何实现</a></li>
+        <li><a href="#72-最基本的例子">7.2 最基本的例子</a></li>
+      </ol>
+    </li>
+    <li><a href="#八作用域">八、作用域</a>
+      <ol>
+        <li><a href="#81-局部变量的特点">8.1 局部变量的特点</a></li>
+        <li><a href="#82-全局变量的特点">8.2 全局变量的特点</a></li>
+        <li><a href="#83-不同作用域同名变量">8.3 不同作用域同名变量</a></li>
+      </ol>
+    </li>
+    <li><a href="#九工程管理">九、工程管理</a>
+      <ol>
+        <li><a href="#91-go111-版本之前的工作区">9.1 Go1.11 版本之前的工作区</a>
+          <ol>
+            <li><a href="#911-工作区介绍">9.1.1 工作区介绍</a></li>
+            <li><a href="#912-gopath设置">9.1.2 GOPATH设置</a></li>
+            <li><a href="#913-分文件编程同一个目录下">9.1.3 分文件编程（同一个目录下）</a></li>
+            <li><a href="#914-分文件编程不同目录下">9.1.4 分文件编程（不同目录下）</a></li>
+            <li><a href="#915-包">9.1.5 包</a></li>
+          </ol>
+        </li>
+        <li><a href="#92-go-module-模块管理">9.2 Go Module 模块管理</a></li>
+      </ol>
+    </li>
+    <li><a href="#十main函数和init函数">十、main()函数和init()函数</a>
+      <ol>
+        <li><a href="#101-main函数的特性">10.1 main()函数的特性</a></li>
+        <li><a href="#102-init函数的特性">10.2 init()函数的特性</a></li>
+        <li><a href="#103-包的其他特性">10.3 包的其他特性</a></li>
+        <li><a href="#104-init函数和main函数的异同">10.4 init()函数和main()函数的异同</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/gryrnn22/">
+                
+                    <img src="https://w.wallhaven.cc/full/d6/wallhaven-d6o97j.png" loading="lazy" alt="Featured image of post Golang学习之函数与工程管理" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%B9%E6%A2%A6%E5%88%B0%E8%A5%BF%E5%B7%9E/" >
+                吹梦到西州
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/gryrnn22/">Golang学习之函数与工程管理</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2021/01/06</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 14 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="一基础函数">一、基础函数</h2>
+<p>函数构成代码执行的逻辑结构。</p>
+<h3 id="11-定义格式">1.1 定义格式</h3>
+<p>函数基本构成元素：由关键字 <code>func</code> 开头，紧接着是一个函数名 <code>FuncName</code>，然后才是参数列表、返回值、函数体和返回语句。（参数列表、返回值、返回语句是可选的）</p>
+<h4 id="111-基本语法">1.1.1 基本语法</h4>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">FuncName</span><span class="p">(</span><span class="cm">/*参数列表*/</span><span class="p">)</span> <span class="p">(</span><span class="nx">o1</span> <span class="nx">type1</span><span class="p">,</span> <span class="nx">o2</span> <span class="nx">type2</span><span class="cm">/*返回值：名称 数据类型*/</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//函数体
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//也就是这一块区域里的代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">v1</span><span class="p">,</span> <span class="nx">v2</span> <span class="c1">//返回值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="112-定义格式的说明">1.1.2 定义格式的说明</h4>
+<h5 id="1121-func">1.1.2.1 func</h5>
+<p><code>func</code> 是声明函数的关键字。</p>
+<h5 id="1122-函数名称">1.1.2.2 函数名称</h5>
+<p>函数名称采用<code>驼峰格式</code>命名。Golang 规定：<strong>函数名首字母小写即对外部不可见，函数名首字母大写即对外部可见</strong>。</p>
+<h5 id="1123-参数列表">1.1.2.3 参数列表</h5>
+<p>紧跟在函数名称后面的一对小括号 <code>()</code>，不管有没有参数，这对<strong>小括号 () 必须写上</strong>！
+参数是可选的，可以是 0 个或者多个参数。参数格式为：<code>参数名 数据类型</code>。
+<strong>Golang 没有默认参数</strong>！</p>
+<h5 id="1124-返回值">1.1.2.4 返回值</h5>
+<p>可选。如果这个函数没有返回值，就直接省略最后的返回参数以及 <code>return</code> 语句。
+如果只有一个返回值且没有声明返回值的名称，那么就可以省略不写返回值名称以及括号，直接在函数体中使用 <code>return</code> 语句把这个只有一个的返回值给返回出去。但返回值的数据类型必须写！同理 1.1.1 的示例中，返回值声明了两个变量名（返回参数名称）o1 和 o2，这个也不是必须写的，可以只写数据类型而不写返回参数名称。
+注意：Golang 没有默认值，如果函数没有返回值，Golang 是不会返回任何内容。<strong>在Golang中，函数没有返回值，那就是真的没有任何内容会返回出来了！</strong>
+例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">myFunc</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a = &#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myFunc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果有返回参数，函数体内必须写上 <code>return</code> 语句。</p>
+<h3 id="12-有参数无返回值函数普通参数列表">1.2 有参数无返回值函数（普通参数列表）</h3>
+<p><strong>Golang 函数参数都属于必备参数，调用时必须传给它实参</strong>！</p>
+<h4 id="121-形参与实参">1.2.1 形参与实参</h4>
+<p>形参：定义函数时，函数的参数。
+实参：调用函数时，传递过去的值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//定义函数时，在函数第一个圆括号内定义的参数叫形成
+</span></span></span><span class="line"><span class="cl"><span class="c1">//参数传递是单向传递，且只能由实参传递给形参，不能反过来
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">MyTest</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a=&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//调用函数时，传递过去的参数叫实参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">MyTest</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="122-多个同类型参数的简写方式">1.2.2 多个同类型参数的简写方式</h4>
+<p>这样写非常简洁，但参数一多就容易发生混乱，到底这个参数是什么类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//都同类型参数的时候，可以简写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">MyTest</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;a=%d\tb=%d\tc=%d\t&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//a=111	b=222	c=333	
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MyTest</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">333</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="123-多个不同类型参数列表的写法">1.2.3 多个不同类型参数列表的写法</h4>
+<p>参数多起来，建议每个参数都写明数据类型，这样不会造成数据类型弄错或忘记。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">MyTest</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">salary</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;name=%s\tage=%d\tsalary=%f\n&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">salary</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//name=golang	age=11	salary=1234567890.000000
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MyTest</span><span class="p">(</span><span class="s">&#34;golang&#34;</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1234567890</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="124-定义了几个参数就必须传递几个值">1.2.4 定义了几个参数，就必须传递几个值</h4>
+<p>如果定义的是普通参数列表，定义了几个参数，就必须传递几个值过去，否则就报错！</p>
+<h3 id="13-不定参数列表">1.3 不定参数列表</h3>
+<p>如果不知道到底会有几个参数，那么就可以用不定参数列表。不定参数列表是指函数传入的参数数量不确定，它是通过切片来实现的，且<strong>只能放在形参中的最后一个</strong>！</p>
+<h4 id="131-不定参数类型的定义">1.3.1 不定参数类型的定义</h4>
+<p>首先将一个函数的形参定义为接受不定参数类型。
+语法：<code>func FuncName(varName ...Type)</code>。（<code>...Type</code>其实就是一种语法糖，接收 0 个或者多个 Type 类型参数）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//...int就是不定参数类型，接收0个或者多个int参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">myTest</span><span class="p">(</span><span class="nx">a</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myTest</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">222</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="132-不定参数的传参">1.3.2 不定参数的传参</h4>
+<p>此时，传递过去的实参可以是 0 个或者多个。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//...int就是不定参数类型，接收0个或者多个int参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">myTest</span><span class="p">(</span><span class="nx">a</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;a type is : %T\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;--------------------------------&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myTest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myTest</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myTest</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">222</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">[]
+</span></span></span><span class="line"><span class="cl"><span class="cm">a type is : []int
+</span></span></span><span class="line"><span class="cl"><span class="cm">--------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="cm">[1]
+</span></span></span><span class="line"><span class="cl"><span class="cm">a type is : []int
+</span></span></span><span class="line"><span class="cl"><span class="cm">--------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="cm">[111 222]
+</span></span></span><span class="line"><span class="cl"><span class="cm">a type is : []int
+</span></span></span><span class="line"><span class="cl"><span class="cm">--------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到，不定参数使用切片来实现。</p>
+<h4 id="133-不定参数必须放在形参的最后面">1.3.3 不定参数必须放在形参的最后面</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//注意：不定参数，一定（只能）放在形参中的最后一个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">myFunc03</span><span class="p">(</span><span class="nx">args</span> <span class="o">...</span><span class="kt">int</span><span class="p">,</span> <span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">myFunc02</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果:
+</span></span></span><span class="line"><span class="cl"><span class="cm"># command-line-arguments
+</span></span></span><span class="line"><span class="cl"><span class="cm">.\32_不定参数类型.go:34:15: syntax error: cannot use ... with non-final parameter args
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>报错大意：<code>...</code> 在列表中只能作为最后一个参数。</p>
+<h4 id="134-不定实参传递给另一个函数的不定形参">1.3.4 不定实参传递给另一个函数的不定形参</h4>
+<p>不定参数作为实参，传递给另外一个函数的不定形参，另一个函数的形参必须也是一个不定参数类型。</p>
+<h5 id="1341-基本示例">1.3.4.1 基本示例</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//参数类型被定义为不定参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">f1</span><span class="p">(</span><span class="nx">a</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">f2</span><span class="p">(</span><span class="nx">a</span><span class="o">...</span><span class="p">)</span> <span class="c1">//不定参数作为实参，传递给目标函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//目标函数的形参也必须是不定参数类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">f2</span><span class="p">(</span><span class="nx">a</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;a type is : %T, a=%v\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">f1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">a type is : []int, a=[1 2 3 4 5]
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="1342-形参和实参都要加上">1.3.4.2 形参和实参都要加上<code>...</code></h5>
+<p>目标函数的形参需要定义成不定参数类型，传递过去的实参后面也需要加上 <code>...</code>。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//想要接受不定参数，这里的形参也必须定义成不定参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">myFunc</span><span class="p">(</span><span class="nx">tmps</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">tmps</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">args</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//此处，想要把args全部传递给myFunc，需要这样写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">myFunc</span><span class="p">(</span><span class="nx">args</span><span class="o">...</span><span class="p">)</span> <span class="c1">//所有的都传过去了。...不能忘
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">[1 2 3 4 5]
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意：传递过去的时候，第 12 行 args 后面的 <code>...</code> 不能忘。不定参数的类型是一个切片，不加 <code>...</code> 就是一个数组类型。在 Golang 中，数组和切片是不同类型。</p>
+<h5 id="1343-可以使用切片截取">1.3.4.3 可以使用切片截取</h5>
+<p>如果只想传递某几个元素过去，可以使用切片截取某个片段。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//想要接受不定参数，这里的形参也必须定义成不定参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">myFunc</span><span class="p">(</span><span class="nx">tmps</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">tmps</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">args</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//只想把元素2,3,4传递给myFunc
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">myFunc</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">...</span><span class="p">)</span> <span class="c1">//...不能忘
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">[2 3 4]
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="14-无参有返回值">1.4 无参有返回值</h3>
+<p>有返回值的函数，在函数体内必须通过 <code>return</code> 返回。</p>
+<h4 id="141-一个返回值">1.4.1 一个返回值</h4>
+<p>只有一个返回值，可以不写该返回值的名称。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span> <span class="c1">//不给返回值起名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="mi">777</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">test</span><span class="p">())</span> <span class="c1">//777
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="142-多个返回值">1.4.2 多个返回值</h4>
+<p>有多个返回值的时候，官方推荐给每个返回值起个名字。
+下面这种写法是官方推荐：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//每个返回值都起了名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//函数中可以直接使用这及格返回值的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;golang&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">age</span> <span class="p">=</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="c1">//按照返回值参数定义的顺序，自动把name和age都给返回回去了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">test</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//golang 11
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Golang 是按照返回值参数定义的顺序进行返回</strong>。
+使用 Goland 时，按住 <code>Ctrl</code>，鼠标移动到函数上的时候，就能清晰看到那个函数返回了哪些信息，信息更加明显：</p>
+<h3 id="15-有参数有返回值">1.5 有参数有返回值</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">maxAndMin</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">max</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">min</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">a</span> <span class="p">&gt;</span> <span class="nx">b</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">max</span> <span class="p">=</span> <span class="nx">a</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">min</span> <span class="p">=</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">max</span> <span class="p">=</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">min</span> <span class="p">=</span> <span class="nx">a</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">max</span><span class="p">,</span> <span class="nx">min</span> <span class="o">:=</span> <span class="nf">maxAndMin</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;max=%d, min=%d\n&#34;</span><span class="p">,</span> <span class="nx">max</span><span class="p">,</span> <span class="nx">min</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nf">maxAndMin</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;max=%d&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="二递归函数">二、递归函数</h2>
+<h3 id="21-普通函数调用流程">2.1 普通函数调用流程</h3>
+<p>先调用后返回，先进后出（<code>FILO</code>）。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">funcc</span><span class="p">(</span><span class="nx">c</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;c = &#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">funcb</span><span class="p">(</span><span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">funcc</span><span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;b = &#34;</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">funca</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">funcb</span><span class="p">(</span><span class="nx">a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a = &#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">funca</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">//函数调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;main&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">c =  1
+</span></span></span><span class="line"><span class="cl"><span class="cm">b =  2
+</span></span></span><span class="line"><span class="cl"><span class="cm">a =  3
+</span></span></span><span class="line"><span class="cl"><span class="cm">main
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="22-递归函数的特性">2.2 递归函数的特性</h3>
+<p>递归函数可以直接或间接地调用自身，同样利用的是普通函数调用流程：先调用后返回、先进后出的特性。
+递归函数通常有相同的结构：一个跳出条件和一个递归体。跳出条件就是根据传入的实参判断是否需要停止递归，递归体说白了就是包裹在函数体内的代码。</p>
+<h3 id="23-递归函数调用流程">2.3 递归函数调用流程</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span> <span class="c1">//函数终止调用的条件，非常重要
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a = &#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="c1">//终止函数调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//函数调用自身
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">test</span><span class="p">(</span><span class="nx">a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a = &#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">test</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;main&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="24-数字累加">2.4 数字累加</h3>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//实现1+2+3+...100
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test01</span><span class="p">()</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test02</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">100</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">i</span> <span class="o">+</span> <span class="nf">test02</span><span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">sum</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">sum</span> <span class="p">=</span> <span class="nf">test01</span><span class="p">()</span> <span class="c1">//普通方法实现
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;sum = &#34;</span><span class="p">,</span> <span class="nx">sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">sum</span> <span class="p">=</span> <span class="nf">test02</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">//递归实现
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;sum = &#34;</span><span class="p">,</span> <span class="nx">sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三函数类型">三、函数类型</h2>
+<p>Golang中，函数也是一个数据类型：<strong>所有拥有相同的参数、相同的返回值的一种数据类型</strong>。</p>
+<h3 id="31-大致流程">3.1 大致流程</h3>
+<h4 id="311-给函数起一个别名">3.1.1 给函数起一个别名。</h4>
+<p>使用关键字 <code>type</code> 声明一个函数类型。
+语法：<code>type 变量名 func(/*参数列表*/)</code>。例：<code>type myFunc func(int, int) int</code>。
+注意：<strong>type 定义的函数类型，func() 后面不能接返回值和大括号</strong>。</p>
+<h4 id="312-声明一个函数类型的变量名">3.1.2 声明一个函数类型的变量名</h4>
+<p>例：<code>var f myFunc</code>。声明一个变量，名称为 f，类型为 myFunc 函数类型。</p>
+<h4 id="313-赋值给一个变量">3.1.3 赋值给一个变量</h4>
+<p>把某个同类型参数以及同类型返回值的函数体赋值给一个变量。
+例：<code>f = add</code>。注意：这个 add 的参数数量和参数类型必须和 f 函数的类型一模一样！</p>
+<h4 id="314-通过这个变量来调用函数">3.1.4 通过这个变量来调用函数</h4>
+<p>变量名+小括号+实参，实现调用。例：<code>f(10, 20)</code>。</p>
+<h3 id="32-综合示例演示多态的思想">3.2 综合示例，演示多态的思想</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Minus</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//函数也是一种数据类型，通过type给一个函数类型起名
+</span></span></span><span class="line"><span class="cl"><span class="c1">//FuncType它是一个函数类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">FuncType</span> <span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="c1">//没有函数名字，没有{}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">result</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">result</span> <span class="p">=</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">//传统调用方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;result = &#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//声明一个函数类型的变量，变量名叫fTest
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">fTest</span> <span class="nx">FuncType</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fTest</span> <span class="p">=</span> <span class="nx">Add</span>            <span class="c1">//是变量就可以赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">result</span> <span class="p">=</span> <span class="nf">fTest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="c1">//等价于Add(10,20)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;result2 = &#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">fTest</span> <span class="p">=</span> <span class="nx">Minus</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">result</span> <span class="p">=</span> <span class="nf">fTest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">//等价于Minus(10, 5)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;result3 = &#34;</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">result =  2
+</span></span></span><span class="line"><span class="cl"><span class="cm">result2 =  30
+</span></span></span><span class="line"><span class="cl"><span class="cm">result3 =  5
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四回调函数">四、回调函数</h2>
+<p>所谓回调函数就是函数的参数里有一个参数是函数类型。</p>
+<h3 id="41-大致流程">4.1 大致流程</h3>
+<p>1.定义一个函数类型。
+2 函数形参指定为一个函数类型。定义另一个函数，函数的参数列表里放入刚才定义的函数类型。此时，这个函数就变成了回调函数。
+3.在回调函数内部去调用其他不同的函数。</p>
+<h3 id="42-综合示例">4.2 综合示例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//1.首先要定义一个函数类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">myFunc</span> <span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//每个函数的实现
+</span></span></span><span class="line"><span class="cl"><span class="c1">//参数数量和数据类型以及返回值类型，要跟myFunc函数类型一模一样
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//每个函数的实现
+</span></span></span><span class="line"><span class="cl"><span class="c1">//参数数量和数据类型以及返回值类型，要跟myFunc函数类型一模一样
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">minus</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//每个函数的实现
+</span></span></span><span class="line"><span class="cl"><span class="c1">//参数数量和数据类型以及返回值类型，要跟myFunc指向的函数类型一模一样
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">mul</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//2.定义一个回调函数。函数的参数列表里，funcName形参被指定为myFunc函数类型，此时Calc就是一个回调函数
+</span></span></span><span class="line"><span class="cl"><span class="c1">//多态：多种形态。调用同一个接口，可以实现不同的功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">Calc</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">funcName</span> <span class="nx">myFunc</span><span class="p">)</span> <span class="p">(</span><span class="nx">result</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//传过来就是add,minus,mul三个中的一个，funcName可以动态变成add或minus或mul，以实现不同的功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//调用函数依然采用：函数名+小括号的方式调用，这里就可以根据实际传过来的函数名去动态调用，动态实现不同功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">result</span> <span class="p">=</span> <span class="nf">funcName</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//return add(a, b) //这样就写死了，Calc这个函数只能实现add这个功能，而不能实现其他功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="nf">Calc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">add</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;add a:&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="nf">Calc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">minus</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;minus a:&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="nf">Calc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">mul</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;mul a:&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">add a: 7
+</span></span></span><span class="line"><span class="cl"><span class="cm">minus a: -1
+</span></span></span><span class="line"><span class="cl"><span class="cm">mul a: 12
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意：关键字 <code>type</code> 定义的函数类型的数据类型是什么，其他函数也必须跟它一样，不然数据类型不匹配就会报错。</p>
+<h2 id="五匿名函数与闭包">五、匿名函数与闭包</h2>
+<p>匿名函数是指不需要定义函数名称的一种函数实现方式。
+在 Golang 中，所有的匿名函数（Golang 规范中称之为函数字面量）都是闭包。
+闭包就是一个函数&quot;捕获&quot;了和它在同一作用域的其他常量和变量，闭包不关心&quot;捕获&quot;的常量和变量是否已经超出了作用域，只要闭包还在使用它们，这些常量和变量就还会存在。
+闭包需要通过匿名函数来实现。</p>
+<h3 id="51-无参无返回值的匿名函数">5.1 无参无返回值的匿名函数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">age</span> <span class="o">:=</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">name</span> <span class="o">:=</span> <span class="s">&#34;golang&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//定义匿名函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//自动推导成为函数类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;name=&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;age=&#34;</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">f1</span><span class="p">()</span> <span class="c1">//调用匿名函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="kd">type</span> <span class="nx">myFunc</span> <span class="kd">func</span><span class="p">()</span> <span class="c1">//无参无返回值的函数类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">f2</span> <span class="nx">myFunc</span>      <span class="c1">//声明变量f2为myFunc类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f2</span> <span class="p">=</span> <span class="nx">f1</span>            <span class="c1">//都是无参无返回值的同类型函数，所以可以相互赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">f2</span><span class="p">()</span>			   <span class="c1">//本质上就是在调用f1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//定义匿名函数且同时调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;name=%s\tage=%d\n&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}()</span> <span class="c1">//这个圆括号代表直接调用此匿名函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">name= golang
+</span></span></span><span class="line"><span class="cl"><span class="cm">age= 11
+</span></span></span><span class="line"><span class="cl"><span class="cm">name= golang
+</span></span></span><span class="line"><span class="cl"><span class="cm">age= 11
+</span></span></span><span class="line"><span class="cl"><span class="cm">name=golang	age=11
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="52-带参数的匿名函数">5.2 带参数的匿名函数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//匿名函数不需要写函数名称，这里只写上参数即可
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//例如：func(i, j int) {/**/}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//自动类型推导
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f1</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;i=%d,j=%d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">f1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;i=%d,j=%d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="c1">//简单粗暴，定义且直接调用，记得小括号中要给参数，因为定义了有2个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">i=1,j=2
+</span></span></span><span class="line"><span class="cl"><span class="cm">i=10,j=20
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="53-有参数有返回值">5.3 有参数有返回值</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">max</span><span class="p">,</span> <span class="nx">min</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="nx">j</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">max</span> <span class="p">=</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">min</span> <span class="p">=</span> <span class="nx">j</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">max</span> <span class="p">=</span> <span class="nx">j</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">min</span> <span class="p">=</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="c1">//定义了返回值，必须写上return
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="c1">//这里加小括号表示直接调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;max=%d,min=%d\n&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="c1">//max=20,min=10
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="54-闭包捕获外部变量的特点">5.4 闭包捕获外部变量的特点</h3>
+<p>闭包是以 <code>引用</code> 的方式去捕获外部变量，用的是同一个变量。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="s">&#34;str bbb&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//闭包以引用方式捕获外部变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">a</span> <span class="p">=</span> <span class="mi">999</span>      <span class="c1">//直接赋值，这里改了会影响外部，外部也被修改了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">b</span> <span class="p">=</span> <span class="s">&#34;golang&#34;</span> <span class="c1">//直接赋值，这里改了会影响外部，外部也被修改了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;内部，a=%d,b=%s\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}()</span> <span class="c1">//()代表直接调用，否则就需要用一个变量去接收这个匿名函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;外部，a=%d,b=%s\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">内部，a=999,b=golang
+</span></span></span><span class="line"><span class="cl"><span class="cm">外部，a=999,b=golang
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是，如果在闭包内使用海象运算符 <code>:=</code> 声明了新变量，那么新变量就跟外部没有关系了。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="s">&#34;str bbb&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">a</span> <span class="o">:=</span> <span class="mi">999</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">b</span> <span class="o">:=</span> <span class="s">&#34;golang&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;内部，a=%d,b=%s\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}()</span> <span class="c1">//()代表直接调用，否则就需要用一个变量去接收这个匿名函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;外部，a=%d,b=%s\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">内部，a=999,b=golang
+</span></span></span><span class="line"><span class="cl"><span class="cm">外部，a=10,b=str bbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="55-只要闭包还在使用变量就还存在">5.5 只要闭包还在使用，变量就还存在</h3>
+<p>闭包&quot;捕获&quot;外部变量并不会去关心它的作用域，只要闭包还在使用这些变量，变量就会存在。也就是说闭包有记忆变量的特性。
+示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test1</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span> <span class="c1">//返回值是一个匿名函数，该匿名函数有一个int类型的返回值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">x</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span> <span class="c1">//return语句后面接上这个匿名函数的函数体
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">x</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">f</span> <span class="o">:=</span> <span class="nf">test1</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">1
+</span></span></span><span class="line"><span class="cl"><span class="cm">4
+</span></span></span><span class="line"><span class="cl"><span class="cm">9
+</span></span></span><span class="line"><span class="cl"><span class="cm">16
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="56-注意事项">5.6 注意事项</h3>
+<p>1.匿名函数定义了必须要有变量去接收，或者在最后接圆括号 <code>()</code> 直接调用它。
+2.闭包不能在函数体外声明。</p>
+<h2 id="六defer">六、defer</h2>
+<p><code>defer</code> 用于延迟一个函数、方法、或者当前所创建的匿名函数的执行。常用于函数执行完毕被释放前的一些清理工作。
+<strong>defer 只能出现在函数或者方法的内部</strong>！</p>
+<h3 id="61-最基本的例子">6.1 最基本的例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;aaa&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;bbb&#34;</span><span class="p">)</span> <span class="c1">//最后才执行的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;ccc&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">aaa
+</span></span></span><span class="line"><span class="cl"><span class="cm">ccc
+</span></span></span><span class="line"><span class="cl"><span class="cm">bbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="62-多个defer的执行顺序">6.2 多个defer的执行顺序</h3>
+<p>一个函数中有多个<code>defer</code>语句，它们会以<code>FILO</code>(先进后出)的顺序执行，哪怕函数或某个延迟调用发生错误，这些调用依旧会被执行。
+多个<code>defer</code>的执行顺序的演示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">x</span> <span class="o">:=</span> <span class="mi">100</span> <span class="o">/</span> <span class="nx">a</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;x = &#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">	fmt.Println(&#34;aaaaaaaaaaa&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">	fmt.Println(&#34;bbbbbbbbbbb&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	//调用一个函数，导致内存出问题
+</span></span></span><span class="line"><span class="cl"><span class="cm">	test(0)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	fmt.Println(&#34;ccccccccccc&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">	aaaaaaaaaaa
+</span></span></span><span class="line"><span class="cl"><span class="cm">	bbbbbbbbbbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">	panic: runtime error: integer divide by zero
+</span></span></span><span class="line"><span class="cl"><span class="cm">	**/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">	defer fmt.Println(&#34;aaaaaaaaaaa&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">	defer fmt.Println(&#34;bbbbbbbbbbb&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	//调用一个函数，导致内存出问题
+</span></span></span><span class="line"><span class="cl"><span class="cm">	test(0)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	defer fmt.Println(&#34;ccccccccccc&#34;) //这个defer还没有进栈中，所以不会打印出这行的内容，只会打印上面两行的内容
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">	运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">	bbbbbbbbbbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">	aaaaaaaaaaa
+</span></span></span><span class="line"><span class="cl"><span class="cm">	panic: runtime error: integer divide by zero
+</span></span></span><span class="line"><span class="cl"><span class="cm">	**/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">		defer fmt.Println(&#34;aaaaaaaaaaa&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">		defer fmt.Println(&#34;bbbbbbbbbbb&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">		//调用一个函数，导致内存出问题
+</span></span></span><span class="line"><span class="cl"><span class="cm">		defer test(0) //报错时，会放到最后一个被显示出来
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">		defer fmt.Println(&#34;ccccccccccc&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">			运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">			ccccccccccc
+</span></span></span><span class="line"><span class="cl"><span class="cm">			bbbbbbbbbbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">			aaaaaaaaaaa
+</span></span></span><span class="line"><span class="cl"><span class="cm">			panic: runtime error: integer divide by zero
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;aaaaaaaaaaa&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;bbbbbbbbbbb&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nf">test</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">//在没有报错的情况下，defer 将按照先进后出的顺序执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;ccccccccccc&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/*运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">	ccccccccccc
+</span></span></span><span class="line"><span class="cl"><span class="cm">	x =  100
+</span></span></span><span class="line"><span class="cl"><span class="cm">	bbbbbbbbbbb
+</span></span></span><span class="line"><span class="cl"><span class="cm">	aaaaaaaaaaa
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="62-defer和匿名函数结合使用">6.2 defer和匿名函数结合使用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;defer语句，匿名函数内部：a=%d,b=%d\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}()</span> <span class="c1">//()代表匿名函数直接执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="mi">111</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="p">=</span> <span class="mi">222</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;外部：a=%d,b=%d\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">外部：a=111,b=222
+</span></span></span><span class="line"><span class="cl"><span class="cm">defer语句，匿名函数内部：a=111,b=222
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上例的基础中，给匿名函数传递两个实参：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;匿名函数内部：a=%d,b=%d\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="c1">//()代表匿名函数直接执行，把参数传递过去，已经先传递参数，只是没有调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="mi">111</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="p">=</span> <span class="mi">222</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;外部：a=%d,b=%d\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">外部：a=111,b=222
+</span></span></span><span class="line"><span class="cl"><span class="cm">匿名函数内部：a=10,b=20
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="七获取命令行参数">七、获取命令行参数</h2>
+<p>无论在哪个系统中敲命令，或多或少都会遇到带着参数的命令。比如：<code>ping www.google.com</code>，<code>ping</code> 是一个可执行程序 ，www.google.com 就是参数。
+命令行以空格 <code>space</code> 区分各个参数，且以字符串方式传递！</p>
+<h3 id="71-如何实现">7.1 如何实现</h3>
+<p>需要用到 Golang 自带的 <code>os.Args</code> 变量，按<code>F2</code>即可看到官方对于这个变量的描述：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// Args hold the command-line arguments, starting with the program name.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">Args</span> <span class="p">[]</span><span class="kt">string</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Args 保持住命令行参数，从程序自身的名字开始。</p>
+<h3 id="72-最基本的例子">7.2 最基本的例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">list</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Args</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">n</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;n = &#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;list[%d] = %s\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;++++++++++++++++&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">data</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">list</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;list[%d] = %s\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">go run 48_获取命令行参数.go 4 42
+</span></span></span><span class="line"><span class="cl"><span class="cm">n =  3
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[0] = C:\Users\ADMINI~1\AppData\Local\Temp\go-build346730226\b001\exe\48_获取命令行参数.exe
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[1] = 4
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[2] = 42
+</span></span></span><span class="line"><span class="cl"><span class="cm">++++++++++++++++
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[0] = C:\Users\ADMINI~1\AppData\Local\Temp\go-build346730226\b001\exe\48_获取命令行参数.exe
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[1] = 4
+</span></span></span><span class="line"><span class="cl"><span class="cm">list[2] = 42
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第一个参数是程序自己本身的名称。
+直接 <code>go run</code> 的方式只是人类自己看起来省力而已，Golang 底层依旧会先去编译并生成一个可执行程序，然后再运行这个可执行程序，如下图所示：</p>
+<h2 id="八作用域">八、作用域</h2>
+<p>作用域就是：变量起作用的范围。</p>
+<h3 id="81-局部变量的特点">8.1 局部变量的特点</h3>
+<p>执行到定义变量的那句话，才开始分配内存空间，离开作用域被自动回收且被释放。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span> <span class="c1">//必须
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a = &#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//定义在{}里面的变量就是局部变量，只能在{}里面有效
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//执行到定义变量那句话，才开始分配空间，离开作用域自动释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//作用域，变量其作用的范围
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//a = 111
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">i</span> <span class="o">:=</span> <span class="mi">10</span> <span class="c1">//块级作用域，出了这对大括号的范围，i就会被自动释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;i = &#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//i = 111
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">flag</span> <span class="o">:=</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">flag</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">{</span> <span class="c1">//flag同样也是块级作用域内的变量，出了if块被自动回收并释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;flag = &#34;</span><span class="p">,</span> <span class="nx">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">flag</span> <span class="p">=</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="82-全局变量的特点">8.2 全局变量的特点</h3>
+<p>1.定义在函数外部的变量叫全局变量。
+2.全局变量不能使用海象运算符 <code>:=</code> 声明。
+3.<code>const</code> 声明的名称不再是全局变量，而是 <code>常量</code> 了，是不允许被修改的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">a</span> <span class="kt">int</span> <span class="c1">//这个a是全局变量，可以给赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="nx">b</span> <span class="p">=</span> <span class="mi">10</span> <span class="c1">//const声明的b是常量了，不能给赋值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a=&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">b</span> <span class="p">=</span> <span class="mi">20</span> <span class="c1">//cannot assign to b ===&gt; 不能赋值给b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="83-不同作用域同名变量">8.3 不同作用域同名变量</h3>
+<p>1.不同作用域允许定义同名变量。
+2.使用变量的原则：就近原则。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">a</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;in test, a type is : %T\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">a</span> <span class="kt">byte</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;in main, a type is : %T\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">var</span> <span class="nx">a</span> <span class="kt">float64</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;in block, a type is : %T\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">in main, a type is : uint8
+</span></span></span><span class="line"><span class="cl"><span class="cm">in block, a type is : float64
+</span></span></span><span class="line"><span class="cl"><span class="cm">in test, a type is : int
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>找全局变量的时候，是<code>引用</code>全局变量：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">a</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="p">=</span> <span class="mi">10</span> <span class="c1">//引用全局变量，会修改其结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a=&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;a=&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="c1">//依然是引用，test函数中已改变了其值，所以也将引用改变后的值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">a= 10
+</span></span></span><span class="line"><span class="cl"><span class="cm">a= 10
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="九工程管理">九、工程管理</h2>
+<h3 id="91-go111-版本之前的工作区">9.1 Go1.11 版本之前的工作区</h3>
+<p>Go1.11 版本之前，使用 GOPATH 来管理工程。</p>
+<h4 id="911-工作区介绍">9.1.1 工作区介绍</h4>
+<p>Golang 代码必须放在工作区中。工作区是对应一个特定工程的目录，它应包含 3 个子目录：
+1.src目录
+用于以代码包的形式组织并保存 Go 源代码文件。（比如：<code>.go</code> <code>.c</code> <code>.h</code> <code>.s</code> …）
+src用于包含所有的源代码，是 Go1.11 版本之前，命令行工具的强制规则。
+2.pkg目录
+用于存放由 <code>go install</code> 命令构建安装后的代码包（包含 go 库源码文件）的 <code>.a</code> 归档文件。
+3.bin目录
+与 pkg 目录类似，在通过 <code>go install</code> 命令完成安装后，保存由 Go 命令源码文件生成的可执行文件。</p>
+<h4 id="912-gopath设置">9.1.2 GOPATH设置</h4>
+<p>标准库中的包会在安装 Go 语言的位置找到。程序员自己创建的包会在 <code>GOPATH</code> 环境变量指定的目录中查找。
+首先需要把工程目录的根路径加入到环境变量 <code>GOPATH</code> 中，这样才能构建这个工程。否则，即使处于同一工作目录（工作区），代码之间也无法通过绝对代码包路径完成调用。
+src 这个目录是强制要求存在，而 pkg 和 bin 目录则无需手动创建，Go 命令行工具在构建过程中会自动创建这些目录。
+特别注意：只有当环境变量 <code>GOPATH</code> 中只包含一个工作区的目录路径时，<code>go install</code> 命令才会把命令源码安装到当前工作区的 bin 目录下。如果环境变量 <code>GOPATH</code> 中包含多个工作区的路径，则必须设置环境变量 <code>GOBIN</code>，否则执行 <code>go install</code> 命令就会失效。</p>
+<h4 id="913-分文件编程同一个目录下">9.1.3 分文件编程（同一个目录下）</h4>
+<p>1.多个源文件，必须放在 <code>src</code> 目录下。
+2.设置 <code>GOPATH</code> 环境变量时，注意：别把 <code>src</code> 目录包含进去。
+3.同一个目录，包名必须一样。
+4.同一个目录，调用别的文件中的函数，无需加包名引用直接调用即可。</p>
+<h4 id="914-分文件编程不同目录下">9.1.4 分文件编程（不同目录下）</h4>
+<p>1.依旧必须放在 <code>src</code> 目录下。
+2.不同目录，包名不一样。
+3.调用不同包里面的函数，格式：<code>包名.函数名()</code>。
+4.<strong>被调用的其他包里的函数名称首字母必须大写，否则对其他包不可见</strong></p>
+<h4 id="915-包">9.1.5 包</h4>
+<h5 id="9151-自定义包">9.1.5.1 自定义包</h5>
+<p>创建的自定义包最好放在<code>GOPATH</code>的<code>src</code>目录下（或者<code>GOPATH</code> <code>src</code>的某个子目录下）
+在Golang中，代码包中的源码文件名是可以任意的，但这些源码文件都必须以包声明语句作为文件中非注释语句的第一行，每个包都对应一个独立的空间
+例：
+<code>package calc</code>
+包中成员以名称首字母大小写决定访问权限：首字母大写可被包外访问，首字母小写仅包内成员可以访问。
+注意：<strong>同一个目录（文件夹）中，每个 go 文件所声明的包名称必须一样</strong>！</p>
+<h5 id="9152-给包起个别名">9.1.5.2 给包起个别名</h5>
+<p>语法：<code>import 新名字 原本的包名</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">//新名字+原本的名字
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kn">import</span> <span class="nx">myFMT</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">myFMT</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;test info.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="9153-忽略丢弃一个包">9.1.5.3 忽略丢弃一个包</h5>
+<p>引入包的时候使用 <code>_</code>，主要是为了让 Golang 自动调用那个包中的 init() 函数。
+例如，我有这么一个项目结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">hello</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">hello</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="cl"><span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>hello/hello.go 中的代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">hello</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;this message from hello/hello.go init() function.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">PrintHello</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello message.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我只想引入这个模块，但不想用这个模块的任何函数。那么可以在引入这个模块的时候，使用<code>_</code>丢弃这个包。
+main.go 中的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">_</span> <span class="s">&#34;gitee.com/quanquan616/hello&#34;</span> <span class="c1">//引入的同时，丢弃这个包，我只想做初始化使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">运行结果：
+</span></span></span><span class="line"><span class="cl"><span class="cm">this message from hello/hello.go init() function.
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">Process finished with exit code 0
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译通过，没有任何问题，而且也可以看到 Golang 自动调用了 hello/hello.go 中的 init() 函数。</p>
+<h5 id="9154-下划线_丢弃包的常用场景1">9.1.5.4 下划线<code>_</code>丢弃包的常用场景1</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;database/sql&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">_</span> <span class="s">&#34;github.com/go-sql-driver/mysql&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第二个 import 就是不使用 mysql 包，将其丢弃，只是执行一下这个包的 init() 函数，把 mysql 的驱动注册到 sql 包里，然后程序里就可以使用 sql 包来访问 mysql 数据库了。</p>
+<h3 id="92-go-module-模块管理">9.2 Go Module 模块管理</h3>
+<p>Go1.11 开始，官方推出并建议使用 <code>Go Module</code> 来管理工程。
+详情使用：<a class="link" href="https://blog.csdn.net/zhangyibei2008/article/details/104672471"  target="_blank" rel="noopener"
+    >link</a></p>
+<h2 id="十main函数和init函数">十、main()函数和init()函数</h2>
+<p>Golang 有两个保留函数：<code>main()</code> 和 <code>init()</code>。这两个函数在定义时不能有任何的参数和返回值，Go 程序会自动调用这两个函数。</p>
+<h3 id="101-main函数的特性">10.1 main()函数的特性</h3>
+<p>1.main() 函数是 Go 程序的唯一入口。
+2.main() 函数只能应用于 main 包中，main 包中必须包含有且只有一个 <code>main()</code> 函数。</p>
+<h3 id="102-init函数的特性">10.2 init()函数的特性</h3>
+<p>1.init() 函数是用于程序执行前做包的初始化的函数，比如初始化包里的变量等。
+init() 函数能够应用于所有的包中，可选的，可写可不写。init() 函数会在程序执行开始的时候被调用。所有被编译器发现的 init() 函数，都会安排在 main() 函数之前执行。init() 函数通常用在设置包、初始化变量或者其他先行引导工作。
+2.不同包的 init() 函数，按照包导入的依赖关系决定该初始化函数的执行顺序。
+3.init() 函数不能被其他函数调用，而是在 main() 函数执行之前，自动被调用。
+4.每个包可以拥有多个 init() 函数。
+不推荐这么做，强烈建议每个文件只写一个 init() 函数。</p>
+<h3 id="103-包的其他特性">10.3 包的其他特性</h3>
+<p>1.有时候一个包会被多个包同时导入，那么它只会被导入一次。（例如：很多包都会用到fmt包，但它只会被导入一次）
+2.当一个包被导入时，如果该包还导入了其他的包，那么会先将其他包导入进来，然后再对这些包中的包级常量和变量进行初始化，紧接着执行 init() 函数（如果有）。等所有被导入的包都加载完毕了，就会对 main 包中的包级常量和变量进行初始化，然后执行 main 包中的 init() 函数（如果有），最后执行 main() 函数。</p>
+<h3 id="104-init函数和main函数的异同">10.4 init()函数和main()函数的异同</h3>
+<p>共同点：两个函数在定义时不能有任何的参数和返回值，且由 Go 程序自动调用。
+不同电：init() 函数可以应用于任意包中，且可以重复定义多个。main() 函数只能用于 main 包中，且只能定义一个。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/golang/">Golang</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/1ypylhrh/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png" loading="lazy" data-key="1ypylhrh" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2or6.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之并发编程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/xb9uhh7c/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/gp/wallhaven-gpd95q.png" loading="lazy" data-key="xb9uhh7c" data-hash="https://w.wallhaven.cc/full/gp/wallhaven-gpd95q.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之异常与文本文件处理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/giabprkd/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/zy/wallhaven-zydldy.jpg" loading="lazy" data-key="giabprkd" data-hash="https://w.wallhaven.cc/full/zy/wallhaven-zydldy.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之面向对象编程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/wknjbadw/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/zy/wallhaven-zy9gwv.png" loading="lazy" data-key="wknjbadw" data-hash="https://w.wallhaven.cc/full/zy/wallhaven-zy9gwv.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之复合类型</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/nn24jprl/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/kx/wallhaven-kxdz96.jpg" loading="lazy" data-key="nn24jprl" data-hash="https://w.wallhaven.cc/full/kx/wallhaven-kxdz96.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Golang学习之基本类型与流程控制</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

